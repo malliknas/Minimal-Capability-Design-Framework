@@ -1,0 +1,570 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Crimson Text', serif;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background-color: #fafafa;
+}
+
+/* Header Styles */
+.main-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: white;
+    padding: 2rem 0;
+    box-shadow: 0 2px 10px rgba(30, 58, 138, 0.2);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+.university-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-placeholder {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    text-align: center;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.institution-details h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.institution-details p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.thesis-title-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.author-info {
+    display: flex;
+    gap: 2rem;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.9rem;
+}
+
+.author-info .author {
+    font-weight: 600;
+}
+
+/* Main Container */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 2rem;
+    padding: 2rem;
+    min-height: calc(100vh - 200px);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+    order: 2;
+}
+
+.nav-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.nav-header h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #1e3a8a;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    color: #6b7280;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* Navigation Items */
+.nav-section {
+    margin-bottom: 0.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.nav-item:hover {
+    background: #f8fafc;
+    color: #1e3a8a;
+}
+
+.nav-item.active {
+    background: #1e3a8a;
+    color: white;
+}
+
+.nav-icon {
+    margin-right: 0.75rem;
+    font-size: 1rem;
+}
+
+.nav-text {
+    flex: 1;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+}
+
+.expand-icon {
+    margin-left: 0.5rem;
+    transition: transform 0.2s ease;
+    font-size: 0.8rem;
+}
+
+.nav-item.active .expand-icon {
+    color: white;
+}
+
+.expandable.expanded .expand-icon {
+    transform: rotate(90deg);
+}
+
+.status {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.status.completed {
+    color: #059669;
+}
+
+.status.current {
+    color: #dc2626;
+    animation: pulse 2s infinite;
+}
+
+.status.pending {
+    color: #d1d5db;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Subsections */
+.nav-subsections {
+    display: none;
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+}
+
+.nav-subsections.expanded {
+    display: block;
+}
+
+.nav-subitem {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-family: 'Source Sans Pro', sans-serif;
+    transition: all 0.2s ease;
+    margin-bottom: 0.25rem;
+}
+
+.nav-subitem:hover {
+    background: #f1f5f9;
+    color: #1e3a8a;
+}
+
+.nav-subitem.active {
+    background: #dbeafe;
+    color: #1e3a8a;
+    font-weight: 600;
+}
+
+/* Download Section */
+.download-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.download-section h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #1e3a8a;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.download-btn {
+    display: block;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1e3a8a;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+    background: #1e3a8a;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Main Content */
+.main-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    order: 1;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.9rem;
+}
+
+.breadcrumb-item {
+    color: #6b7280;
+}
+
+.breadcrumb-item.current {
+    color: #1e3a8a;
+    font-weight: 600;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.5rem;
+    color: #d1d5db;
+}
+
+/* Chapter Content */
+.chapter-content {
+    min-height: 400px;
+    margin-bottom: 3rem;
+}
+
+.content-placeholder {
+    padding: 3rem;
+    text-align: center;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    color: #64748b;
+}
+
+.content-placeholder h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1e3a8a;
+}
+
+/* Chapter Navigation */
+.chapter-navigation {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.nav-btn {
+    padding: 0.75rem 1.5rem;
+    background: #1e3a8a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: #1e3a8a;
+    border: none;
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.mobile-menu-toggle span {
+    width: 20px;
+    height: 2px;
+    background: white;
+    margin: 2px 0;
+    transition: 0.3s;
+}
+
+/* Print Styles */
+@media print {
+    .sidebar, .mobile-menu-toggle, .chapter-navigation {
+        display: none !important;
+    }
+    
+    .container {
+        grid-template-columns: 1fr;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .main-content {
+        box-shadow: none;
+        border-radius: 0;
+        padding: 1rem;
+    }
+    
+    .main-header {
+        background: white !important;
+        color: black !important;
+        box-shadow: none;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .sidebar {
+        order: 1;
+        position: static;
+        margin-bottom: 1rem;
+    }
+    
+    .main-content {
+        order: 2;
+        padding: 1.5rem;
+    }
+    
+    .header-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .thesis-title-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .author-info {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .sidebar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        height: 100vh;
+        z-index: 999;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    .sidebar.open {
+        right: 0;
+    }
+    
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .thesis-title-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .author-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+/* Coming Soon Styles */
+.nav-item.coming-soon {
+    opacity: 0.6;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.nav-item.coming-soon:hover {
+    background: #f8fafc;
+    color: #6b7280;
+}
+
+.nav-subitem.coming-soon {
+    opacity: 0.5;
+    cursor: not-allowed;
+    font-style: italic;
+}
+
+.nav-subitem.coming-soon:hover {
+    background: transparent;
+    color: #6b7280;
+}
+
+.status.coming-soon {
+    color: #f59e0b;
+    animation: none;
+}
+
+.status.partial {
+    color: #3b82f6;
+}
+
+/* Coming Soon Tooltip */
+.nav-item.coming-soon::after {
+    content: "Coming Soon";
+    position: absolute;
+    right: -85px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #374151;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: 'Source Sans Pro', sans-serif;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.nav-item.coming-soon:hover::after {
+    opacity: 1;
+}
+
+.nav-subitem.coming-soon::after {
+    content: "Coming Soon";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #374151;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: 'Source Sans Pro', sans-serif;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    margin-left: 0.5rem;
+    z-index: 10;
+}
+
+.nav-subitem.coming-soon:hover::after {
+    opacity: 1;
+}
