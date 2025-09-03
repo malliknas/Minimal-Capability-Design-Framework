@@ -1,0 +1,291 @@
+{
+  "name": "mcd-simulation-runner",
+  "version": "1.1.0",
+  "description": "Minimal Capability Design Validation Framework - Browser-Based Research Tool with WebLLM Integration including Chapter 7 Domain Walkthroughs",
+  "main": "browser-deployment/index.html",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--max-old-space-size=6144 vite --host --port 3000",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=6144 vite build",
+    "preview": "cross-env NODE_OPTIONS=--max-old-space-size=6144 vite preview --port 3000",
+    "serve": "cross-env NODE_OPTIONS=--max-old-space-size=6144 vite preview --port 3000",
+    "start": "npm run dev",
+    "build:production": "cross-env NODE_OPTIONS=--max-old-space-size=6144 vite build --mode production",
+    "build:development": "cross-env NODE_OPTIONS=--max-old-space-size=6144 vite build --mode development",
+    "clean": "rimraf dist browser-deployment/dist node_modules/.vite",
+    "lint": "eslint src/**/*.ts browser-deployment/src/**/*.ts --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"browser-deployment/**/*.{ts,tsx,html}\"",
+    "type-check": "tsc --noEmit",
+    "docs": "typedoc src --out docs",
+    "test:browser": "echo 'Open http://localhost:3000 to run tests in browser'",
+    "test:t1-t10": "echo 'Navigate to T1-T10 Tests section for systematic validation'",
+    "test:chapter7": "echo 'Navigate to Chapter 7 Domain Walkthroughs for practical application testing'",
+    "test:unified": "echo 'Run unified framework tests combining T1-T10 and Chapter 7'",
+    "validate:webgpu": "echo 'Check WebGPU compatibility at http://localhost:3000'",
+    "validate:models": "echo 'Verify model loading for all tiers (Q1, Q4, Q8)'",
+    "validate:tsconfig": "echo 'Verify TypeScript configuration with vite-tsconfig-paths'",
+    "demo:full": "echo 'Complete demonstration: Run both T1-T10 tests and Chapter 7 walkthroughs'",
+    "demo:walkthroughs": "echo 'Chapter 7 Demo: Appointment Booking, Spatial Navigation, Failure Diagnostics'",
+    "demo:unified": "echo 'Unified framework demo showcasing cross-framework consistency'",
+    "install:fresh": "npm ci && npm run clean && npm run type-check",
+    "prepare": "husky install",
+    "precommit": "lint-staged"
+  },
+  "keywords": [
+    "MCD",
+    "Minimal Capability Design",
+    "LLM Testing",
+    "WebLLM",
+    "Browser Testing",
+    "Quantization",
+    "Validation Framework",
+    "Semantic Drift Detection",
+    "Model Tiering",
+    "T1-T10 Tests",
+    "Chapter 7 Walkthroughs",
+    "Domain Walkthroughs",
+    "Appointment Booking Agent",
+    "Spatial Navigation Agent",
+    "Failure Diagnostics Agent",
+    "Fallback Logic",
+    "Multi-turn Testing",
+    "Research Framework",
+    "Browser Validation",
+    "Resource Optimization",
+    "WebGPU",
+    "Client-Side AI",
+    "Stateless Slot-filling",
+    "Symbol-anchored Movement",
+    "Over-engineering Detection",
+    "MCD Principle Validation",
+    "Domain-specific Testing",
+    "Tier Comparison Analysis",
+    "Unified Framework",
+    "Cross-framework Validation",
+    "TypeScript Path Resolution"
+  ],
+  "author": {
+    "name": "MCD Research Team",
+    "email": "mcd-framework@research.org"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcd-research/simulation-runner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mcd-research/simulation-runner/issues"
+  },
+  "homepage": "https://github.com/mcd-research/simulation-runner#readme",
+  "dependencies": {
+    "@mlc-ai/web-llm": ">=0.2.50"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.4",
+    "rimraf": "^5.0.5",
+    "typedoc": "^0.25.7",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "peerDependencies": {
+    "@mlc-ai/web-llm": ">=0.2.50"
+  },
+  "files": [
+    "src/**/*",
+    "browser-deployment/**/*",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "vite.config.ts",
+    "tsconfig.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/test-config.d.ts",
+      "import": "./src/test-config.js"
+    },
+    "./evaluator": {
+      "types": "./src/evaluator.d.ts",
+      "import": "./src/evaluator.js"
+    },
+    "./test-config": {
+      "types": "./src/test-config.d.ts",
+      "import": "./src/test-config.js"
+    },
+    "./drift-detector": {
+      "types": "./src/drift-detector.d.ts",
+      "import": "./src/drift-detector.js"
+    },
+    "./model-loader": {
+      "types": "./src/model-loader.d.ts",
+      "import": "./src/model-loader.js"
+    },
+    "./utils": {
+      "types": "./src/utils.d.ts",
+      "import": "./src/utils.js"
+    },
+    "./logger": {
+      "types": "./src/logger.d.ts",
+      "import": "./src/logger.js"
+    },
+    "./domain-walkthroughs": {
+      "types": "./src/domain-walkthroughs.d.ts",
+      "import": "./src/domain-walkthroughs.js"
+    },
+    "./walkthrough-evaluator": {
+      "types": "./src/walkthrough-evaluator.d.ts",
+      "import": "./src/walkthrough-evaluator.js"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,html}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run type-check"
+    }
+  },
+  "config": {
+    "mcd": {
+      "defaultTier": "Q4",
+      "maxTokens": 150,
+      "timeoutMs": 30000,
+      "retryAttempts": 3,
+      "driftThreshold": 0.1,
+      "fallbackEnabled": true,
+      "loggingLevel": "info",
+      "outputFormat": "download",
+      "benchmarkIterations": 5,
+      "port": 3000,
+      "webgpuRequired": true,
+      "unifiedFramework": {
+        "enabled": true,
+        "crossFrameworkValidation": true,
+        "consistencyThreshold": 0.85
+      },
+      "chapter7": {
+        "enabled": true,
+        "domains": [
+          "appointment-booking",
+          "spatial-navigation",
+          "failure-diagnostics"
+        ],
+        "defaultDomain": "appointment-booking",
+        "scenarioTimeout": 45000,
+        "walkthroughRetries": 2,
+        "exportFormats": [
+          "json",
+          "csv",
+          "html"
+        ],
+        "batchModeEnabled": true,
+        "realTimeUpdates": true
+      },
+      "testing": {
+        "t1t10Tests": {
+          "enabled": true,
+          "defaultSelection": [
+            "T1",
+            "T2",
+            "T3",
+            "T4",
+            "T5",
+            "T6",
+            "T7",
+            "T8",
+            "T9",
+            "T10"
+          ],
+          "appendixStyleReporting": true,
+          "detailedAnalysisAlwaysVisible": true
+        },
+        "domainWalkthroughs": {
+          "enabled": true,
+          "appointmentBooking": {
+            "enabled": true,
+            "scenarios": 3,
+            "maxExchanges": 5,
+            "slotFillingOptimized": true
+          },
+          "spatialNavigation": {
+            "enabled": true,
+            "scenarios": 3,
+            "landmarkBased": true,
+            "symbolAnchored": true
+          },
+          "failureDiagnostics": {
+            "enabled": true,
+            "scenarios": 3,
+            "complexityDetection": true,
+            "overEngineeringDetection": true
+          }
+        }
+      },
+      "tiers": {
+        "Q1": {
+          "maxTokens": 60,
+          "memoryLimit": 512,
+          "avgLatency": 200,
+          "walkthroughOptimized": true,
+          "domainOptimization": {
+            "appointmentBooking": 0.85,
+            "spatialNavigation": 0.8,
+            "failureDiagnostics": 0.75
+          }
+        },
+        "Q4": {
+          "maxTokens": 150,
+          "memoryLimit": 1024,
+          "avgLatency": 320,
+          "walkthroughOptimized": true,
+          "domainOptimization": {
+            "appointmentBooking": 0.9,
+            "spatialNavigation": 0.88,
+            "failureDiagnostics": 0.85
+          }
+        },
+        "Q8": {
+          "maxTokens": 200,
+          "memoryLimit": 2048,
+          "avgLatency": 580,
+          "walkthroughOptimized": true,
+          "domainOptimization": {
+            "appointmentBooking": 0.95,
+            "spatialNavigation": 0.93,
+            "failureDiagnostics": 0.9
+          }
+        }
+      }
+    }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/mcd-research"
+  }
+}
