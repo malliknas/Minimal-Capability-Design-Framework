@@ -288,29 +288,118 @@
             </nav>
 
             <!-- Chapter Content Area -->
-            <article class="chapter-content" id="chapter-content">
-                <!-- This is where you'll paste your converted HTML from wordtohtml.net -->
-                <div class="content-placeholder">
-                    <h1 style="color: #1e3a8a; margin-bottom: 1.5rem;">Chapter 7: Walkthroughs — MCD in Domain-Specific Workflows</h1>
-                    
-                    <div style="background: #f0f9ff; border-left: 4px solid #0ea5e9; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
-                        <h3 style="color: #0369a1; margin-bottom: 1rem;">Purpose of This Chapter</h3>
-                        <p>While Chapter 6 validated the Minimal Capability Design (MCD) framework through controlled simulation tests, this chapter demonstrates its practical transferability in real-world inspired, domain-specific agent workflows. These walkthroughs take the principles stress-tested under constraint and apply them directly to operational tasks in constrained-first deployments.</p>
-                    </div>
-                    
-                    <div style="background: #fefce8; border: 1px solid #eab308; border-radius: 8px; padding: 1.5rem; margin: 2rem 0;">
-                        <strong style="color: #a16207;">Instructions for Chapter 7:</strong>
-                        <ul style="margin-top: 0.5rem; margin-left: 1rem; color: #374151;">
-                            <li>This is Chapter 7 content from your thesis document</li>
-                            <li>Convert the full Chapter 7 content using <strong>wordtohtml.net</strong></li>
-                            <li>Copy the generated HTML</li>
-                            <li>Replace this entire placeholder section with your converted content</li>
-                            <li>The formatting will automatically match your academic theme</li>
-                            <li>Include all sections: 7.0 through 7.7 as shown in the navigation</li>
-                        </ul>
-                    </div>
+           ```html
+<article class="chapter-content" id="chapter-content">
+    <!-- Thesis Introduction and Overview -->
+    <div class="thesis-intro">
+        <h1 style="color: #1e3a8a; margin-bottom: 1.5rem; font-size: 2.2rem;">Designing Lightweight AI Agents for Edge Deployment</h1>
+        <p class="thesis-subtitle" style="color: #64748b; font-size: 1.2rem; font-style: italic; margin-bottom: 2rem;">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+        
+        <!-- Abstract Overview -->
+        <div style="background: #f8fafc; border-left: 4px solid #1e3a8a; border-radius: 8px; padding: 2rem; margin-bottom: 2rem;">
+            <h2 style="color: #1e3a8a; margin-bottom: 1rem; font-size: 1.4rem;">Abstract</h2>
+            <p style="line-height: 1.7; margin-bottom: 1rem;">
+                This thesis introduces the <strong>Minimal Capability Design (MCD)</strong> framework, a systematic methodology for engineering lightweight AI agents specifically optimized for edge deployment environments. Unlike conventional approaches that add memory, orchestration, and redundancy by default, MCD begins with architectural minimalism as a foundational design principle.
+            </p>
+            <p style="line-height: 1.7;">
+                Through extensive simulation testing and domain-specific walkthroughs, this research demonstrates that stateless, prompt-driven agents can achieve robust task performance while maintaining interpretability and deployment efficiency under strict resource constraints.
+            </p>
+        </div>
+
+        <!-- Key Contributions -->
+        <div style="background: #f0f9ff; border: 1px solid #3b82f6; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: #1e40af; margin-bottom: 1rem;">Key Contributions</h3>
+            <ul style="line-height: 1.6; color: #374151;">
+                <li><strong>Theoretical Framework:</strong> Formal design principles treating minimalism, statelessness, and prompt resilience as primary constraints</li>
+                <li><strong>Empirical Validation:</strong> Browser-based simulation testbed with quantized models (Q1/Q4/Q8) demonstrating MCD effectiveness</li>
+                <li><strong>Practical Application:</strong> Domain-specific walkthroughs in appointment booking, spatial navigation, and failure diagnostics</li>
+                <li><strong>Diagnostic Methodology:</strong> Systematic tools for detecting over-engineering and capability excess in AI agents</li>
+            </ul>
+        </div>
+
+        <!-- Thesis Structure -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background: #fefce8; border: 1px solid #eab308; border-radius: 8px; padding: 1.5rem;">
+                <h4 style="color: #92400e; margin-bottom: 0.5rem; font-size: 1.1rem;">🧱 Part I: Foundations</h4>
+                <p style="font-size: 0.9rem; line-height: 1.5; color: #374151;">
+                    Establishes the motivation for lightweight agents, reviews literature across architectural domains, and outlines the research methodology.
+                </p>
+            </div>
+            
+            <div style="background: #ecfdf5; border: 1px solid #22c55e; border-radius: 8px; padding: 1.5rem;">
+                <h4 style="color: #166534; margin-bottom: 0.5rem; font-size: 1.1rem;">🧱 Part II: MCD Framework</h4>
+                <p style="font-size: 0.9rem; line-height: 1.5; color: #374151;">
+                    Introduces core MCD principles, layered architecture, and practical instantiation strategies for stateless agent design.
+                </p>
+            </div>
+            
+            <div style="background: #fdf2f8; border: 1px solid #ec4899; border-radius: 8px; padding: 1.5rem;">
+                <h4 style="color: #be1c5f; margin-bottom: 0.5rem; font-size: 1.1rem;">🧩 Part III: Validation</h4>
+                <p style="font-size: 0.9rem; line-height: 1.5; color: #374151;">
+                    Comprehensive testing through simulations, domain walkthroughs, comparative evaluation, and future research directions.
+                </p>
+            </div>
+        </div>
+
+        <!-- Research Impact -->
+        <div style="background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: #166534; margin-bottom: 1rem;">Research Impact & Applications</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div>
+                    <h4 style="color: #15803d; font-size: 1rem; margin-bottom: 0.5rem;">🏥 Healthcare Systems</h4>
+                    <p style="font-size: 0.85rem; color: #374151;">Appointment scheduling and patient triage in resource-constrained environments</p>
                 </div>
-            </article>
+                <div>
+                    <h4 style="color: #15803d; font-size: 1rem; margin-bottom: 0.5rem;">🤖 Edge Robotics</h4>
+                    <p style="font-size: 0.85rem; color: #374151;">Navigation and decision-making for autonomous systems with limited computing power</p>
+                </div>
+                <div>
+                    <h4 style="color: #15803d; font-size: 1rem; margin-bottom: 0.5rem;">📱 IoT & Mobile</h4>
+                    <p style="font-size: 0.85rem; color: #374151;">Intelligent assistants running locally on phones and embedded devices</p>
+                </div>
+                <div>
+                    <h4 style="color: #15803d; font-size: 1rem; margin-bottom: 0.5rem;">🔧 Industrial Monitoring</h4>
+                    <p style="font-size: 0.85rem; color: #374151;">Diagnostic agents for equipment monitoring in remote or offline environments</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Guide -->
+        <div style="background: #fffbeb; border: 1px solid #f59e0b; border-radius: 8px; padding: 1.5rem;">
+            <h3 style="color: #d97706; margin-bottom: 1rem;">How to Navigate This Thesis</h3>
+            <p style="line-height: 1.6; margin-bottom: 1rem; color: #374151;">
+                Use the <strong>Table of Contents</strong> on the right to explore different chapters and sections. Available chapters include complete content, while "Coming Soon" sections are currently being finalized.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div style="background: #16a34a; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem;">
+                    <strong>✓ Available:</strong> Chapters 1-7, 10 + Appendices
+                </div>
+                <div style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem;">
+                    <strong>⏳ Coming Soon:</strong> Chapters 8-9
+                </div>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 1rem; color: #6b7280;">
+                <strong>Pro Tip:</strong> Start with Chapter 1 for the complete introduction, or jump directly to Chapter 6 (Simulation Testing) or Chapter 7 (Domain Walkthroughs) to see the framework in action.
+            </p>
+        </div>
+
+        <!-- Download Options -->
+        <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+            <h4 style="color: #374151; margin-bottom: 1rem;">Download Complete Thesis</h4>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <a href="files/thesis.pdf" style="background: #1e3a8a; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.2s;">
+                    📄 PDF Version
+                </a>
+                <a href="files/thesis.docx" style="background: #059669; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.2s;">
+                    📝 Word Document
+                </a>
+            </div>
+        </div>
+    </div>
+</article>
+```
+
+[1](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/82416846/72f7c474-1df6-4c72-ad17-4b56f9aa2a71/theis7-Copy.docx)
 
             <!-- Chapter Navigation -->
             <nav class="chapter-navigation">
