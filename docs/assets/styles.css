@@ -568,3 +568,32 @@ body {
 .nav-subitem.coming-soon:hover::after {
     opacity: 1;
 }
+/* Part Header Styling */
+.nav-section.part-header {
+    margin: 1.5rem 0 0.5rem 0;
+    padding: 0;
+}
+
+.part-title {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e3a8a;
+    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border-left: 3px solid #1e3a8a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Enhanced navigation for thesis structure */
+.nav-subsections {
+    border-left: 2px solid #e2e8f0;
+    margin-left: 1.5rem;
+    padding-left: 0.5rem;
+}
+
+.nav-subsections.expanded {
+    border-left-color: #3b82f6;
+}
