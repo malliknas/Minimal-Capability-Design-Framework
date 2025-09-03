@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1: Introduction - MCD Thesis</title>
+    <style>
+        body { 
+            font-family: Georgia, serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            line-height: 1.8; 
+            color: #333;
+        }
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        .nav-breadcrumb {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .nav-breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 0; }
+        h2 { color: #34495e; border-bottom: 2px solid #667eea; padding-bottom: 5px; }
+        h3 { color: #667eea; }
+        .definition-table {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .definition-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .definition-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        .definition-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .research-questions {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #28a745;
+            margin: 30px 0;
+        }
+        .contributions-list {
+            background: linear-gradient(135deg, #fff8e1 0%, #fffdf5 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #ffc107;
+            margin: 30px 0;
+        }
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+            margin-left: 0;
+            font-style: italic;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-breadcrumb">
+        <a href="../">← Thesis Home</a> / <a href="../">Part I: Foundations</a> / <strong>Chapter 1: Introduction</strong>
+    </div>
+
+    <div class="chapter-header">
+        <h1>📘 Chapter 1</h1>
+        <h2>Introduction</h2>
+        <p><em>Problem Context and Framework Motivation</em></p>
+    </div>
+
+    <h2>Introduction</h2>
+    <p>In recent years, the rise of transformer-based agents has led to a duality between performance-oriented orchestration frameworks and task-specific, domain-bounded deployments. This thesis pursues the latter: the design of agents that operate effectively within tight constraints, even at the cost of generality.</p>
+
+    <h2>1.1 Motivation</h2>
+    <p>Existing AI agents are typically constructed under assumptions of abundant memory, orchestration infrastructure, and access to external toolchains [Brown et al., 2020; Shinn et al., 2023; Zhou et al., 2023]. These defaults introduce avoidable cost, latency, and fragility — especially in edge-aligned applications where devices have tight resource budgets and may operate offline. The rise of AI agents on constrained devices like phones, browsers, and microcontrollers means cloud-based orchestration is often overkill for simple tasks.</p>
+
+    <blockquote>
+        Recent work on lightweight model deployment [Dettmers et al., 2022; Frantar et al., 2023] focuses on computational optimization but does not address interaction minimalism or stateless reasoning as first-class design principles.
+    </blockquote>
+
+    <p>This gap motivates the <strong>Minimal Capability Design (MCD)</strong> framework, which treats minimalism, statelessness, and prompt resilience as foundational concerns. Unlike performance-optimized models, minimal agents prioritize interpretability and robustness under tight constraints, making them ideal for edge-aligned design.</p>
+
+    <div class="definition-table">
+        <h3>Operational Definitions</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Over-engineering</strong></td>
+                    <td>Inclusion of architectural components or capabilities that increase complexity without measurable gains in task reliability or accuracy</td>
+                </tr>
+                <tr>
+                    <td><strong>Capability Collapse</strong></td>
+                    <td>Degradation of task performance when resource ceilings (e.g., token limits, absent memory) are reached, often compounded over multiple turns</td>
+                </tr>
+                <tr>
+                    <td><strong>Prompt Resilience</strong></td>
+                    <td>The ability of a prompt-driven system to maintain task accuracy under prompt compression, reformulation, or fallback scenarios</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>1.2 Problem Statement</h2>
+    <p>Despite advances in AI agent design and model optimization strategies such as PEFT or distillation, most frameworks implicitly assume abundant memory, persistent state, orchestration layers, or retraining access. These architectural defaults increase cost, latency, and fragility—and are unnecessary for many real-world edge deployments [Brown et al., 2020; Kojima et al., 2022; Zhou et al., 2023].</p>
+
+    <p>However, the field lacks principled frameworks that:</p>
+    <ul>
+        <li>Treat minimalism and statelessness as foundational design constraints</li>
+        <li>Systematically evaluate agent robustness under these constraints</li>
+        <li>Detect over-engineering or capability collapse before deployment</li>
+    </ul>
+
+    <p>This study addresses the gap by proposing and validating the Minimal Capability Design (MCD) framework, which provides a structured approach to designing and diagnosing lightweight, interpretable agents for edge environments.</p>
+
+    <div class="research-questions">
+        <h2>1.3 Research Questions</h2>
+        <p>To address this problem, the thesis investigates:</p>
+        <ul>
+            <li><strong>RQ1:</strong> What design principles enable stateless, low-resource AI agents to function reliably?</li>
+            <li><strong>RQ2:</strong> How can architectural complexity be minimized without sacrificing core functionality?</li>
+            <li><strong>RQ3:</strong> How can agent behavior be systematically evaluated for robustness under constraints such as prompt compression, fallback handling, and statelessness?</li>
+            <li><strong>RQ4:</strong> What diagnostic signals reveal over-engineering, excessive capabilities, or fragility in minimal agents?</li>
+        </ul>
+    </div>
+
+    <h2>1.4 Aim and Objectives</h2>
+    <p><strong>Aim:</strong> To propose and validate a generalizable design framework—Minimal Capability Design (MCD)—for constructing lightweight, interpretable AI agents suitable for real-world edge deployment.</p>
+
+    <p><strong>Objectives:</strong></p>
+    <ol>
+        <li>Formalize design principles that prioritize minimalism, robustness, and prompt resilience</li>
+        <li>Validate the framework via literature synthesis, simulation in a constrained runtime, and walkthroughs across diverse agent domains</li>
+        <li>Extract a diagnostic toolkit to detect symptoms of over-engineering, fragility, or prompt failure modes in minimal agents</li>
+        <li>Anticipate hardware-based benchmarking extensions using edge boards such as Raspberry Pi or Jetson Nano in future iterations</li>
+        <li>Justify the choice of quantization as the primary optimization strategy through comparative architectural review</li>
+    </ol>
+
+    <div class="contributions-list">
+        <h2>1.5 Contributions</h2>
+        <p>This thesis makes the following contributions:</p>
+        <ol>
+            <li>A formal, literature-derived design framework — <strong>Minimal Capability Design (MCD)</strong> — that treats minimalism, statelessness, and prompt resilience as primary design constraints</li>
+            <li>A principled diagnostic methodology for detecting over-engineering, capability excess, and prompt fragility in AI agents</li>
+            <li>A browser-based, reproducible simulation testbed that emulates edge constraints using quantized LLMs</li>
+            <li>Defined and implemented a quantization-aware agent architecture using 1-bit (simulated), 4-bit, and 8-bit model tiers</li>
+            <li>Demonstrated the feasibility of deploying fallback-capable lightweight agents in browser and edge settings</li>
+            <li>Domain-specific walkthroughs demonstrating MCD principles in real-world agent use cases</li>
+            <li>A taxonomy of heuristic indicators and failure patterns applicable across domains</li>
+            <li>Design heuristics operationalized through agent checklists and failure diagnostics</li>
+            <li>Agent architecture diagrams supporting reproducibility and instantiation clarity</li>
+            <li>A unifying validation arc combining theoretical stress tests and applied agent walkthroughs</li>
+        </ol>
+    </div>
+
+    <h2>Optimization Scope</h2>
+    <p>While numerous optimization strategies exist—such as pruning, distillation, parameter-efficient fine-tuning (PEFT), and adaptive computation—this thesis focuses explicitly on <strong>quantization (1-bit, 4-bit, and 8-bit tiers)</strong>. This focus stems from:</p>
+    <ul>
+        <li>The practical relevance of quantization to runtime deployment in browser and microcontroller contexts</li>
+        <li>Its minimal hardware dependency and compatibility with edge toolchains (e.g., WebAssembly, ONNX runtimes)</li>
+        <li>The relative simplicity of its integration without retraining or fine-tuning</li>
+    </ul>
+
+    <h2>Thesis Roadmap</h2>
+    <p>The next chapter reviews relevant literature on lightweight agent design, prompt-based reasoning, memory architectures, and over-engineering in AI systems. This review is organized by architectural challenges rather than chronology, highlighting where current approaches fall short of supporting edge-native, minimal-capability agents—and motivating the framework proposed in subsequent chapters.</p>
+
+    <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid #eee;">
+        <p>
+            <a href="../" style="color: #667eea;">← Back to Thesis Home</a> | 
+            <a href="../chapter-6/" style="color: #667eea;">Skip to Chapter 6 (Simulation) →</a>
+        </p>
+    </div>
+</body>
+</html>
