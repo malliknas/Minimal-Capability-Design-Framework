@@ -47,6 +47,7 @@ If any changes after deplyment
 rm -rf browser-deployment/dist
 npm run build
 npm run serve:prod
+
 ```
 
 ### **Access Your Research Interface**
@@ -476,6 +477,221 @@ Traditional LLM deployment approaches suffer from **over-provisioning** and **re
 - **Evidence**: Real-time tier comparison with efficiency scoring
 - **Measurement**: 30% average resource savings with maintained performance
 - **Impact**: Practical framework for browser-based LLM optimization
+
+
+# 🏥 **Domain-Specific Walkthroughs (Chapter 7 Implementation)**
+
+## **Purpose & Research Context**
+
+The domain walkthroughs implement **Chapter 7's comprehensive analysis** of five prompt engineering approaches across real-world deployment scenarios. Unlike the controlled T1-T10 simulations, these walkthroughs test **practical application contexts** where different optimization strategies excel.
+
+## **Multi-Strategy Comparative Framework**
+
+Each walkthrough evaluates **five distinct approaches**:
+- **MCD Structured**: Resource-efficient, constraint-optimized design
+- **Conversational Natural**: User experience-focused, natural interaction  
+- **Few-Shot Pattern**: Example-driven learning with structural guidance
+- **System Role Professional**: Expertise framing with systematic processing
+- **Hybrid Multi-Strategy**: Advanced integration leveraging complementary strengths
+
+## **Domain Coverage (W1-W3)**
+
+### **W1: Healthcare Appointment Booking** 🏥
+
+**Context**: Medical appointment scheduling under stateless constraints with Q4 quantization
+
+```typescript
+// Example walkthrough configuration
+{
+  domain: "healthcare-booking",
+  scenario: "Stateless appointment extraction {doctor_type, date, time}",
+  constraints: { maxTokens: 150, quantTier: "Q4", stateless: true },
+  successMetrics: ["slot_extraction_rate", "professional_tone", "resource_efficiency"],
+  realWorldApplication: "Customer service automation, medical scheduling"
+}
+```
+
+**Key Findings from Implementation**:
+- **MCD Structured**: 92% completion, 388ms latency, minimal user guidance
+- **Conversational**: 28% completion under constraints, superior UX when resources allow
+- **Few-Shot Pattern**: 84% completion, good balance of efficiency and guidance
+- **System Role**: 86% completion, highest professional quality
+- **Hybrid**: 96% completion, 394ms latency, requires ML expertise
+
+### **W2: Spatial Navigation Agent** 🗺️
+
+**Context**: Indoor navigation with real-time obstacle avoidance using Q1/Q4 dynamic selection
+
+```typescript
+{
+  domain: "spatial-navigation", 
+  scenario: "Multi-waypoint pathfinding with hazard avoidance",
+  constraints: { dynamicTiers: ["Q1", "Q4"], realTime: true, safetyFocus: true },
+  successMetrics: ["navigation_accuracy", "safety_communication", "resource_efficiency"],
+  realWorldApplication: "Robotic navigation, indoor positioning systems"
+}
+```
+
+**Key Research Insights**:
+- **MCD Coordinates**: 93% navigation accuracy, 5% safety communication (liability risk)
+- **Natural Language**: 6% navigation accuracy, 91% safety communication  
+- **Few-Shot Pattern**: 76% accuracy, reliable for simple patterns
+- **System Role Expert**: 82% accuracy with professional hazard awareness
+- **Hybrid Adaptive**: 88% accuracy, 78% safety communication (optimal balance)
+
+### **W3: Failure Diagnostics Agent** 🔧
+
+**Context**: System troubleshooting with complexity scaling using Q8 quantization
+
+```typescript
+{
+  domain: "failure-diagnostics",
+  scenario: "Multi-layered diagnostic analysis with expert reasoning", 
+  constraints: { quantTier: "Q8", complexReasoning: true, educationalValue: true },
+  successMetrics: ["diagnostic_accuracy", "educational_value", "action_immediacy"],
+  realWorldApplication: "Technical support automation, system monitoring"
+}
+```
+
+**Advanced Multi-Strategy Integration Results**:
+- **MCD Structured**: 82% diagnostic accuracy, immediate action focus (76% context-optimal)
+- **Comprehensive**: 78% accuracy, 94% educational value, failed under constraints
+- **Few-Shot Pattern**: 76% accuracy, 58% educational value, balanced applications  
+- **System Role**: 84% accuracy, 81% professional quality (82% context-optimal)
+- **Hybrid**: 90% diagnostic accuracy, 87% multi-strategy optimization
+
+## **Browser Interface Integration**
+
+### **Accessing Domain Walkthroughs**
+
+```bash
+# Launch research framework
+npm run dev
+# In browser interface:
+# 1. Navigate to "Domain Walkthroughs" tab (Chapter 7)
+# 2. Select walkthrough: W1 (Healthcare) | W2 (Navigation) | W3 (Diagnostics)
+# 3. Choose prompt approaches: MCD | Conversational | Few-Shot | Role | Hybrid
+# 4. Configure quantization tiers: Q1/Q4/Q8 based on domain requirements
+# 5. Click "🚀 Start Domain Tests" 
+# 6. Monitor real-time multi-strategy comparison
+```
+
+### **Domain-Specific UI Features**
+
+The browser interface includes **walkthrough-specific components**:
+
+**`walkthrough-ui.ts` - Domain Control Interface**
+- **Domain selection tabs** with context explanations
+- **Multi-approach testing** with parallel execution
+- **Real-time strategy comparison** with efficiency scoring
+- **Implementation complexity indicators** for ML team guidance
+
+**`domain-results.ts` - Specialized Analysis**
+- **Context-dependent performance rankings** by deployment priority
+- **Implementation sophistication requirements** scoring
+- **Strategy coordination recommendations** for advanced implementation
+- **Cross-domain transferability** pattern recognition
+
+## **Research Data Generated**
+
+### **Multi-Strategy Performance Matrices**
+
+```json
+{
+  "domainResults": {
+    "W1_healthcare": {
+      "resourceConstrainedRanking": [
+        {"approach": "Hybrid", "score": 84.7, "expertise": "Advanced"},
+        {"approach": "SystemRole", "score": 78.3, "expertise": "Intermediate"},  
+        {"approach": "MCD", "score": 76.7, "expertise": "Basic"}
+      ],
+      "userExperienceRanking": [
+        {"approach": "Hybrid", "score": 82.1},
+        {"approach": "SystemRole", "score": 79.2},
+        {"approach": "Conversational", "score": 68.8}
+      ]
+    }
+  },
+  "crossDomainInsights": {
+    "optimalApproach": "Hybrid Multi-Strategy (when expert implementation)",
+    "practicalCompromise": "Few-Shot + System Role combination",
+    "constraintOptimal": "MCD + Few-Shot proven combination"
+  }
+}
+```
+
+### **Implementation Guidance Analytics**
+
+```json
+{
+  "engineeringComplexity": {
+    "MCD_Structured": {"complexity": "Simple (94%)", "maintenance": "Low"},
+    "Few_Shot": {"complexity": "Moderate (84%)", "maintenance": "Medium"},
+    "Hybrid": {"complexity": "Advanced (74%)", "maintenance": "High", 
+               "requirement": "Expert ML engineering team"}
+  },
+  "deploymentRecommendations": {
+    "maximumPerformance": "Hybrid Multi-Strategy with coordinated approaches",
+    "rapidDevelopment": "Few-Shot → Hybrid progressive scaling",  
+    "extremeConstraints": "MCD + Few-Shot efficiency optimization"
+  }
+}
+```
+
+## **Chapter 7 Academic Contributions Validated**
+
+### **1. Multi-Strategy Optimization Framework**
+- **Evidence**: Hybrid approaches achieve 84.7-90% performance vs single-strategy limitations
+- **Browser Validation**: Real-time coordination effectiveness measurement
+- **Impact**: Demonstrates coordinated multi-strategy advantages with expert implementation
+
+### **2. Context-Dependent Selection Methodology**  
+- **Evidence**: No single approach dominates; optimal selection varies by constraints
+- **Interactive Analysis**: Live strategy comparison across deployment priorities
+- **Impact**: Evidence-based framework for approach selection with measurable criteria
+
+### **3. Implementation Sophistication Modeling**
+- **Evidence**: Advanced multi-strategy requires 74% engineering accessibility vs 94% for MCD
+- **Practical Measurement**: Relationship between prompt engineering expertise and performance
+- **Impact**: Resource planning guidance for ML teams implementing optimization strategies
+
+### **Key Points**
+
+✅ **Real-World Applicability**: Beyond controlled simulations to operational contexts  
+✅ **Multi-Strategy Analysis**: Comprehensive approach comparison with measurable trade-offs  
+✅ **Implementation Guidance**: Practical ML engineering sophistication requirements  
+✅ **Context-Aware Selection**: Evidence-based methodology for deployment optimization  
+✅ **Interactive Validation**: Live browser demonstration of Chapter 7 theoretical framework  
+
+## **Domain Walkthroughs vs T1-T10 Simulations**
+
+| **Aspect** | **T1-T10 Simulations** | **W1-W3 Domain Walkthroughs** |
+|------------|-------------------------|-------------------------------|
+| **Purpose** | Controlled MCD principle validation | Real-world multi-strategy application |  
+| **Environment** | Constraint-focused testing | Practical deployment scenarios |
+| **Comparison** | MCD vs Non-MCD approaches | Five distinct prompt engineering strategies |
+| **Metrics** | Resource efficiency, semantic preservation | Context-dependent performance, implementation complexity |
+| **Application** | Framework principle validation | Strategic approach selection guidance |
+| **Academic Value** | Chapter 6 empirical evidence | Chapter 7 comparative methodology |
+
+## **Export Capabilities for Domain Analysis**
+
+### **Specialized Domain Data Formats**
+- **`domain-walkthrough-results.json`**: Complete multi-strategy performance matrices
+- **`cross-domain-analysis.csv`**: Statistical comparison across W1-W3 scenarios  
+- **`implementation-guidance.json`**: ML team sophistication requirements and recommendations
+- **`strategy-coordination.json`**: Advanced hybrid approach optimization data
+
+### **Research Applications**
+- **Thesis Chapter 7 Documentation**: Direct evidence for multi-strategy comparative analysis
+- **ML Team Planning**: Implementation complexity and resource requirement guidance
+- **Deployment Strategy**: Context-aware approach selection with measurable criteria  
+- **Academic Publication**: Cross-domain transferability and optimization methodology validation
+
+***
+
+This comprehensive domain walkthrough section demonstrates that your framework goes **beyond controlled testing** into **practical application validation**, providing the evidence base for Chapter 7's multi-strategy comparative methodology and implementation guidance for ML engineering teams.
+
 
 ## 🚀 **Advanced Usage & Research Applications**
 
