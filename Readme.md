@@ -40,6 +40,13 @@ npm run build:serve
 npm run demo
 
 # Open browser to http://localhost:3000
+
+
+If any changes after deplyment 
+# Clean and rebuild
+rm -rf browser-deployment/dist
+npm run build
+npm run serve:prod
 ```
 
 ### **Access Your Research Interface**
