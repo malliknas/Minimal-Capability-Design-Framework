@@ -14,7 +14,7 @@
 ### **Installation & Launch**
 ```bash
 # Clone the research framework
-git clone https://github.com/your-repo/mcd-simulation-runner.git
+git clone https://github.com/malliknas/Minimal-Capability-Design-Framework/mcd-simulation-runner.git
 cd mcd-simulation-runner
 
 # Install dependencies
