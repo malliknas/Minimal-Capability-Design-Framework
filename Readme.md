@@ -14,14 +14,32 @@
 ### **Installation & Launch**
 ```bash
 # Clone the research framework
-git clone https://github.com/malliknas/Minimal-Capability-Design-Framework/mcd-simulation-runner.git
 cd mcd-simulation-runner
 
 # Install dependencies
 npm install
-
 # Launch browser-based validation interface
 npm run dev
+
+
+( OR )
+
+# Install all dependencies including serve
+npm install
+
+# Build production version
+npm run build
+
+# Serve production build (using local serve)
+npm run serve:prod
+
+# Or do both in one command
+npm run build:serve
+
+# Or use the demo command
+npm run demo
+
+# Open browser to http://localhost:3000
 ```
 
 ### **Access Your Research Interface**
