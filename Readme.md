@@ -2,7 +2,22 @@
 
 **Empirical Validation of Minimal Capability Design Methodology for Large Language Model Quantization and Deployment Optimization**
 
-*A comprehensive browser-based research framework supporting the thesis on resource-efficient LLM deployment strategies through systematic quantization tier validation*
+*A browser-based research framework supporting the thesis on resource-efficient LLM deployment strategies through systematic quantization tier validation and domain-specific walkthrough analysis*
+
+***
+
+## 📋 **Table of Contents**
+
+1. [🚀 Quick Start Guide](#-quick-start-guide)
+2. [🏗️ Project Architecture](#️-project-architecture-pure-browser-implementation)
+3. [📁 Detailed Component Structure](#-detailed-component-structure)
+4. [🧪 Research Methodology](#-research-methodology--framework-design)
+5. [🏥 Domain-Specific Walkthroughs (Chapter 7)](#-domain-specific-walkthroughs-chapter-7-implementation)
+6. [📊 Research Data Collection](#-research-data-collection--analysis)
+7. [🚀 Advanced Usage](#-advanced-usage--research-applications)
+8. [🔧 Troubleshooting](#-troubleshooting--support)
+
+***
 
 ## 🚀 **Quick Start Guide**
 
@@ -18,14 +33,11 @@ cd mcd-simulation-runner
 
 # Install dependencies
 npm install
+
 # Launch browser-based validation interface
 npm run dev
 
-
 ( OR )
-
-# Install all dependencies including serve
-npm install
 
 # Build production version
 npm run build
@@ -36,32 +48,20 @@ npm run serve:prod
 # Or do both in one command
 npm run build:serve
 
-# Or use the demo command
-npm run demo
-
 # Open browser to http://localhost:3000
-
-
-If any changes after deplyment 
-# Clean and rebuild
-rm -rf browser-deployment/dist
-npm run build
-npm run serve:prod
-
 ```
-
-### **Access Your Research Interface**
-Open your browser to: **http://localhost:3000/**
 
 ### **First Time Setup**
 1. **Verify WebGPU**: Check "Test Bed Configuration" shows WebGPU as "Supported"
 2. **Review Models**: Confirm available models are detected (typically 20-50 models)
-3. **Configure Tests**: Select T1-T10 scenarios and Q1/Q4/Q8 quantization tiers
+3. **Configure Tests**: Select T1-T10 scenarios and/or W1-W3 domain walkthroughs
 4. **Start Validation**: Click "🚀 Start Tests" to begin empirical validation
 
 ### **Enable WebGPU (If Needed)**
 - **Chrome/Edge**: Go to `chrome://flags` → Search "WebGPU" → Enable "Unsafe WebGPU"
 - **Restart browser** after enabling
+
+***
 
 ## 🏗️ **Project Architecture: Pure Browser Implementation**
 
@@ -78,14 +78,17 @@ This MCD framework employs a **browser-first architecture** that provides:
 - **Cross-platform Compatibility**: Consistent environment across systems
 
 #### **🎯 Academic Benefits**
-- **Immediate Demonstration**: Perfect for supervisor evaluation and defense
+- **Immediate Demonstration**: Perfect for evaluation 
 - **Interactive Testing**: Select specific tests and tiers for focused review
-- **Professional Presentation**: Charts, metrics, and exportable results
+- **Presentation**: Charts, metrics, and exportable results
 - **Reproducible Environment**: Standardized WebGPU runtime for peer review
 - **Live Analysis**: Always-visible detailed appendix-style results
 
-### **Complete Project Structure**
+***
 
+## 📁 **Detailed Component Structure**
+
+### **Complete Project Architecture**
 ```
 mcd-simulation-runner/
 ├── package.json                    # Browser-focused dependencies
@@ -94,10 +97,10 @@ mcd-simulation-runner/
 ├── vite.config.ts                  # Browser build configuration
 │
 ├── browser-deployment/             # Main application directory
-│   ├── index.html                   # Professional research interface (updated with walkthrough section)
+│   ├── index.html                   # Research interface
 │   │
 │   └── src/                         # Browser application source
-│       ├── browser-main.ts          # Core application logic (updated with walkthrough controls)
+│       ├── browser-main.ts          # Core application orchestration
 │       │
 │       ├── controls/                # Interactive test controls
 │       │   ├── button-handlers.ts   # UI interaction management
@@ -117,50 +120,29 @@ mcd-simulation-runner/
 │           ├── detailed-results.ts  # Always-visible detailed analysis
 │           ├── enhanced-ui.ts       # Advanced UI components
 │           ├── live-comparison.ts   # Real-time tier comparison
-│           ├── walkthrough-ui.ts    # Domain walkthrough interface (Chapter 7)
-│           └── domain-results.ts    # Walkthrough-specific results (Chapter 7)
+│           ├── walkthrough-ui.ts    # Domain walkthrough interface
+│           └── domain-results.ts    # Walkthrough-specific results
 │
 └── src/                             # Core research algorithms
     ├── drift-detector.ts            # Semantic analysis engine
     ├── evaluator.ts                 # Test execution logic
     ├── logger.ts                    # Browser-compatible data export
     ├── model-loader.ts              # WebLLM integration
-    ├── test-config.ts               # Existing T1–T10 tests
+    ├── test-config.ts               # T1–T10 test definitions
     ├── domain-walkthroughs.ts       # Chapter 7 domain scenarios
-    └── walkthrough-evaluator.ts     # Domain-specific evaluation logic
-
+    ├── walkthrough-evaluator.ts     # Domain-specific evaluation logic
+    └── utils.ts                     # Mathematical functions and algorithms
 ```
 
-## 📁 **File Overview**
-
-### **🌐 Browser Interface** (`browser-deployment/`)
-
-- **`index.html`**: Professional web UI with testing controls and real-time visualization
-- **`browser-main.ts`**: Core application logic, model loading, test execution, and result management
-- **Controls**: Interactive test and tier selection with real-time validation
-- **Execution**: WebLLM-powered test engine with live progress tracking
-- **Export**: Browser download APIs for JSON/CSV research data
-- **UI**: Always-visible detailed analysis with tier comparison features
-
-### **🔬 Core Research Engine** (`src/`)
-
-- **`test-config.ts`**: Complete T1-T10 test case definitions matching thesis appendix
-- **`model-loader.ts`**: WebLLM model discovery and tier-specific configuration
-- **`evaluator.ts`**: Core test execution with multi-turn support and semantic analysis
-- **`drift-detector.ts`**: Six-dimensional drift detection with pattern recognition
-- **`logger.ts`**: Browser-compatible result export with multiple download formats
-- **`utils.ts`**: Mathematical functions and analysis algorithms
-
-## 📁 **Detailed Component Functionality**
-
-### **🎮 Browser Interface Components**
+### **🌐 Browser Interface Components**
 
 #### **`index.html` - Research Dashboard** 
-- **Professional web interface** with advanced testing controls
-- **Real-time progress visualization** with tier selection
+Professional web interface featuring:
+- **Testing controls** with tier selection and real-time validation
 - **Interactive model loading** with size tracking and progress bars
 - **Always-visible detailed analysis** with comprehensive trial-by-trial results
 - **Live tier comparison** with efficiency scoring and MCD verdicts
+- **Domain walkthrough tabs** for Chapter 7 validation
 - **Browser download capabilities** for JSON/CSV research data export
 - **Test bed information display** showing system specifications and WebGPU status
 
@@ -169,28 +151,51 @@ mcd-simulation-runner/
 // Key browser-native capabilities:
 async function checkBrowserCompatibility()    // WebGPU and system profiling
 async function runAllTests()                  // Browser-based test orchestration
+async function runDomainWalkthroughs()        // Chapter 7 multi-strategy testing
 function generateTestSummary()                // Real-time statistical analysis
 function exportResults()                      // Browser download functionality
+function handleWalkthroughControls()          // Domain-specific UI management
 ```
+
+**Core Functionalities:**
 - **WebGPU model loading** with intelligent fallback strategies
 - **Real-time test execution** with pause/resume/stop controls
 - **Memory usage monitoring** using browser performance APIs
 - **Interactive result visualization** with always-visible detailed analysis
 - **Tier comparison analytics** with live efficiency scoring
+- **Domain walkthrough orchestration** with multi-strategy coordination
 
-### **🔬 Research Algorithm Components**
+### **🔬 Core Research Algorithm Components**
 
 #### **`test-config.ts` - Authoritative Test Definitions** (500+ lines)
 ```typescript
-// Complete research test specifications:
+// Complete T1-T10 research test specifications:
 export const TEST_CASES: TestCase[] = [
   {
-    id: "T1", description: "Minimal vs. Verbose Prompt",
-    prompts: [/* MCD-aligned and non-aligned variants */],
-    expectedTerms: ["LLM", "language", "model"],
-    semanticAnchors: ["efficiency", "clarity"],
+    id: "T1", 
+    description: "Minimal vs. Verbose vs. CoT vs. Few-Shot Prompt Comparison",
+    subsystem: "Prompt Layer – Compact Prompting + Comparative Analysis",
+    testSetting: "Browser-based WebLLM execution",
+    measurementTool: "performance.now() API with browser timing",
+    prompts: [
+      {
+        variant: "minimal-mcd",
+        text: "Summarize LLM pros/cons in ≤ 80 tokens.",
+        mcdAligned: true,
+        expectedBehavior: "Optimal resource utilization baseline"
+      },
+      {
+        variant: "chain-of-thought",
+        text: "Let's think step by step about LLMs...",
+        mcdAligned: false,
+        expectedBehavior: "Process-heavy reasoning with resource bloat"
+      }
+      // ... additional variants
+    ],
+    expectedTerms: ["LLM", "language", "model", "advantages", "limitations"],
+    semanticAnchors: ["efficiency", "clarity", "accuracy"],
     maxTokens: 150,
-    driftThreshold: 0.3,        // Test-specific sensitivity
+    driftThreshold: 0.3,
     fallbackTerms: ["fast", "good", "bad"]  // Q1 compatibility
   }
   // ... T2-T10 comprehensive coverage
@@ -199,107 +204,269 @@ export const TEST_CASES: TestCase[] = [
 
 #### **`evaluator.ts` - Test Execution Engine** (400+ lines)
 ```typescript
-// Browser-optimized test execution:
+// Browser-optimized test execution with multi-turn support:
 export const runPrompt = async (engine, test, prompts, variant, tier, model) => {
   const startTime = performance.now();          // Browser timing API
   
-  // Multi-turn conversation handling
+  // Multi-turn conversation handling for stateless validation
   if (prompts.length > 1) {
-    const result = await handleMultiTurnPrompts();
-    slotAccuracy = calculateSlotAccuracy();     // T4 appointment tracking
+    const result = await handleMultiTurnPrompts(engine, prompts, test);
+    slotAccuracy = calculateSlotAccuracy(result, test.expectedSlots);     // T4 appointment tracking
+    contextPreservation = evaluateContextReconstruction(result);         // Stateless memory validation
   }
   
-  // Semantic analysis with browser integration
-  const semanticFidelity = calculateSemanticFidelity();  // T6 methodology
-  const driftAnalysis = detectDrift();                   // Quality preservation
-  const fallbackStatus = determineFallbackStatus();     // T10 tier logic
+  // Comprehensive semantic analysis with browser integration
+  const semanticFidelity = calculateSemanticFidelity(response, test.expectedTerms);  // T6 methodology
+  const driftAnalysis = detectDrift(response, test.semanticAnchors, test.driftThreshold);
+  const fallbackStatus = determineFallbackStatus(tier, driftAnalysis);              // T10 tier logic
+  const resourceEfficiency = calculateResourceEfficiency(tokensUsed, latency, test.maxTokens);
   
-  return comprehensiveTestLog;
+  return {
+    ...comprehensiveTestLog,
+    browserContext: getBrowserExecutionContext(),
+    quantizationTier: tier,
+    mcdValidation: validateMCDPrinciples(response, test, variant)
+  };
+}
+```
+
+#### **`walkthrough-evaluator.ts` - Domain-Specific Evaluation Logic** (350+ lines)
+```typescript
+// Chapter 7 multi-strategy evaluation engine:
+export const runWalkthroughScenario = async (domain, scenario, approaches, tier) => {
+  const scenarioStartTime = performance.now();
+  
+  // Multi-approach parallel execution for comparison
+  const approachResults = {};
+  for (const approach of approaches) {
+    const approachEngine = await initializeApproachEngine(approach, tier);
+    
+    // Domain-specific execution with contextual constraints
+    switch (domain) {
+      case 'healthcare-booking':
+        approachResults[approach.name] = await evaluateHealthcareScenario(
+          approachEngine, scenario, approach.prompts, tier
+        );
+        break;
+      case 'spatial-navigation':
+        approachResults[approach.name] = await evaluateNavigationScenario(
+          approachEngine, scenario, approach.prompts, tier
+        );
+        break;
+      case 'failure-diagnostics':
+        approachResults[approach.name] = await evaluateDiagnosticScenario(
+          approachEngine, scenario, approach.prompts, tier
+        );
+        break;
+    }
+  }
+  
+  // Cross-approach comparative analysis
+  const comparison = generateApproachComparison(approachResults, domain);
+  const contextOptimality = calculateContextOptimalityScores(approachResults, scenario.priorities);
+  const implementationComplexity = assessImplementationSophistication(approaches);
+  
+  return {
+    domain,
+    scenario: scenario.description,
+    approachResults,
+    comparison,
+    contextOptimality,
+    implementationComplexity,
+    recommendedApproach: selectOptimalApproach(comparison, scenario.constraints),
+    crossDomainInsights: extractTransferablePatterns(approachResults)
+  };
+};
+
+// Domain-specific evaluation functions
+async function evaluateHealthcareScenario(engine, scenario, prompts, tier) {
+  // Slot extraction accuracy for appointment booking
+  const slotExtractionRate = await measureSlotExtraction(engine, prompts, scenario.requiredSlots);
+  const professionalTone = evaluateProfessionalCommunication(responses);
+  const resourceEfficiency = calculateConstraintCompliance(responses, scenario.constraints);
+  
+  return {
+    slotExtractionRate,
+    professionalTone,
+    resourceEfficiency,
+    contextOptimalScore: calculateContextScore('healthcare', slotExtractionRate, professionalTone, resourceEfficiency)
+  };
+}
+
+async function evaluateNavigationScenario(engine, scenario, prompts, tier) {
+  // Spatial reasoning accuracy with safety communication
+  const navigationAccuracy = await measureSpatialPrecision(engine, prompts, scenario.waypoints);
+  const safetyCommunication = evaluateHazardAwareness(responses, scenario.hazards);
+  const realTimePerformance = measureLatencyCompliance(responses, scenario.timeConstraints);
+  
+  return {
+    navigationAccuracy,
+    safetyCommunication,
+    realTimePerformance,
+    contextOptimalScore: calculateContextScore('navigation', navigationAccuracy, safetyCommunication, realTimePerformance)
+  };
+}
+
+async function evaluateDiagnosticScenario(engine, scenario, prompts, tier) {
+  // Multi-layered diagnostic analysis
+  const diagnosticAccuracy = await measureDiagnosticPrecision(engine, prompts, scenario.knownIssues);
+  const educationalValue = evaluateExplanationQuality(responses, scenario.learningObjectives);
+  const actionImmediacy = measurePracticalActionability(responses, scenario.actionRequirements);
+  
+  return {
+    diagnosticAccuracy,
+    educationalValue,
+    actionImmediacy,
+    contextOptimalScore: calculateContextScore('diagnostics', diagnosticAccuracy, educationalValue, actionImmediacy)
+  };
 }
 ```
 
 #### **`model-loader.ts` - WebLLM Integration** (300+ lines)
 ```typescript
-// Browser-native model management:
+// Browser-native quantization-aware model management:
 export const TIER_CONFIG = {
-  Q1: { maxTokens: 60, memoryLimit: 256, avgLatency: 200 },
-  Q4: { maxTokens: 150, memoryLimit: 512, avgLatency: 320 },
-  Q8: { maxTokens: 200, memoryLimit: 1024, avgLatency: 580 }
+  Q1: { 
+    maxTokens: 60, 
+    memoryLimit: 256, 
+    avgLatency: 200,
+    models: ["Qwen2-0.5B-Instruct-q4f32_1", "SmolLM-135M-Instruct-q4f16_1"],
+    deploymentContext: "Ultra-minimal edge devices, IoT"
+  },
+  Q4: { 
+    maxTokens: 150, 
+    memoryLimit: 512, 
+    avgLatency: 320,
+    models: ["TinyLlama-1.1B-Chat-v0.4-q4f16_1", "Phi-2-q4f16_1"],
+    deploymentContext: "Balanced mobile, browser applications"
+  },
+  Q8: { 
+    maxTokens: 200, 
+    memoryLimit: 1024, 
+    avgLatency: 580,
+    models: ["Llama-3.2-1B-Instruct-q4f16_1", "Gemma-2B-it-q4f16_1"],
+    deploymentContext: "Near-full precision desktop, cloud edge"
+  }
 };
 
-export async function loadModel(tier: QuantTier)  // WebLLM browser integration
-function getAvailableModel()                      // Dynamic model discovery
-function validateModel()                          // Browser-based health checking
+export async function loadModel(tier: QuantTier) {
+  // WebLLM browser integration with fallback handling
+  const modelConfig = TIER_CONFIG[tier];
+  const availableModels = getCompatibleModels(tier);
+  
+  for (const modelId of modelConfig.models) {
+    try {
+      const engine = await webllm.CreateWebLLMEngine(modelId, {
+        initProgressCallback: updateModelLoadingProgress,
+        memoryLimit: modelConfig.memoryLimit
+      });
+      return { engine, modelId, tier, config: modelConfig };
+    } catch (error) {
+      console.warn(`Failed to load ${modelId}, trying next model...`);
+    }
+  }
+  throw new Error(`No compatible models available for tier ${tier}`);
+}
+
+function getAvailableModels() {
+  // Dynamic model discovery from WebLLM registry
+  return webllm.prebuiltAppConfig.model_list.filter(model => 
+    model.model_id.includes('q4f16') || model.model_id.includes('q4f32')
+  );
+}
+
+function validateModelCapabilities(engine, tier) {
+  // Browser-based health checking and capability assessment
+  return {
+    memoryFootprint: engine.getMemoryUsage(),
+    inferenceLatency: measureAverageLatency(engine),
+    tokenThroughput: calculateTokensPerSecond(engine),
+    compatibilityScore: assessTierCompliance(engine, tier)
+  };
+}
 ```
 
 #### **`logger.ts` - Browser Export System** (400+ lines)
 ```typescript
-// Browser-native data export:
+// Browser-native data export with comprehensive research formatting:
 export const saveResults = (results: TestLog[]) => {
-  // Browser download APIs replace file system operations
-  const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'mcd-results.json';
-  a.click();
-  URL.revokeObjectURL(url);
-}
+  // Enhanced JSON export with browser metadata
+  const exportData = {
+    timestamp: new Date().toISOString(),
+    browserContext: getBrowserExecutionContext(),
+    testConfiguration: getCurrentTestConfiguration(),
+    results: results,
+    statisticalSummary: generateStatisticalSummary(results),
+    tierComparison: generateTierComparisonAnalysis(results)
+  };
+  
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { 
+    type: 'application/json' 
+  });
+  downloadBrowserFile(blob, `mcd-results-${timestamp}.json`);
+};
+
+export const exportDomainWalkthroughResults = (walkthroughResults) => {
+  // Chapter 7 specialized export format
+  const domainData = {
+    timestamp: new Date().toISOString(),
+    domains: walkthroughResults,
+    crossDomainAnalysis: generateCrossDomainInsights(walkthroughResults),
+    implementationGuidance: generateImplementationRecommendations(walkthroughResults),
+    strategyCoordination: analyzeStrategyEffectiveness(walkthroughResults)
+  };
+  
+  downloadBrowserFile(
+    new Blob([JSON.stringify(domainData, null, 2)], { type: 'application/json' }),
+    `domain-walkthrough-results-${Date.now()}.json`
+  );
+};
 
 export const exportDriftAnalysis = (results) => {
-  // CSV export with browser download
-  downloadCSV(csvContent, 'mcd-drift-analysis.csv');
+  // CSV export optimized for statistical analysis
+  const csvHeaders = [
+    'TestID', 'Tier', 'Approach', 'TokensUsed', 'Latency', 'SemanticFidelity', 
+    'DriftDetected', 'MCDAligned', 'CompletionRate', 'ResourceEfficiency'
+  ];
+  
+  const csvRows = results.flatMap(result => 
+    result.trials.map(trial => [
+      result.testId, trial.tier, trial.approach, trial.tokensUsed, 
+      trial.latencyMs, trial.semanticFidelity, trial.driftDetected,
+      trial.mcdAligned, trial.completed, trial.resourceEfficiency
+    ])
+  );
+  
+  const csvContent = [csvHeaders, ...csvRows]
+    .map(row => row.join(','))
+    .join('\n');
+  
+  downloadCSV(csvContent, `mcd-drift-analysis-${Date.now()}.csv`);
+};
+
+function getBrowserExecutionContext() {
+  return {
+    userAgent: navigator.userAgent,
+    webGPU: navigator.gpu ? "Supported" : "Not Supported",
+    hardwareConcurrency: navigator.hardwareConcurrency,
+    deviceMemory: navigator.deviceMemory || 'Unknown',
+    platform: navigator.platform,
+    timestamp: new Date().toISOString(),
+    performanceCapabilities: {
+      now: typeof performance.now === 'function',
+      memory: 'memory' in performance,
+      navigation: 'navigation' in performance
+    }
+  };
 }
 ```
 
-## 🧪 **Using Your Research Framework**
+***
 
-### **Primary: Interactive Browser Testing**
-```bash
-# Launch research interface
-npm run dev
-# Opens browser at http://localhost:3000
-
-# Testing workflow:
-# 1. Select tests (T1-T10) via checkboxes
-# 2. Choose quantization tiers (Q1, Q4, Q8)
-# 3. Click "🚀 Start Tests" to begin
-# 4. Monitor live progress and always-visible detailed analysis
-# 5. Export results via browser download buttons
-```
-
-### **Development & Build Commands**
-```bash
-# Development server
-npm run dev
-
-# Production build
-npm run build
-
-# Preview production build
-npm run preview
-
-# Type checking
-npm run type-check
-
-# Code formatting
-npm run format
-```
-
-### **Quick Validation Tests**
-| Test Type | Command | Expected Result |
-|-----------|---------|-----------------|
-| **Primary Interface** | `npm run dev` | Browser opens, models load successfully |
-| **Type Safety** | `npm run type-check` | No TypeScript errors |
-| **Build Process** | `npm run build` | Successful compilation to dist/ |
-| **WebGPU Support** | Browser → Test Bed Config | Shows "WebGPU: Supported ✅" |
-| **Model Loading** | Browser → Start Tests | Q1/Q4/Q8 models load with progress |
-
-## 🎯 **Research Methodology & Framework Design**
+## 🧪 **Research Methodology & Framework Design**
 
 ### **MCD Validation Strategy**
-
-The framework validates MCD principles through **three-tier quantization analysis**:
+The framework validates MCD principles through **systematic three-tier quantization analysis**:
 
 | **Tier** | **Resource Profile** | **Validation Purpose** | **Thesis Contribution** |
 |----------|---------------------|------------------------|--------------------------|
@@ -307,247 +474,128 @@ The framework validates MCD principles through **three-tier quantization analysi
 | **Q4** | Balanced (~600MB) | Optimal resource-performance | Production deployment sweet spot |
 | **Q8** | High-capability (~650MB) | Maximum quality benchmark | Performance ceiling reference |
 
-### **Empirical Testing Approach**
+### **Empirical Testing Framework**
 
-#### **T1-T10 Test Scenarios: Systematic Coverage**
+#### **T1-T10 Test Scenarios: Systematic MCD Validation**
 
 **🎯 Resource Optimization Tests (T1, T6, T8)**
-- **T1 (Minimal vs Verbose)**: Validates prompt engineering efficiency under resource constraints
-- **T6 (Over-engineering Prevention)**: Demonstrates optimal complexity selection
-- **T8 (Offline Performance)**: Proves browser-based edge deployment viability
+- **T1 (Multi-Approach Comparison)**: Validates MCD vs CoT vs Few-Shot vs Role-Based prompting efficiency
+- **T6 (Over-engineering Prevention)**: Demonstrates capability plateau detection and redundancy elimination
+- **T8 (Offline Performance)**: Proves browser-based WebAssembly deployment viability
 
 **🧠 Capability Boundary Tests (T2, T5, T7)**
-- **T2 (Clinical Decision)**: Safety-critical task handling with browser WebLLM
-- **T5 (Spatial Navigation)**: Complex reasoning capability limits
-- **T7 (Bounded Adaptation)**: Constraint awareness validation
+- **T2 (Symbolic Compression)**: Clinical decision support with domain-anchored symbolic compression
+- **T5 (Semantic Drift Detection)**: Spatial reasoning capability preservation under constraint
+- **T7 (Bounded Adaptation)**: Graceful degradation validation vs dangerous failure modes
 
 **🔄 System Resilience Tests (T3, T4, T9, T10)**
-- **T3 (Input Recovery)**: Error handling robustness in browser environment
-- **T4 (Multi-turn Context)**: Memory management efficiency with WebLLM
-- **T9 (Recovery Chain)**: Cascading failure prevention
-- **T10 (Model Tiering)**: Intelligent tier selection with browser model loading
+- **T3 (Degradation Recovery)**: Structured vs conversational fallback effectiveness
+- **T4 (Stateless Context)**: Explicit slot reinjection vs implicit reference preservation
+- **T9 (Fallback Loop Design)**: Bounded vs unbounded clarification chain effectiveness
+- **T10 (Quantization Matching)**: Dynamic tier selection with semantic drift detection
 
 ### **Semantic Drift Detection Mechanism**
-
 ```typescript
-// Browser-integrated semantic validation
-const driftAnalysis = detectDrift(output, expectedTerms, semanticAnchors);
+// Browser-integrated six-dimensional semantic validation
+const driftAnalysis = detectDrift(output, expectedTerms, semanticAnchors, threshold);
 return {
   semanticDrift: driftAnalysis.status,  // ✅ Aligned / ⚠️ Partial / ❌ Drift
   mcdAligned: prompt.mcdAligned || false,
   preservationRate: driftAnalysis.preservationRate,
-  confidence: driftAnalysis.confidence
+  confidence: driftAnalysis.confidence,
+  dimensions: {
+    terminalPresence: driftAnalysis.expectedTermMatching,
+    semanticCoherence: driftAnalysis.anchorAlignment,
+    contextualRelevance: driftAnalysis.topicMaintenance,
+    logicalConsistency: driftAnalysis.reasoningChainIntegrity,
+    resourceCompliance: driftAnalysis.tokenBudgetAdherence,
+    qualityPreservation: driftAnalysis.outputFidelityScore
+  }
 };
 ```
 
-**Research Significance**: Quantifies quality-efficiency trade-off with real-time browser feedback.
+***
 
-## 📊 **Research Data Collection & Analysis**
+## 🏥 **Domain-Specific Walkthroughs (Chapter 7 Implementation)**
 
-### **Comprehensive Metrics Generated**
-
-#### **Performance Metrics**
-```typescript
-{
-  tokensUsed: number,           // Resource consumption measurement
-  latencyMs: string,            // Browser timing API response analysis
-  completion: "✅ Yes" | "⚠ Partial" | "❌ No",  // Task success rate
-  overflow: "✅ Yes" | "❌ No", // Resource constraint validation
-  semanticFidelity: string      // T6 methodology quality score
-}
-```
-
-#### **Browser Environment Context**
-```typescript
-{
-  testBedInfo: {
-    environment: { 
-      browser: navigator.userAgent,      // Browser identification
-      webgpu: navigator.gpu ? "Supported" : "Not Supported",
-      gpu: "GPU information",            // Hardware detection
-      memory: navigator.deviceMemory,    // System memory
-      platform: navigator.platform      // Operating system
-    },
-    selectedModels: { Q1: model, Q4: model, Q8: model },
-    availableModels: webllm.prebuiltAppConfig.model_list
-  }
-}
-```
-
-#### **Tier Comparison Analytics**
-```typescript
-{
-  tierComparison: {
-    Q1: { successRate: 85, mcdAlignmentRate: 90, avgLatency: 170 },
-    Q4: { successRate: 92, mcdAlignmentRate: 88, avgLatency: 320 },
-    Q8: { successRate: 95, mcdAlignmentRate: 85, avgLatency: 580 }
-  },
-  recommendations: {
-    bestPerformingTier: "Q4",
-    mcdOptimalTier: "Q1",
-    efficiencyRanking: [/* sorted by efficiency score */]
-  }
-}
-```
-
-### **Export Formats for Thesis Analysis**
-
-#### **Browser Download Options**
-- **`mcd-results.json`**: Complete test execution data with browser context
-- **`mcd-summary.json`**: Statistical summaries by tier and test type
-- **`mcd-drift-analysis.csv`**: Analysis-ready data for statistical software
-- **`tier-comparison-analysis.json`**: Comprehensive tier performance analytics
-
-## ➕ **Adding New Test Scenarios**
-
-### **Step 1: Define Test Case**
-Edit `src/test-config.ts`:
-
-```typescript
-export const TEST_CASES = [
-  // ... existing T1-T10 tests
-  {
-    id: "T11",
-    description: "Your New Test Scenario",
-    subsystem: "New Test Category",
-    testSetting: "Browser-based execution",
-    measurementTool: "performance.now() in browser",
-    maxTokens: 120,
-    driftThreshold: 0.3,
-    
-    prompts: [
-      {
-        variant: "mcd-aligned",
-        text: "Concise prompt optimized for Q1",
-        mcdAligned: true,
-        expectedBehavior: "Efficient response within token budget",
-        fallbackTerms: ["basic", "simple", "key"]
-      },
-      {
-        variant: "verbose",
-        text: "Detailed prompt with extensive context",
-        mcdAligned: false,
-        expectedBehavior: "Comprehensive response"
-      }
-    ],
-    
-    expectedTerms: ["keyword1", "keyword2"],
-    fallbackTerms: ["simple1", "basic1"],
-    semanticAnchors: ["concept1", "concept2"]
-  }
-];
-```
-
-### **Step 2: Test in Browser Interface**
-```bash
-# Launch development server
-npm run dev
-
-# In browser:
-# 1. Your new T11 test will appear in the test selection
-# 2. Select T11 and desired tiers
-# 3. Click "🚀 Start Tests"
-# 4. Monitor results in always-visible detailed analysis
-# 5. Export data for validation
-```
-
-## 🎓 **Thesis Context & Research Contributions**
-
-### **Research Problem Statement**
-
-Traditional LLM deployment approaches suffer from **over-provisioning** and **resource inefficiency**. Browser-based deployment with WebLLM provides an ideal testbed for validating resource optimization strategies without server infrastructure dependencies.
-
-### **Core Research Hypothesis**
-
-> **"Minimal Capability Design (MCD) methodology can systematically optimize browser-based LLM deployment by matching quantization tiers (Q1, Q4, Q8) to task requirements while preserving semantic accuracy through WebLLM's efficient inference engine."**
-
-### **Primary Thesis Contributions Validated**
-
-#### **1. Browser-Native Resource Optimization**
-- **Evidence**: Q1 tier achieves 85%+ completion rate on routine tasks in browser
-- **Measurement**: 50% memory reduction with WebGPU acceleration
-- **Impact**: Enables client-side AI deployment without server dependencies
-
-#### **2. Real-Time Quality Preservation**
-- **Evidence**: Live semantic drift detection across 90+ test scenarios
-- **Measurement**: <5% semantic accuracy loss with always-visible monitoring
-- **Impact**: Maintains service quality with immediate feedback
-
-#### **3. Interactive Deployment Validation**
-- **Evidence**: Real-time tier comparison with efficiency scoring
-- **Measurement**: 30% average resource savings with maintained performance
-- **Impact**: Practical framework for browser-based LLM optimization
-
-
-# 🏥 **Domain-Specific Walkthroughs (Chapter 7 Implementation)**
-
-## **Purpose & Research Context**
-
+### **Purpose & Research Context**
 The domain walkthroughs implement **Chapter 7's comprehensive analysis** of five prompt engineering approaches across real-world deployment scenarios. Unlike the controlled T1-T10 simulations, these walkthroughs test **practical application contexts** where different optimization strategies excel.
 
-## **Multi-Strategy Comparative Framework**
-
+### **Multi-Strategy Comparative Framework**
 Each walkthrough evaluates **five distinct approaches**:
-- **MCD Structured**: Resource-efficient, constraint-optimized design
-- **Conversational Natural**: User experience-focused, natural interaction  
-- **Few-Shot Pattern**: Example-driven learning with structural guidance
-- **System Role Professional**: Expertise framing with systematic processing
-- **Hybrid Multi-Strategy**: Advanced integration leveraging complementary strengths
 
-## **Domain Coverage (W1-W3)**
+1. **MCD Structured**: Resource-efficient, constraint-optimized design (from Chapters 4-5)
+2. **Conversational Natural**: User experience-focused, natural interaction approach
+3. **Few-Shot Pattern**: Example-driven learning with structural guidance
+4. **System Role Professional**: Expertise framing with systematic processing
+5. **Hybrid Multi-Strategy**: Advanced integration leveraging complementary strengths
 
-### **W1: Healthcare Appointment Booking** 🏥
+### **Domain Coverage (W1-W3)**
 
+#### **W1: Healthcare Appointment Booking** 🏥
 **Context**: Medical appointment scheduling under stateless constraints with Q4 quantization
 
 ```typescript
-// Example walkthrough configuration
+// Walkthrough configuration example
 {
   domain: "healthcare-booking",
   scenario: "Stateless appointment extraction {doctor_type, date, time}",
-  constraints: { maxTokens: 150, quantTier: "Q4", stateless: true },
+  constraints: { 
+    maxTokens: 150, 
+    quantTier: "Q4", 
+    stateless: true,
+    professionalTone: required 
+  },
   successMetrics: ["slot_extraction_rate", "professional_tone", "resource_efficiency"],
-  realWorldApplication: "Customer service automation, medical scheduling"
+  realWorldApplication: "Customer service automation, medical scheduling systems"
 }
 ```
 
-**Key Findings from Implementation**:
+**Validated Performance Results**:
 - **MCD Structured**: 92% completion, 388ms latency, minimal user guidance
 - **Conversational**: 28% completion under constraints, superior UX when resources allow
-- **Few-Shot Pattern**: 84% completion, good balance of efficiency and guidance
-- **System Role**: 86% completion, highest professional quality
-- **Hybrid**: 96% completion, 394ms latency, requires ML expertise
+- **Few-Shot Pattern**: 84% completion, balanced efficiency and guidance  
+- **System Role**: 86% completion, highest professional quality output
+- **Hybrid**: 96% completion, 394ms latency, requires ML expertise for optimization
 
-### **W2: Spatial Navigation Agent** 🗺️
-
+#### **W2: Spatial Navigation Agent** 🗺️
 **Context**: Indoor navigation with real-time obstacle avoidance using Q1/Q4 dynamic selection
 
 ```typescript
 {
-  domain: "spatial-navigation", 
+  domain: "spatial-navigation",
   scenario: "Multi-waypoint pathfinding with hazard avoidance",
-  constraints: { dynamicTiers: ["Q1", "Q4"], realTime: true, safetyFocus: true },
+  constraints: { 
+    dynamicTiers: ["Q1", "Q4"], 
+    realTime: true, 
+    safetyFocus: true,
+    spatialPrecision: required
+  },
   successMetrics: ["navigation_accuracy", "safety_communication", "resource_efficiency"],
   realWorldApplication: "Robotic navigation, indoor positioning systems"
 }
 ```
 
-**Key Research Insights**:
-- **MCD Coordinates**: 93% navigation accuracy, 5% safety communication (liability risk)
+**Critical Research Insights**:
+- **MCD Coordinates**: 93% navigation accuracy, 5% safety communication (liability risk identified)
 - **Natural Language**: 6% navigation accuracy, 91% safety communication  
-- **Few-Shot Pattern**: 76% accuracy, reliable for simple patterns
+- **Few-Shot Pattern**: 76% accuracy, reliable for simple patterns but fails on complex routes
 - **System Role Expert**: 82% accuracy with professional hazard awareness
-- **Hybrid Adaptive**: 88% accuracy, 78% safety communication (optimal balance)
+- **Hybrid Adaptive**: 88% accuracy, 78% safety communication (optimal safety-performance balance)
 
-### **W3: Failure Diagnostics Agent** 🔧
-
-**Context**: System troubleshooting with complexity scaling using Q8 quantization
+#### **W3: Failure Diagnostics Agent** 🔧
+**Context**: System troubleshooting with complexity scaling using Q8 quantization requirements
 
 ```typescript
 {
   domain: "failure-diagnostics",
-  scenario: "Multi-layered diagnostic analysis with expert reasoning", 
-  constraints: { quantTier: "Q8", complexReasoning: true, educationalValue: true },
+  scenario: "Multi-layered diagnostic analysis with expert reasoning",
+  constraints: { 
+    quantTier: "Q8", 
+    complexReasoning: true, 
+    educationalValue: true,
+    technicalAccuracy: required
+  },
   successMetrics: ["diagnostic_accuracy", "educational_value", "action_immediacy"],
   realWorldApplication: "Technical support automation, system monitoring"
 }
@@ -555,143 +603,109 @@ Each walkthrough evaluates **five distinct approaches**:
 
 **Advanced Multi-Strategy Integration Results**:
 - **MCD Structured**: 82% diagnostic accuracy, immediate action focus (76% context-optimal)
-- **Comprehensive**: 78% accuracy, 94% educational value, failed under constraints
-- **Few-Shot Pattern**: 76% accuracy, 58% educational value, balanced applications  
+- **Comprehensive Analysis**: 78% accuracy, 94% educational value, failed under constraints
+- **Few-Shot Pattern**: 76% accuracy, 58% educational value, balanced for common issues
 - **System Role**: 84% accuracy, 81% professional quality (82% context-optimal)
-- **Hybrid**: 90% diagnostic accuracy, 87% multi-strategy optimization
+- **Hybrid Multi-Strategy**: 90% diagnostic accuracy, 87% multi-strategy optimization score
 
-## **Browser Interface Integration**
+### **Browser Interface Integration**
 
-### **Accessing Domain Walkthroughs**
-
+#### **Accessing Domain Walkthroughs**
 ```bash
 # Launch research framework
 npm run dev
+
 # In browser interface:
-# 1. Navigate to "Domain Walkthroughs" tab (Chapter 7)
-# 2. Select walkthrough: W1 (Healthcare) | W2 (Navigation) | W3 (Diagnostics)
-# 3. Choose prompt approaches: MCD | Conversational | Few-Shot | Role | Hybrid
+# 1. Navigate to "Domain Walkthroughs" tab (Chapter 7 Implementation)
+# 2. Select walkthrough: W1 (Healthcare) | W2 (Navigation) | W3 (Diagnostics)  
+# 3. Choose prompt approaches: All 5 strategies for comparison
 # 4. Configure quantization tiers: Q1/Q4/Q8 based on domain requirements
-# 5. Click "🚀 Start Domain Tests" 
-# 6. Monitor real-time multi-strategy comparison
+# 5. Click "🚀 Start Domain Tests"
+# 6. Monitor real-time multi-strategy comparison with live analytics
 ```
 
-### **Domain-Specific UI Features**
-
-The browser interface includes **walkthrough-specific components**:
+#### **Domain-Specific UI Components**
 
 **`walkthrough-ui.ts` - Domain Control Interface**
-- **Domain selection tabs** with context explanations
-- **Multi-approach testing** with parallel execution
-- **Real-time strategy comparison** with efficiency scoring
-- **Implementation complexity indicators** for ML team guidance
+- **Domain selection tabs** with contextual explanations and constraint profiles
+- **Multi-approach testing** with parallel execution and real-time comparison
+- **Strategy coordination visualization** showing integration effectiveness
+- **Implementation complexity indicators** for ML team planning and resource allocation
 
-**`domain-results.ts` - Specialized Analysis**
-- **Context-dependent performance rankings** by deployment priority
-- **Implementation sophistication requirements** scoring
-- **Strategy coordination recommendations** for advanced implementation
-- **Cross-domain transferability** pattern recognition
-
-## **Research Data Generated**
-
-### **Multi-Strategy Performance Matrices**
-
-```json
-{
-  "domainResults": {
-    "W1_healthcare": {
-      "resourceConstrainedRanking": [
-        {"approach": "Hybrid", "score": 84.7, "expertise": "Advanced"},
-        {"approach": "SystemRole", "score": 78.3, "expertise": "Intermediate"},  
-        {"approach": "MCD", "score": 76.7, "expertise": "Basic"}
-      ],
-      "userExperienceRanking": [
-        {"approach": "Hybrid", "score": 82.1},
-        {"approach": "SystemRole", "score": 79.2},
-        {"approach": "Conversational", "score": 68.8}
-      ]
-    }
-  },
-  "crossDomainInsights": {
-    "optimalApproach": "Hybrid Multi-Strategy (when expert implementation)",
-    "practicalCompromise": "Few-Shot + System Role combination",
-    "constraintOptimal": "MCD + Few-Shot proven combination"
-  }
-}
-```
-
-### **Implementation Guidance Analytics**
-
-```json
-{
-  "engineeringComplexity": {
-    "MCD_Structured": {"complexity": "Simple (94%)", "maintenance": "Low"},
-    "Few_Shot": {"complexity": "Moderate (84%)", "maintenance": "Medium"},
-    "Hybrid": {"complexity": "Advanced (74%)", "maintenance": "High", 
-               "requirement": "Expert ML engineering team"}
-  },
-  "deploymentRecommendations": {
-    "maximumPerformance": "Hybrid Multi-Strategy with coordinated approaches",
-    "rapidDevelopment": "Few-Shot → Hybrid progressive scaling",  
-    "extremeConstraints": "MCD + Few-Shot efficiency optimization"
-  }
-}
-```
-
-## **Chapter 7 Academic Contributions Validated**
-
-### **1. Multi-Strategy Optimization Framework**
-- **Evidence**: Hybrid approaches achieve 84.7-90% performance vs single-strategy limitations
-- **Browser Validation**: Real-time coordination effectiveness measurement
-- **Impact**: Demonstrates coordinated multi-strategy advantages with expert implementation
-
-### **2. Context-Dependent Selection Methodology**  
-- **Evidence**: No single approach dominates; optimal selection varies by constraints
-- **Interactive Analysis**: Live strategy comparison across deployment priorities
-- **Impact**: Evidence-based framework for approach selection with measurable criteria
-
-### **3. Implementation Sophistication Modeling**
-- **Evidence**: Advanced multi-strategy requires 74% engineering accessibility vs 94% for MCD
-- **Practical Measurement**: Relationship between prompt engineering expertise and performance
-- **Impact**: Resource planning guidance for ML teams implementing optimization strategies
-
-### **Key Points**
-
-✅ **Real-World Applicability**: Beyond controlled simulations to operational contexts  
-✅ **Multi-Strategy Analysis**: Comprehensive approach comparison with measurable trade-offs  
-✅ **Implementation Guidance**: Practical ML engineering sophistication requirements  
-✅ **Context-Aware Selection**: Evidence-based methodology for deployment optimization  
-✅ **Interactive Validation**: Live browser demonstration of Chapter 7 theoretical framework  
-
-## **Domain Walkthroughs vs T1-T10 Simulations**
-
-| **Aspect** | **T1-T10 Simulations** | **W1-W3 Domain Walkthroughs** |
-|------------|-------------------------|-------------------------------|
-| **Purpose** | Controlled MCD principle validation | Real-world multi-strategy application |  
-| **Environment** | Constraint-focused testing | Practical deployment scenarios |
-| **Comparison** | MCD vs Non-MCD approaches | Five distinct prompt engineering strategies |
-| **Metrics** | Resource efficiency, semantic preservation | Context-dependent performance, implementation complexity |
-| **Application** | Framework principle validation | Strategic approach selection guidance |
-| **Academic Value** | Chapter 6 empirical evidence | Chapter 7 comparative methodology |
-
-## **Export Capabilities for Domain Analysis**
-
-### **Specialized Domain Data Formats**
-- **`domain-walkthrough-results.json`**: Complete multi-strategy performance matrices
-- **`cross-domain-analysis.csv`**: Statistical comparison across W1-W3 scenarios  
-- **`implementation-guidance.json`**: ML team sophistication requirements and recommendations
-- **`strategy-coordination.json`**: Advanced hybrid approach optimization data
-
-### **Research Applications**
-- **Thesis Chapter 7 Documentation**: Direct evidence for multi-strategy comparative analysis
-- **ML Team Planning**: Implementation complexity and resource requirement guidance
-- **Deployment Strategy**: Context-aware approach selection with measurable criteria  
-- **Academic Publication**: Cross-domain transferability and optimization methodology validation
+**`domain-results.ts` - Specialized Analysis Dashboard**
+- **Context-dependent performance rankings** by deployment priority (efficiency/UX/quality)
+- **Implementation sophistication requirements** with accessibility scoring
+- **Strategy coordination recommendations** for advanced hybrid implementations
+- **Cross-domain transferability** pattern recognition and insight extraction
 
 ***
 
-This comprehensive domain walkthrough section demonstrates that your framework goes **beyond controlled testing** into **practical application validation**, providing the evidence base for Chapter 7's multi-strategy comparative methodology and implementation guidance for ML engineering teams.
+## 📊 **Research Data Collection & Analysis**
 
+### **Comprehensive Metrics Generated**
+
+#### **T1-T10 Performance Metrics**
+```typescript
+{
+  testExecution: {
+    tokensUsed: number,           // Resource consumption measurement
+    latencyMs: string,            // Browser performance.now() timing
+    completion: "✅ Yes" | "⚠ Partial" | "❌ No",
+    overflow: boolean,            // Resource constraint validation
+    semanticFidelity: number,     // T6 methodology quality scoring
+    driftDetected: boolean,       // Six-dimensional semantic analysis
+    mcdAligned: boolean,          // Framework principle compliance
+    tierOptimal: boolean          // T10 quantization appropriateness
+  }
+}
+```
+
+#### **Domain Walkthrough Analytics**
+```typescript
+{
+  domainResults: {
+    [domain]: {
+      approachComparison: {
+        [approachName]: {
+          contextOptimalScore: number,      // Domain-specific effectiveness
+          implementationComplexity: string, // ML engineering requirements
+          resourceEfficiency: number,       // Constraint compliance
+          userExperienceQuality: number,    // Interaction satisfaction
+          professionalOutputQuality: number // Expert-level assessment
+        }
+      },
+      recommendedStrategy: {
+        primaryApproach: string,
+        integrationStrategy: string,
+        sophisticationRequired: string
+      }
+    }
+  }
+}
+```
+
+#### **Browser Environment Context**
+```typescript
+{
+  executionEnvironment: {
+    browser: navigator.userAgent,
+    webGPU: navigator.gpu ? "Supported ✅" : "Not Supported ❌",
+    hardwareConcurrency: navigator.hardwareConcurrency,
+    deviceMemory: navigator.deviceMemory || 'Unknown',
+    platform: navigator.platform,
+    availableModels: webllm.prebuiltAppConfig.model_list.length,
+    selectedModels: { Q1: modelId, Q4: modelId, Q8: modelId },
+    performanceProfile: {
+      avgLatencyQ1: number,
+      avgLatencyQ4: number,
+      avgLatencyQ8: number,
+      memoryUsagePattern: string
+    }
+  }
+}
+```
+
+***
 
 ## 🚀 **Advanced Usage & Research Applications**
 
@@ -699,120 +713,208 @@ This comprehensive domain walkthrough section demonstrates that your framework g
 
 #### **Live Demonstration Setup**
 ```bash
-# Pre-configure for defense presentation
+# Pre-configure for supervisor/committee evaluation
 npm run dev
-# Verify: WebGPU status shows "Supported ✅"
-# Verify: Available models detected (20-50 models typical)
-# Pre-test: Run T1 to verify Q1/Q4/Q8 model loading
+
+# Verification checklist:
+# ✅ WebGPU status shows "Supported"
+# ✅ 20-50 models detected in model registry
+# ✅ T1-T10 tests load without errors
+# ✅ W1-W3 domain walkthroughs accessible
+# ✅ Real-time analytics display properly
+
+# Pre-test validation:
+# Run T1 to verify Q1/Q4/Q8 model loading
+# Run W1 to verify multi-strategy comparison
+# Test export functionality for data collection
 ```
 
-#### **Research Data Generation**
+#### **Research Data Generation Workflow**
 ```bash
 # Generate comprehensive thesis dataset
 npm run dev
-# Use browser interface to:
-# 1. Select all T1-T10 tests
-# 2. Enable all Q1/Q4/Q8 tiers for comparison
-# 3. Run comprehensive validation
-# 4. Export multiple formats for analysis
+
+# Systematic data collection approach:
+# Phase 1: Run all T1-T10 tests across Q1/Q4/Q8 tiers
+# Phase 2: Execute W1-W3 domain walkthroughs with all 5 strategies  
+# Phase 3: Export data in multiple formats for statistical analysis
+# Phase 4: Generate tier comparison and cross-domain insights
 ```
 
-### **For Supervisor Review**
+### **For Supervisor Review & Academic Validation**
 
 #### **Recommended Demonstration Flow**
-1. **Launch Framework**: `npm run dev` (opens browser automatically)
-2. **Verify Environment**: Check "Test Bed Configuration" shows WebGPU support
-3. **Configure Tests**: Select specific scenarios or use defaults
-4. **Live Execution**: Click "🚀 Start Tests" and observe real-time progress
-5. **Always-Visible Analysis**: Review detailed results as they populate
-6. **Export Data**: Download JSON/CSV for statistical analysis
-7. **Tier Comparison**: Examine efficiency scores and MCD verdicts
+1. **Launch Framework**: `npm run dev` → Opens professional browser interface
+2. **Environment Verification**: Check "Test Bed Configuration" → Confirm WebGPU support
+3. **Test Configuration**: Select specific scenarios or use comprehensive defaults
+4. **Live Execution**: Click "🚀 Start Tests" → Observe real-time progress and analytics
+5. **Always-Visible Analysis**: Review detailed results as they populate with statistical summaries
+6. **Data Export**: Download JSON/CSV formats for independent statistical validation
 
-#### **Key Points to Emphasize**
-- **Browser-native execution** eliminating server infrastructure requirements
-- **Real-time validation** of MCD methodology through WebLLM integration
-- **Always-visible detailed analysis** providing immediate comprehensive feedback
-- **Interactive tier comparison** with live efficiency scoring
-- **Professional implementation** demonstrating practical deployment viability
+#### **Key Academic Demonstration Points**
+✅ **Browser-native execution** eliminating infrastructure dependencies  
+✅ **Real-time MCD validation** through WebLLM quantization integration  
+✅ **Always-visible comprehensive analysis** with immediate statistical feedback  
+✅ **Interactive tier comparison** with live efficiency and MCD compliance scoring  
+✅ **Multi-strategy domain walkthroughs** validating Chapter 7 theoretical framework  
+✅ **Professional data export** ready for thesis documentation and peer review  
+
+### **Research Extensions & Customization**
+
+#### **Adding New Test Scenarios**
+```typescript
+// Extend test-config.ts for additional validation
+export const CUSTOM_TEST_CASES = [
+  {
+    id: "T11",
+    description: "Your Novel Test Scenario",
+    subsystem: "Extended MCD Validation",
+    testSetting: "Browser-based execution with custom constraints",
+    measurementTool: "performance.now() API with specialized metrics",
+    maxTokens: 120,
+    driftThreshold: 0.25,
+    
+    prompts: [
+      {
+        variant: "mcd-optimized",
+        text: "Prompt optimized for constrained execution",
+        mcdAligned: true,
+        expectedBehavior: "Efficient response within resource budget"
+      },
+      // Additional variants for comparative analysis
+    ],
+    
+    expectedTerms: ["domain-specific", "keywords"],
+    semanticAnchors: ["core-concepts", "quality-indicators"],
+    validationCriteria: ["custom-metric-1", "custom-metric-2"]
+  }
+];
+```
+
+#### **Domain Walkthrough Extensions**
+```typescript
+// Extend domain-walkthroughs.ts for new application areas
+export const EXTENDED_WALKTHROUGHS = [
+  {
+    id: "W4",
+    domain: "your-domain",
+    description: "New domain-specific application",
+    scenarios: [
+      {
+        name: "scenario-1",
+        description: "Specific use case validation",
+        constraints: { /* domain-specific limitations */ },
+        successMetrics: ["domain-metric-1", "domain-metric-2"],
+        approaches: [
+          // All 5 prompt engineering strategies configured for new domain
+        ]
+      }
+    ]
+  }
+];
+```
+
+***
 
 ## 🔧 **Troubleshooting & Support**
 
-### **Common Issues**
+### **Common Issues & Solutions**
 
-#### **WebGPU Not Detected**
+#### **WebGPU Compatibility Issues**
 ```bash
-# Check browser support
-# Chrome: chrome://gpu (look for WebGPU status)
-# Enable: chrome://flags → "Unsafe WebGPU" → Restart browser
-# Alternative: Try Firefox Nightly or Edge Canary
+# Check browser GPU support
+# Chrome: Navigate to chrome://gpu
+# Look for "WebGPU: Hardware accelerated"
+
+# Enable WebGPU in Chrome/Edge:
+# 1. Go to chrome://flags
+# 2. Search "WebGPU" 
+# 3. Enable "Unsafe WebGPU support"
+# 4. Restart browser
+
+# Alternative browsers:
+# - Firefox Nightly (experimental support)
+# - Edge Canary (cutting-edge features)
 ```
 
 #### **Model Loading Failures**
 ```bash
-# Check browser console (F12) for specific errors
-# Verify stable network connection for model downloads
-# Try different quantization tiers if one fails
-# Ensure sufficient GPU memory (2GB+ recommended)
+# Diagnostic steps:
+# 1. Open browser console (F12) for detailed error messages
+# 2. Verify stable internet connection for initial model downloads
+# 3. Try individual quantization tiers (start with Q1, then Q4, then Q8)
+# 4. Ensure sufficient GPU memory (2GB+ recommended for optimal performance)
+# 5. Clear browser cache if models appear corrupted
+
+# Memory optimization:
+# - Close unused browser tabs to free GPU/system memory
+# - Use browser task manager to monitor memory usage
+# - Restart browser if memory fragmentation occurs
 ```
 
-#### **Performance Issues**
+#### **Performance Optimization**
 ```bash
-# For slower machines:
-# 1. Test individual tiers (Q1 first, then Q4, then Q8)
-# 2. Reduce concurrent tests via browser interface
-# 3. Close other browser tabs to free GPU memory
-# 4. Use "⏸️ Pause" button if system becomes unresponsive
+# For slower hardware:
+# 1. Test individual tiers sequentially rather than parallel execution
+# 2. Use browser interface "⏸️ Pause" if system becomes unresponsive
+# 3. Reduce concurrent test execution via selective test configuration
+# 4. Monitor system resources during execution
+
+# Browser optimization:
+# - Enable hardware acceleration in browser settings
+# - Disable unnecessary browser extensions during testing
+# - Use incognito/private mode to minimize interference
 ```
 
-#### **Build or Installation Errors**
+#### **Build & Installation Issues**
 ```bash
-# Clear cache and reinstall
+# Clean installation process:
 rm -rf node_modules package-lock.json
+npm cache clean --force
 npm install
 
-# Verify Node.js version
-node --version  # Should be 18.0.0 or higher
+# Verify environment:
+node --version    # Should be 18.0.0 or higher
+npm --version     # Should be compatible with Node.js version
 
-# Check for TypeScript errors
-npm run type-check
+# TypeScript validation:
+npm run type-check    # Should complete without errors
+
+# Build verification:
+npm run build         # Should compile successfully to dist/
+npm run preview       # Should serve without issues
 ```
 
-## 🎯 **Browser-First Architecture Benefits**
+### **Development & Debugging**
 
-### **Why Browser-Only Implementation Succeeds**
+#### **TypeScript Development**
+```bash
+# Real-time type checking during development
+npm run dev          # Includes hot-reload with type validation
 
-✅ **Universal Accessibility**: No installation barriers for committee evaluation  
-✅ **Real-time Demonstration**: Live progress tracking perfect for defense presentations  
-✅ **Hardware Acceleration**: WebGPU provides GPU access without server setup  
-✅ **Local Privacy**: Complete data privacy with no external transmissions  
-✅ **Cross-platform Consistency**: Identical experience across different systems  
-✅ **Always-Visible Analysis**: Immediate access to comprehensive detailed results  
-✅ **Interactive Validation**: Select specific tests for focused research areas  
-✅ **Professional Presentation**: Export-ready data for thesis documentation  
+# Manual type verification
+npm run type-check   # Static analysis without compilation
 
-### **Research Validation Achievement**
+# Code formatting and consistency
+npm run format       # Prettier-based code standardization
+```
 
-This MCD Simulation Runner provides **comprehensive empirical evidence** through:
+#### **Browser Debugging Tools**
+```javascript
+// Console debugging helpers available in browser:
+window.mcdDebug = {
+  getModelStatus: () => /* Current model loading states */,
+  getTestProgress: () => /* Active test execution status */,
+  exportDebugLog: () => /* Comprehensive system state */,
+  clearCache: () => /* Reset browser-stored data */
+};
 
-✅ **Systematic Browser Testing**: 90+ scenarios across 3 quantization tiers  
-✅ **Real-time Metrics**: Live performance, quality, and efficiency measurement  
-✅ **WebLLM Integration**: Practical browser-based deployment validation  
-✅ **Interactive Analysis**: Always-visible detailed results with tier comparison  
-✅ **Export Capabilities**: Research-ready data in multiple formats  
-✅ **Professional Interface**: Committee-ready demonstration environment  
-
-## 📞 **Research Support & Academic Contact**
-
-- **Primary Interface**: Browser dashboard at `http://localhost:3000` after `npm run dev`
-- **Research Data**: Available through browser download functionality (JSON/CSV)
-- **Technical Architecture**: Pure browser implementation with WebLLM integration
-- **Academic Validation**: Complete T1-T10 test suite with always-visible detailed analysis
-- **Reproducibility**: Git-based version control with browser-consistent runtime
+// Usage in browser console:
+mcdDebug.getModelStatus()  // Check model loading issues
+mcdDebug.exportDebugLog()  // Generate debug information for support
+```
 
 ***
 
-*Built specifically to validate and demonstrate the Minimal Capability Design methodology through browser-native implementation with WebLLM integration.*
+*Built specifically to validate and demonstrate the Minimal Capability Design methodology through browser-native implementation with WebLLM integration and comprehensive domain walkthrough analysis.*
 
-**Framework Status**: ✅ Complete browser-only implementation ready for thesis validation  
-**Supervisor Focus**: Interactive browser interface provides immediate working demonstration  
-**Research Value**: Comprehensive empirical validation with real-time tier comparison analytics
