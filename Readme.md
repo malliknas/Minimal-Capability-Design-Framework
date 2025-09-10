@@ -820,6 +820,11 @@ export const EXTENDED_WALKTHROUGHS = [
 
 ### **Common Issues & Solutions**
 
+#### **Known Issues**
+```bash
+# Exit the application completely after running Domain Walkthroughs or T1 - T10 suite of tests especially from terminal.. Then restart tests.
+```
+
 #### **WebGPU Compatibility Issues**
 ```bash
 # Check browser GPU support
