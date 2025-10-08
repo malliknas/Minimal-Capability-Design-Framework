@@ -160,38 +160,36 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 }
 
 .intro p{
-  font-size: 1.05rem;
+  font-size: 1rem;           /* Changed from 1.05rem to 1rem */
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.55;         /* Slightly tighter from 1.6 */
   color: var(--text-body);
-  margin: 0 0 1rem 0;
-  letter-spacing: 0.02em;
+  margin: 0 0 0.85rem 0;     /* Reduced bottom margin from 1rem */
+  letter-spacing: 0.01em;    /* Reduced from 0.02em */
   text-rendering: optimizeLegibility;
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;    
-font-feature-settings: "liga", "kern";
+  font-feature-settings: "liga", "kern";
   -webkit-font-feature-settings: "liga", "kern";
   -moz-font-feature-settings: "liga", "kern";
   -ms-font-feature-settings: "liga", "kern";
   -o-font-feature-settings: "liga", "kern";  
 }
 
-
-
 .intro h3{
-  font-size:1.15rem;
+  font-size:1.1rem;          /* Slightly reduced from 1.15rem */
   font-weight:600;
   color:var(--text);
-  margin:1rem 0 0.5rem;
+  margin:1.2rem 0 0.5rem;    /* Increased top margin slightly */
   line-height:1.3;
 }
 
 .intro h4{
-  font-size:1.05rem;
+  font-size:1rem;            /* Reduced from 1.05rem */
   font-weight:600;
   color:var(--text);
-  margin:0.8rem 0 0.4rem;
+  margin:0.9rem 0 0.4rem;
   line-height:1.3;
 }
 
@@ -203,17 +201,17 @@ font-feature-settings: "liga", "kern";
 /* Compact lists with better readability */
 .intro ul,
 .intro ol{
-  margin:0.4rem 0 0.6rem;
+  margin:0.35rem 0 0.6rem;   /* Reduced top margin */
   padding-left:1.25rem;
 }
 
 .intro ul li,
 .intro ol li{
-  margin:0.15rem 0;
+  margin:0.12rem 0;          /* Reduced from 0.15rem */
   padding-left:0.2rem;
-  font-size:1rem;
+  font-size:0.98rem;         /* Slightly reduced from 1rem */
   font-weight:400;
-  line-height:1.45;
+  line-height:1.5;           /* Slightly tighter from 1.45 */
   color:var(--text-body);
 }
 
@@ -281,8 +279,8 @@ font-feature-settings: "liga", "kern";
   .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
 }
 
-</style>
-<style>
+
+
 /* Responsive table wrapper */
 .table-responsive {
   margin: 20px 0;
@@ -349,6 +347,45 @@ font-feature-settings: "liga", "kern";
     padding: 6px 8px !important;
   }
 }
+
+/* Responsive adjustments */
+@media (max-width:768px){
+  .intro p{
+    font-size: 0.95rem;       /* Smaller on mobile */
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .intro h3{
+    font-size: 1.05rem;
+    margin: 1rem 0 0.4rem;
+  }
+  
+  .intro h4{
+    font-size: 0.95rem;
+    margin: 0.8rem 0 0.35rem;
+  }
+  
+  .intro ul li,
+  .intro ol li{
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width:640px){
+  .intro p{
+    font-size: 0.93rem;       /* Even smaller on very small screens */
+    line-height: 1.48;
+  }
+  
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
 </style>
 </head>
 
