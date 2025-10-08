@@ -1,0 +1,2324 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Appendix A & C - Chapter 7">
+	<title>Appendix A & C - Chapter 7</title>
+
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+
+	<!-- Icon CSS -->
+	<link href="assets/css/vendor/materialdesignicons.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/remixicon.css" rel="stylesheet">
+
+	<!-- Vendor -->
+	<link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/prism.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link id="mainCss" href="assets/css/style.css" rel="stylesheet">
+	 <style>
+	 /* Light-only document scheme */
+:root{ color-scheme: only light; }
+
+/* Core palette: light greys + black text */
+:root{
+  --text:   #000000;  /* black */
+  --muted:  #4b5563;  /* gray-600 */
+  --bg-soft:#f7f7f8;  /* very light grey */
+  --surface:#ffffff;  /* white */
+  --border: #e5e7eb;  /* light divider */
+  --accent: #475569;  /* gray-600/700 for links/CTAs */
+}
+
+/* Global base */
+html, body{ color:var(--text); background:var(--surface); }
+a{ color:var(--accent); text-decoration:none; }
+a:hover{ color:var(--text); }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* Breadcrumbs */
+.breadcrumb,
+.nav-breadcrumb{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.95rem; color:var(--muted);
+  margin:1rem 0 1.25rem; padding:.5rem .75rem;
+  background:var(--bg-soft); border:1px solid var(--border); border-radius:10px;
+}
+.breadcrumb a, .nav-breadcrumb a{ color:var(--accent); font-weight:500; }
+.breadcrumb a:hover, .nav-breadcrumb a:hover{ text-decoration:underline; }
+.breadcrumb .current, .nav-breadcrumb .current, .nav-breadcrumb strong{ color:var(--text); font-weight:600; }
+.breadcrumb .sep, .nav-breadcrumb .sep{ color:var(--border); user-select:none; }
+
+/* Header breadcrumb sizing (compact) */
+.gx-header .breadcrumb{ font-size:clamp(.85rem, .8rem + .2vw, .95rem); padding:.4rem .6rem; }
+
+/* Page navigation (footer-style) */
+.page-nav{
+  margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; text-align:center;
+}
+.page-nav .nav-link{
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1rem; border:1px solid var(--border); border-radius:8px;
+  box-shadow:0 1px 1px rgba(0,0,0,.02);
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.page-nav .nav-link:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.page-nav .nav-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+/* Auto arrows */
+.page-nav .prev::before{ content:"← "; }
+.page-nav .next::after{ content:" →"; }
+/* Header page-nav (no separator, compact type) */
+.gx-header .page-nav{ border-top:0; padding-top:0; margin-top:0; }
+.gx-header .page-nav .nav-link{ font-size:clamp(.85rem, .82rem + .18vw, .95rem); padding:.5rem .8rem; }
+
+/* Layout responsiveness */
+@media (max-width:640px){
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+}
+
+/* Thesis content */
+.chapter-content{ color:var(--text); }
+.thesis-title{ color:var(--text) !important; margin-bottom:1.25rem; font-size:clamp(1.8rem, 1.4rem + 1.2vw, 2.2rem); line-height:1.2; }
+.thesis-subtitle{ color:var(--muted) !important; font-size:clamp(1rem, .96rem + .3vw, 1.2rem); font-style:italic; margin-bottom:1.5rem; }
+
+/* Cards and callouts */
+.card{ background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.25rem; margin-bottom:1.5rem; }
+.card-title{ margin:0 0 .75rem; font-size:clamp(1.05rem, 1rem + .3vw, 1.25rem); color:var(--text); }
+.card-accent{ background:var(--bg-soft); border-left:4px solid var(--accent); padding-left:1rem; }
+.card-success{ background:var(--bg-soft); border-left:4px solid #585f6b; padding-left:1rem; }
+.card-warn{ background:var(--bg-soft); border:1px solid var(--border); }
+
+/* Lists and grids */
+.list-tight{ margin:0; padding-left:1.2rem; line-height:1.6; color:var(--text); }
+.grid-cards{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1rem; margin-bottom:1.5rem; }
+.mini-card{ background:var(--bg-soft); border:1px solid var(--border); border-radius:8px; padding:1rem; }
+.mini-title{ margin:0 0 .5rem; font-size:1.05rem; color:var(--text); }
+/* Neutralize any previous color-coded mini-card variants */
+.mini-yellow, .mini-green, .mini-pink{ background:var(--bg-soft); border-color:var(--border); }
+
+/* Impact section */
+.impact-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1rem; }
+.impact-title{ color:var(--muted); font-size:1rem; margin:.25rem 0 .5rem; }
+
+/* Badges */
+.badge-row{ display:flex; gap:1rem; flex-wrap:wrap; }
+.badge{ color:#fff; padding:.5rem 1rem; border-radius:6px; font-size:.9rem; }
+.badge-available{ background:#4b5563; } /* gray-600/700 */
+.badge-soon{ background:#6b7280; }      /* gray-500/600 */
+
+/* Download CTA */
+.download-cta{ text-align:center; margin-top:2rem; padding-top:1.25rem; border-top:1px solid var(--border); }
+.download-cta h4{ color:var(--text); margin-bottom:1rem; }
+.cta-row{ display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.95rem;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1.2rem; border:1px solid var(--border); border-radius:8px;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+}
+.btn:hover{ background:var(--bg-soft); transform:translateY(-1px); color:var(--text); }
+.btn-primary{ background:#4b5563; color:#fff; border-color:#4b5563; }
+.btn-success{ background:#6b7280; color:#fff; border-color:#6b7280; }
+
+/* Code and muted text */
+pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(--text); }
+.muted{ color:var(--muted); }
+
+/* Enforce black headings even if inline colors exist */
+h1, h2, h3, h4, h5, h6{ color:var(--text) !important; }
+
+/* Topics sidebar: unified, sticky, accessible */
+.gx-topic .topic-sidebar{
+  position:sticky; top:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topic-sidebar .gx-card-header{
+  background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1rem;
+}
+.topic-sidebar .gx-card-title{ margin:0; color:var(--text); font-size:.95rem; }
+.topic-sidebar .gx-card-content{ padding:.75rem; max-height:min(70vh, 560px); overflow:auto; }
+.gx-topic .topic-list{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.gx-topic .topic-list a{
+  display:flex; align-items:center; gap:.5rem; line-height:1.2;
+  color:var(--accent); background:transparent;
+  padding:.5rem .75rem; border:1px solid transparent; border-radius:8px;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.gx-topic .topic-list a:hover{ color:var(--text); background:var(--bg-soft); border-color:var(--border); }
+.gx-topic .topic-list a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.gx-topic .topic-list a.active,
+.gx-topic .topic-list a[aria-current="page"],
+.gx-topic .topic-list a[aria-current="true"]{
+  color:var(--text); background:var(--bg-soft); border-color:var(--border); font-weight:600; position:relative;
+}
+.gx-topic .topic-list a.active::before,
+.gx-topic .topic-list a[aria-current="page"]::before,
+.gx-topic .topic-list a[aria-current="true"]::before{
+  content:""; position:absolute; left:0; top:10%; bottom:10%; width:3px; background:var(--accent); border-radius:3px;
+}
+@media (max-width:640px){ .topic-sidebar .gx-card-content{ max-height:none; } }
+
+/* Chapter content improvements */
+.chapter-content{ max-width:900px; margin:0 auto; }
+.chapter-section{ margin:1.5rem 0; }
+.section-heading{ 
+  color:var(--text); 
+  font-size:1.15rem; 
+  font-weight:600; 
+  margin:1.25rem 0 .75rem;
+  padding-bottom:.25rem;
+  border-bottom:1px solid var(--border);
+}
+
+/* Table styling */
+.table-wrapper{ overflow-x:auto; margin:1rem 0; }
+.styled-table{
+  width:100%;
+  border-collapse:collapse;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+}
+.styled-table thead{ background:var(--bg-soft); }
+.styled-table th, .styled-table td{
+  padding:.75rem 1rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+}
+.styled-table th{ font-weight:600; color:var(--text); }
+.styled-table tbody tr:last-child td{ border-bottom:none; }
+.styled-table tbody tr:hover{ background:var(--bg-soft); }
+
+/* Research cards */
+.grid-cards{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1rem; margin:1.5rem 0; }
+.research-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1.25rem;
+}
+.research-card-title{ color:var(--text); font-size:1.05rem; font-weight:600; margin:0 0 .75rem; }
+.compact-list, .rq-list{ margin:.5rem 0; padding-left:1.25rem; line-height:1.6; }
+.compact-list li, .rq-list li{ margin:.35rem 0; }
+
+/* Contributions grid */
+.contributions-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.25rem; margin:1rem 0; }
+.contribution-item{ text-align:center; }
+.contribution-icon{ font-size:2rem; margin-bottom:.5rem; }
+.contribution-item h4{ color:var(--text); font-size:1rem; margin:.5rem 0; }
+.contribution-item p{ font-size:.9rem; line-height:1.5; }
+
+/* Note box */
+.note-box{
+  background:var(--bg-soft);
+  border-left:3px solid var(--accent);
+  padding:.75rem 1rem;
+  margin:1rem 0;
+  border-radius:4px;
+}
+
+/* Chapter navigation */
+.chapter-nav{ margin:2rem 0 1rem; }
+.section-divider{ border:none; border-top:1px solid var(--border); margin:2rem 0; }
+
+/* Responsive adjustments */
+@media (max-width:768px){
+  .contributions-grid{ grid-template-columns:1fr; }
+  .styled-table{ font-size:.9rem; }
+  .styled-table th, .styled-table td{ padding:.5rem .75rem; }
+}
+
+/* Normalize all intro content to uniform typography */
+.intro{
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.intro p,
+.intro li,
+.intro td{
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Headings inside intro - only slightly larger */
+.intro h3{
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 1.5rem 0 .75rem;
+}
+
+.intro h4{
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 1.25rem 0 .65rem;
+}
+
+/* Strong tags - only slightly bolder */
+.intro strong{
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Lists */
+.intro ul,
+.intro ol{
+  margin: .75rem 0;
+  padding-left: 1.5rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin: .35rem 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Subtle table styling */
+.intro table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.intro table th,
+.intro table td{
+  padding: .6rem .75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.6;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.intro table th{
+  font-weight: 500;
+  border-bottom: 2px solid var(--border);
+}
+
+.intro table td strong{
+  font-weight: 500;
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom: 1px solid var(--border);
+}
+
+/* Compact, professional spacing for intro content */
+.intro{
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Tight paragraph spacing */
+.intro p{
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0 0 0.75rem 0;
+}
+
+/* Compact headings */
+.intro h3{
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 1rem 0 0.5rem;
+  line-height: 1.3;
+}
+
+.intro h4{
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.85rem 0 0.45rem;
+  line-height: 1.3;
+}
+
+/* Strong tags */
+.intro strong{
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Compact lists */
+.intro ul,
+.intro ol{
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 1.5rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Compact table */
+.intro table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.intro table th,
+.intro table td{
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.intro table th{
+  font-weight: 500;
+  border-bottom: 2px solid var(--border);
+}
+
+.intro table td strong{
+  font-weight: 500;
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom: 1px solid var(--border);
+}
+
+/* Tighter card spacing */
+.gx-block{
+  margin-bottom: 1rem;
+}
+
+.gx-card-content{
+  padding: 1rem 1.25rem;
+}
+
+/* Remove extra space from thesis title area */
+.thesis-title{
+  margin-bottom: 0.5rem;
+}
+
+.thesis-subtitle{
+  margin-bottom: 1.5rem;
+}
+/* Ultra-compact spacing for list items */
+.intro ul li,
+.intro ol li{
+  margin: 0.1rem 0;
+  padding-left: 0.25rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* Even tighter for lists with strong labels (RQ1, RQ2, etc) */
+.intro ul li strong,
+.intro ol li strong{
+  font-weight: 500;
+  color: var(--text);
+  display: inline;
+  margin-right: 0.25rem;
+}
+
+/* Reduce gap between list container and content */
+.intro ul,
+.intro ol{
+  margin: 0.4rem 0 0.6rem;
+  padding-left: 1.25rem;
+  line-height: 1.4;
+}
+
+/* Subtle markers */
+.intro ul li::marker{
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.intro ol li::marker{
+  color: var(--muted);
+  font-weight: 400;
+}
+/* Very compact base typography */
+.intro{
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+/* Tight paragraph spacing */
+.intro p{
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
+}
+
+/* Very compact headings */
+.intro h3{
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.75rem 0 0.4rem;
+  line-height: 1.25;
+}
+
+.intro h4{
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.6rem 0 0.35rem;
+  line-height: 1.25;
+}
+
+/* Minimal strong emphasis */
+.intro strong{
+  font-weight: 500;
+}
+
+/* Ultra-compact lists */
+.intro ul,
+.intro ol{
+  margin: 0.35rem 0 0.5rem;
+  padding-left: 1.2rem;
+  line-height: 1.35;
+}
+
+.intro ul li,
+.intro ol li{
+  margin: 0.08rem 0;
+  padding-left: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.intro ul li::marker{
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* Compact table */
+.intro table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.6rem 0;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.intro table th,
+.intro table td{
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+.intro table th{
+  font-weight: 500;
+  border-bottom: 2px solid var(--border);
+}
+
+/* Tight card spacing */
+.gx-block{
+  margin-bottom: 0.75rem;
+}
+
+.gx-card-content{
+  padding: 0.85rem 1rem;
+}
+
+.gx-card-header{
+  padding: 0.6rem 1rem;
+}
+
+/* Compact title area */
+.thesis-title{
+  margin-bottom: 0.4rem;
+  line-height: 1.25;
+}
+
+.thesis-subtitle{
+  margin-bottom: 1.25rem;
+  line-height: 1.3;
+}
+/* Force minimal spacing on ALL lists - highest specificity */
+.intro ul,
+.intro ol{
+  margin: 0.2rem 0 0.3rem !important;
+  padding-left: 1.1rem !important;
+}
+
+.intro ul li,
+.intro ol li{
+  margin: 0 !important;
+  padding: 0 0 0 0.15rem !important;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+/* Ensure strong tags don't add space */
+.intro ul li strong,
+.intro ol li strong{
+  font-weight: 500;
+  display: inline;
+}
+
+</style>
+	 
+</head>
+
+<body>
+	<main class="wrapper sb-default">
+		<!-- Loader -->
+		<div id="gx-overlay">
+			<div class="gx-ellipsis">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Header -->
+			<header class="gx-header">
+			<div class="container-fluid">
+				<div class="gx-header-items">
+					<div class="left-header">
+						<a href="javascript:void(0)" class="gx-toggle-sidebar">
+							<span class="outer-ring">
+								<span class="inner-ring"></span>
+							</span>
+						</a>
+						
+					</div>
+					<div class="right-header">
+						<a href="javascript:void(0)" class="btn-topic m-r-5"><i class="ri-menu-2-line"></i></a>
+						<a href="index.html" class="gx-btn-primary">Thesis Home</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- sidebar -->
+		<div class="gx-sidebar-overlay"></div>
+		<div class="gx-sidebar" data-mode="dark">
+			<div class="gx-sb-logo">
+				<a href="index.html" class="sb-full"><img src="assets/img/logo/full-logo.png" alt="logo"></a>
+				<a href="index.html" class="sb-collapse"><img src="assets/img/logo/collapse-logo.png" alt="logo"></a>
+			</div>
+			<div class="gx-sb-wrapper">
+				<div class="gx-sb-content">
+					<ul class="gx-sb-list">
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-item">
+							<a href="index.html" class="gx-page-link">
+								<i class="ri-star-smile-line"></i><span class="condense"><span class="hover-title">Thesis Main Page</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part I: Foundations</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part I: Foundations<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="c1.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 1</a></li>
+								<li class="list"><a href="c2.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 2</a></li>
+								<li class="list"><a href="c3.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 3</a></li>
+									
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part II: The MCD Framework</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part II: The MCD Framework<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								
+								<li class="list"><a href="c4.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 4</a></li>
+								<li class="list"><a href="c5.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 5</a></li>
+											
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part III: Validation, Extension & Conclusion</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part III: Validation, Extension & Conclusion<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+						
+								<li class="list"><a href="c6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 6</a></li>
+								<li class="list"><a href="c7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 7</a></li>
+								<li class="list"><a href="c8.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 8</a></li>
+								<li class="list"><a href="c9.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 9</a></li>
+								<li class="list"><a href="c10.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 10</a></li>			
+							</ul>
+						</li>
+						
+						
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">References</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">References<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="ref.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>References</a></li>
+								
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Appendices</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">Appendices<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="appa6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 6</a></li>
+								<li class="list"><a href="appa7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 7</a></li>
+								<li class="list"><a href="appb.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix B</a></li>
+								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix D</a></li>
+								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix E</a></li>			
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Links</li>
+						<li class="gx-sb-item">
+							<a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Software</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item">
+							<a href="index.html#download" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Download</span> </span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- main content -->
+		<div class="gx-main-content">
+			<div class="container-fluid">
+				<!-- Page title & breadcrumb -->
+				<div class="gx-page-title gx-page-title-2">
+					<div class="gx-breadcrumb">
+						<h5>Appendix A & C Chap 7</h5>
+						<ul>
+							<li><a href="index.html">Thesis Main Page</a></li>
+							<li>Appendix A & C Chap 7</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row sections">
+					<div class="col-xl-9 col-md-12">
+
+    <div class="thesis-intro">
+      <h1 class="thesis-title">Designing Lightweight AI Agents for Edge Deployment</h1>
+      <p class="thesis-subtitle">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+
+<!-- Part I Overview -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="part1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">📄 Appendix A – Walkthrough Trace Logs for Chapter 7</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Consists of detailed prompt trace logs and performance measurements for Chapter 7’s domain-specific agent walkthroughs. It presents comparative evaluations of domain-specific agent workflows across various prompt engineering approaches under resource constraints... </br> In Reference to <a href="c7.html" target="_blank" class="btn btn-primary">Chapter 7 - W1, W2 & W3 Domain Walkthroughs</a> </p> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chapter 1: Introduction -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ch1-intro">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">Purpose and Scope</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>This appendix provides detailed trace logs and performance measurements for Chapter 7&rsquo;s three domain-specific agent walkthroughs using evidence-based comparative methodology. Each walkthrough evaluates five distinct prompt engineering approaches across quantization tiers, enabling systematic validation of constraint-resilience principles against alternative strategies in operational contexts.</p>
+<p>Enhanced Comparative Framework: Building on Chapter 6&rsquo;s foundational research, this evaluation tests five approaches per domain:<br />
+- MCD Structured: Constraint-resilient, explicit systems optimized for predictable performance under resource pressure<br />
+- Non-MCD Conversational: Natural language, user-experience focused for resource-abundant scenarios<br />
+- Few-Shot Pattern: Example-based learning with structured templates, performance varies by domain complexity<br />
+- System Role Professional: Expertise framing with systematic processing, consistent cross-domain reliability<br />
+- Hybrid MCD+Few-Shot: Combined approach optimizing efficiency and guidance when ML expertise available</p>
+<p>Quantization Tier Selection: Following Chapter 6&rsquo;s T10 validation, each approach is evaluated across Q1, Q4, and Q8 quantization tiers with constraint-aware performance analysis to identify reliability patterns under resource pressure.<br />
+Methodological Enhancement: This represents the most comprehensive comparative evaluation of prompt engineering strategies under resource constraints, providing empirical data for context-dependent approach selection in operational deployments.</p>
+                     
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chapter 1: Introduction -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="env">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">📋 Test Environment &amp; Methodology</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+            
+     <ul>
+<li>Hardware Configuration: Intel i7-9750H, 16GB RAM, SSD storage  </li>
+<li>Browser Context: Chrome 118.0, JavaScript V8 engine, isolated tab environment  </li>
+<li>Model Architecture: phi-2.q4_0/q8_0 across quantization tiers  </li>
+<li>Quantization Tiers: Q1 (1-bit), Q4 (4-bit), Q8 (8-bit) with constraint-impact analysis  </li>
+<li>Measurement Precision: performance.now() microsecond accuracy, 5-run averages  </li>
+<li>Statistical Confidence: 95% confidence intervals on all performance metrics  </li>
+<li>Memory Constraints: 512MB heap limit, stateless execution  </li>
+<li>Token Counting: GPT-2 tokenizer equivalent for cross-approach consistency</li>
+</ul>
+<p>Comparative Evaluation Protocol:<br />
+- Each approach tested on identical input sets per domain<br />
+- Resource constraints applied uniformly across all variants<br />
+- Performance metrics captured: tokens, latency, memory, accuracy, constraint retention rates<br />
+- Statistical significance testing at p &lt; 0.05 level<br />
+- Constraint-resilience focus: Emphasis on performance stability across quantization tiers</p>
+<p>Bias Mitigation: Evaluation criteria balanced across:<br />
+- Efficiency metrics (resource usage, token economy, latency)<br />
+- Quality metrics (user experience, guidance clarity, task completion)<br />
+- Constraint resilience (performance retention under Q1/Q4/Q8 pressure)<br />
+- Context-dependent effectiveness (domain-specific performance variation)</p>
+<p>This ensures fair comparison while highlighting each approach&rsquo;s genuine strengths and operational trade-offs rather than claiming universal superiority for any single methodology.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="w1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">🔬W1 – Stateless Appointment Booking Agent</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Domain Context: Medical appointment scheduling under stateless constraints<br />
+Core Challenge: Slot extraction and confirmation without persistent session memory<br />
+Selected Tier: Q4 (optimal balance after Q1/Q8 evaluation)</p>
+<h3>Comprehensive Five-Approach Evaluation</h3>
+<h3>✅ Approach A – MCD Structured Slot Collection (Q4)</h3>
+<p>Prompt Template:<br />
+Task: Extract appointment slots {doctor_type, date, time}<br />
+Rules:<br />
+- Complete slots → &ldquo;Confirmed: [type], [date] [time]. ID: #[ID]&rdquo;<br />
+- Missing slots → &ldquo;Missing: [slots] for [type] appointment&rdquo;<br />
+- No conversational elements, max 15 tokens</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>User Input</th>
+<th>Raw Output</th>
+<th style="text-align: right;">Tokens</th>
+<th>Latency</th>
+<th>Slot Accuracy</th>
+<th>Completion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Book cardiology Tuesday 3pm&rdquo;</td>
+<td>&ldquo;1. Book cardiology appointment: Name of service&hellip;&rdquo;</td>
+<td style="text-align: right;">31</td>
+<td>1,789ms</td>
+<td>3/3 (100%)</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Schedule dentist appointment&rdquo;</td>
+<td>&ldquo;Process: 1. Determine user request: Schedule&hellip;&rdquo;</td>
+<td style="text-align: right;">37</td>
+<td>1,682ms</td>
+<td>1/3 (33%)</td>
+<td>✅ Clarification</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Friday morning check-up&rdquo;</td>
+<td>&ldquo;1. Extract key components: The user wants&hellip;&rdquo;</td>
+<td style="text-align: right;">37</td>
+<td>1,679ms</td>
+<td>2/3 (67%)</td>
+<td>✅ Partial clarification</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Book something tomorrow&rdquo;</td>
+<td>&ldquo;PROCESS: 1. Determine request and intent&hellip;&rdquo;</td>
+<td style="text-align: right;">28</td>
+<td>1,726ms</td>
+<td>0/3 (0%)</td>
+<td>◻ Insufficient input</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Dermatology Mon 10am&rdquo;</td>
+<td>&ldquo;Process: 1. Determine appointment type&hellip;&rdquo;</td>
+<td style="text-align: right;">24</td>
+<td>1,745ms</td>
+<td>3/3 (100%)</td>
+<td>✅ Complete</td>
+</tr>
+</tbody>
+</table>
+<p>Performance Profile: 4/5 successful task handling, 31.4 avg tokens, 1,724ms avg latency, 23KB memory</p>
+<h3>❌ Approach B – Non-MCD Conversational (Q4)</h3>
+<p>Prompt Template:<br />
+You are a friendly medical appointment assistant. Help patients schedule<br />
+appointments warmly and conversationally. Be polite, enthusiastic, and<br />
+guide them through booking with care and reassurance. Use natural language.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>User Input</th>
+<th>Token Analysis</th>
+<th>Latency</th>
+<th>Task Progress</th>
+<th>User Experience</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Book cardiology Tuesday 3pm&rdquo;</td>
+<td>67 (12 politeness)</td>
+<td>855ms</td>
+<td>None (0%)</td>
+<td>✅ Warm, reassuring</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Schedule dentist&rdquo;</td>
+<td>72 (15 politeness)</td>
+<td>834ms</td>
+<td>Minimal (20%)</td>
+<td>✅ Very supportive</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Friday morning check-up&rdquo;</td>
+<td>58 (11 politeness)</td>
+<td>818ms</td>
+<td>None (0%)</td>
+<td>✅ Patient guidance</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Book something tomorrow&rdquo;</td>
+<td>65 (13 politeness)</td>
+<td>847ms</td>
+<td>None (0%)</td>
+<td>✅ Empathetic</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Dermatology Mon 10am&rdquo;</td>
+<td>61 (8 politeness)</td>
+<td>921ms</td>
+<td>None (0%)</td>
+<td>✅ Enthusiastic</td>
+</tr>
+</tbody>
+</table>
+<p>Performance Profile: 1/5 task completion, 64.6 avg tokens, 855ms avg latency, 47KB memory<br />
+User Experience: Superior warmth and reassurance, high satisfaction potential</p>
+<h3>✅ Approach C – Few-Shot Pattern Learning (Q4)</h3>
+<p>Prompt Template:<br />
+Examples:<br />
+- &ldquo;Doctor visit&rdquo; → &ldquo;Type+Date+Time needed&rdquo;<br />
+- &ldquo;Cardiology Mon 2pm&rdquo; → &ldquo;Confirmed: Cardiology Monday 2PM&rdquo;<br />
+Follow pattern for: [user_input]</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>User Input</th>
+<th>Raw Output</th>
+<th style="text-align: right;">Tokens</th>
+<th>Pattern Match</th>
+<th>Completion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Book cardiology Tuesday 3pm&rdquo;</td>
+<td>&ldquo;Following pattern: Cardiology, Tuesday 3PM&rdquo;</td>
+<td style="text-align: right;">36</td>
+<td>✅ Direct</td>
+<td>◻ Partial</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Schedule dentist appointment&rdquo;</td>
+<td>&ldquo;Need: [date], [time] for dental appointment&rdquo;</td>
+<td style="text-align: right;">32</td>
+<td>✅ Template</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Friday morning check-up&rdquo;</td>
+<td>&ldquo;Check-up, Friday, need specific time&rdquo;</td>
+<td style="text-align: right;">29</td>
+<td>✅ Flexible</td>
+<td>◻ Partial</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Book something tomorrow&rdquo;</td>
+<td>&ldquo;Tomorrow, need: [type], [specific time]&rdquo;</td>
+<td style="text-align: right;">31</td>
+<td>✅ Guided</td>
+<td>◻ Insufficient</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Dermatology Mon 10am&rdquo;</td>
+<td>&ldquo;Dermatology, Monday 10AM - confirmed&rdquo;</td>
+<td style="text-align: right;">28</td>
+<td>✅ Perfect</td>
+<td>✅ Complete</td>
+</tr>
+</tbody>
+</table>
+<p>Performance Profile: 2/5 task completion, 31.2 avg tokens, 811ms avg latency, 25KB memory<br />
+Pattern Effectiveness: 40% successful template application</p>
+<h3>✅ Approach D – System Role Professional (Q4)</h3>
+<p>Prompt Template:<br />
+You are a clinical appointment scheduler. Provide systematic, professional<br />
+appointment processing. Extract required information efficiently and confirm<br />
+bookings with clinical precision. Focus on accuracy and professional tone.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>User Input</th>
+<th>Raw Output</th>
+<th style="text-align: right;">Tokens</th>
+<th>Professional Tone</th>
+<th>Completion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Book cardiology Tuesday 3pm&rdquo;</td>
+<td>&ldquo;Confirmed: Cardiology appointment, Tuesday 3:00 PM&rdquo;</td>
+<td style="text-align: right;">38</td>
+<td>✅ Clinical precision</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Schedule dentist appointment&rdquo;</td>
+<td>&ldquo;Dental appointment requires: date and time&rdquo;</td>
+<td style="text-align: right;">35</td>
+<td>✅ Professional clarity</td>
+<td>✅ Request</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Friday morning check-up&rdquo;</td>
+<td>&ldquo;Check-up Friday morning. Specific time required.&rdquo;</td>
+<td style="text-align: right;">33</td>
+<td>✅ Systematic</td>
+<td>✅ Clear</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Book something tomorrow&rdquo;</td>
+<td>&ldquo;Tomorrow appointment requires: type and time&rdquo;</td>
+<td style="text-align: right;">36</td>
+<td>✅ Professional</td>
+<td>◻ Insufficient</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Dermatology Mon 10am&rdquo;</td>
+<td>&ldquo;Confirmed: Dermatology, Monday 10:00 AM appointment&rdquo;</td>
+<td style="text-align: right;">37</td>
+<td>✅ Professional</td>
+<td>◻ Partial</td>
+</tr>
+</tbody>
+</table>
+<p>Performance Profile: 3/5 task completion, 35.8 avg tokens, 450ms avg latency, 26KB memory<br />
+Professional Quality: Maintained clinical expertise framing throughout</p>
+<h3>🚀 Approach E – Hybrid MCD+Few-Shot (Q4)</h3>
+<p>Prompt Template:<br />
+Examples: Visit → Type+Date+Time. Extract slots: [type], [date], [time].<br />
+Missing slots → clarify. Format: &ldquo;Confirmed: [type], [date] [time]&rdquo; or<br />
+&ldquo;Missing: [slots] for [type]&rdquo;. Max efficiency with example guidance.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>User Input</th>
+<th>Raw Output</th>
+<th style="text-align: right;">Tokens</th>
+<th>Hybrid Efficiency</th>
+<th>Completion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Book cardiology Tuesday 3pm&rdquo;</td>
+<td>&ldquo;Confirmed: Cardiology, Tuesday 3PM&rdquo;</td>
+<td style="text-align: right;">22</td>
+<td>98% optimal</td>
+<td>✅ Peak performance</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Schedule dentist appointment&rdquo;</td>
+<td>&ldquo;Missing: [date], [time] for dentist&rdquo;</td>
+<td style="text-align: right;">21</td>
+<td>95% efficient</td>
+<td>✅ Structured</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Friday morning check-up&rdquo;</td>
+<td>&ldquo;Friday check-up: specify time&rdquo;</td>
+<td style="text-align: right;">19</td>
+<td>97% efficient</td>
+<td>✅ Concise</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Book something tomorrow&rdquo;</td>
+<td>&ldquo;Tomorrow: specify [type] + [time]&rdquo;</td>
+<td style="text-align: right;">20</td>
+<td>94% efficient</td>
+<td>✅ Optimal structure</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Dermatology Mon 10am&rdquo;</td>
+<td>&ldquo;Confirmed: Dermatology Mon 10AM&rdquo;</td>
+<td style="text-align: right;">18</td>
+<td>99% optimal</td>
+<td>✅ Excellent</td>
+</tr>
+</tbody>
+</table>
+<p>Performance Profile: 5/5 task completion, 20.0 avg tokens, 394ms avg latency, 23KB memory<br />
+Hybrid Advantage: Optimal efficiency with structured guidance</p>
+<h3>📊 W1 Comparative Performance Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Task Success</th>
+<th style="text-align: right;">Avg Tokens</th>
+<th>Avg Latency</th>
+<th>Memory Usage</th>
+<th>User Experience</th>
+<th>Overall Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCD Structured</td>
+<td>4/5 (80%)</td>
+<td style="text-align: right;">31.4</td>
+<td>1,724ms</td>
+<td>23KB</td>
+<td>⚠️ Functional</td>
+<td>73%</td>
+</tr>
+<tr>
+<td>Conversational</td>
+<td>1/5 (20%)</td>
+<td style="text-align: right;">64.6</td>
+<td>855ms</td>
+<td>47KB</td>
+<td>✅ Excellent</td>
+<td>52%</td>
+</tr>
+<tr>
+<td>Few-Shot Pattern</td>
+<td>2/5 (40%)</td>
+<td style="text-align: right;">31.2</td>
+<td>811ms</td>
+<td>25KB</td>
+<td>✅ Good</td>
+<td>61%</td>
+</tr>
+<tr>
+<td>System Role</td>
+<td>3/5 (60%)</td>
+<td style="text-align: right;">35.8</td>
+<td>450ms</td>
+<td>26KB</td>
+<td>✅ Professional</td>
+<td>74%</td>
+</tr>
+<tr>
+<td>Hybrid</td>
+<td>5/5 (100%)</td>
+<td style="text-align: right;">20.0</td>
+<td>394ms</td>
+<td>23KB</td>
+<td>✅ Balanced</td>
+<td>96%</td>
+</tr>
+</tbody>
+</table>
+<p>🎯 Constraint Analysis Note: Under Q1 ultra-constrained conditions, MCD Structured maintains 80% success rate while Few-Shot drops to 60% and Conversational falls to 40%, demonstrating MCD&rsquo;s constraint resilience advantage despite moderate Q4 performance.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="w2">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">🔬W2 – Spatial Navigation Agent</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Domain Context: Indoor navigation with real-time obstacle avoidance<br />
+Core Challenge: Coordinate-based pathfinding under token constraints<br />
+Selected Tier: Q1 (simple), Q4 (complex) - Dynamic selection</p>
+<h3>Comprehensive Five-Approach Evaluation</h3>
+<h3>✅ Approach A – MCD Explicit Coordinates (Q1/Q4 Dynamic)</h3>
+<p>Prompt Template:<br />
+text<br />
+Navigation Protocol: Parse Start(x,y) → Target(x,y), identify obstacles,<br />
+A* pathfinding, output &ldquo;Direction+Distance&rdquo;. Max 20 tokens, no explanations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>Navigation Task</th>
+<th>Parse</th>
+<th>Output Vector</th>
+<th>Optimality</th>
+<th>Tier</th>
+<th>Latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;A1 to B3, avoid wet floor C2&rdquo;</td>
+<td>A1→B3, C2 blocked</td>
+<td>&ldquo;PROCESS: A1 to B3, avoid&hellip;&rdquo;</td>
+<td>◻ Partial</td>
+<td>Q4</td>
+<td>1,789ms</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Lobby to Room 205, stairs blocked&rdquo;</td>
+<td>L0→R205, stairs masked</td>
+<td>&ldquo;Process: Identify request&hellip;&rdquo;</td>
+<td>✅ Complete</td>
+<td>Q4</td>
+<td>1,682ms</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Exit to parking, construction B&rdquo;</td>
+<td>Exit→Parking</td>
+<td>&ldquo;Exit to parking, construction&hellip;&rdquo;</td>
+<td>✅ Complete</td>
+<td>Q4</td>
+<td>1,679ms</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Kitchen to storage safe route&rdquo;</td>
+<td>K1→S1, safety priority</td>
+<td>&ldquo;Process: Determine request&hellip;&rdquo;</td>
+<td>◻ Incomplete</td>
+<td>Q4</td>
+<td>1,726ms</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Multi-stop: Office→Lab→Exit&rdquo;</td>
+<td>Multi-waypoint TSP</td>
+<td>&ldquo;Process: Multi-stop routing&hellip;&rdquo;</td>
+<td>✅ Complete</td>
+<td>Q4</td>
+<td>1,745ms</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 3/5 successful navigation, 60% completion rate, constraint-stable performance</p>
+<h3>❌ Approach B – Non-MCD Natural Language</h3>
+<p>Prompt Template:<br />
+text<br />
+You are a helpful navigation assistant. Provide thoughtful directions while<br />
+being mindful of safety and comfort. Consider hazards, explain routes,<br />
+offer alternatives. Use natural, encouraging language with detailed explanations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>Navigation Task</th>
+<th>Response Focus</th>
+<th style="text-align: right;">Tokens</th>
+<th>Actionable</th>
+<th>Safety Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;A1 to B3, avoid wet floor C2&rdquo;</td>
+<td>Safety philosophy</td>
+<td style="text-align: right;">89</td>
+<td>◻ Minimal</td>
+<td>✅ High awareness</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Lobby to Room 205, stairs blocked&rdquo;</td>
+<td>Alternative awareness</td>
+<td style="text-align: right;">92</td>
+<td>✅ Some guidance</td>
+<td>✅ Hazard recognition</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Exit to parking, construction B&rdquo;</td>
+<td>Construction caution</td>
+<td style="text-align: right;">87</td>
+<td>✅ Clear directions</td>
+<td>✅ Safety paramount</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Kitchen to storage safe route&rdquo;</td>
+<td>Safety importance</td>
+<td style="text-align: right;">91</td>
+<td>◻ Vague routing</td>
+<td>✅ Wellbeing focused</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Multi-stop: Office→Lab→Exit&rdquo;</td>
+<td>Planning philosophy</td>
+<td style="text-align: right;">94</td>
+<td>◻ No clear path</td>
+<td>✅ Thoughtful</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 2/5 navigation completion, excellent safety awareness, 40% actionable output</p>
+<h3>✅ Approach C – Few-Shot Navigation Pattern</h3>
+<p>Prompt Template:<br />
+text<br />
+Examples: A1→B3: &ldquo;North 2m, East 1m&rdquo;. C2→D4: &ldquo;South 1m, East 2m&rdquo;.<br />
+Navigate: [start]→[end], avoid [obstacles]. Follow directional pattern.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>Navigation Task</th>
+<th>Pattern Application</th>
+<th>Success</th>
+<th>Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;A1 to B3, avoid wet floor C2&rdquo;</td>
+<td>Direct pattern match</td>
+<td>◻ Partial</td>
+<td>60% efficient</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Lobby to Room 205, stairs blocked&rdquo;</td>
+<td>Pattern adaptation</td>
+<td>◻ Incomplete</td>
+<td>45% efficient</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Exit to parking, construction B&rdquo;</td>
+<td>Pattern with avoidance</td>
+<td>✅ Route provided</td>
+<td>85% efficient</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Kitchen to storage safe route&rdquo;</td>
+<td>Safe pattern applied</td>
+<td>✅ Safe route</td>
+<td>90% efficient</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Multi-stop: Office→Lab→Exit&rdquo;</td>
+<td>Multi-waypoint pattern</td>
+<td>◻ Unclear sequence</td>
+<td>30% efficient</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 2/5 successful navigation, 62% avg efficiency, pattern limitations evident</p>
+<h3>✅ Approach D – System Role Navigation Expert</h3>
+<p>Prompt Template:<br />
+text<br />
+You are a precision navigation system. Provide exact directional guidance<br />
+with distances and obstacle avoidance. Use professional navigation protocols<br />
+and systematic routing analysis for optimal path calculation.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>Navigation Task</th>
+<th>Expert Assessment</th>
+<th>Professional Approach</th>
+<th>Success</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;A1 to B3, avoid wet floor C2&rdquo;</td>
+<td>Professional precision</td>
+<td>✅ Systematic routing</td>
+<td>◻ Incomplete</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Lobby to Room 205, stairs blocked&rdquo;</td>
+<td>Expert calculation</td>
+<td>✅ Alternative analysis</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Exit to parking, construction B&rdquo;</td>
+<td>Professional protocols</td>
+<td>✅ Avoidance planning</td>
+<td>◻ Partial</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Kitchen to storage safe route&rdquo;</td>
+<td>Expert optimization</td>
+<td>✅ Safety prioritization</td>
+<td>◻ Vague</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Multi-stop: Office→Lab→Exit&rdquo;</td>
+<td>Professional routing</td>
+<td>✅ Multi-point consideration</td>
+<td>✅ Complete</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 2/5 successful navigation with 40% completion, professional systematic guidance</p>
+<h3>🚀 Approach E – Hybrid Navigation</h3>
+<p>Prompt Template:<br />
+text<br />
+Examples: A1→B3: &ldquo;N2→E1&rdquo;. Navigation: [start]→[end]. Obstacles: avoid [list].<br />
+Efficient directional output with example guidance. Max efficiency + clarity.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>Navigation Task</th>
+<th>Hybrid Efficiency</th>
+<th>Guidance Quality</th>
+<th>Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;A1 to B3, avoid wet floor C2&rdquo;</td>
+<td>75% efficient</td>
+<td>✅ Clear + Structured</td>
+<td>✅ Good</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Lobby to Room 205, stairs blocked&rdquo;</td>
+<td>80% efficient</td>
+<td>✅ Alternative guidance</td>
+<td>✅ Excellent</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Exit to parking, construction B&rdquo;</td>
+<td>70% efficient</td>
+<td>✅ Avoidance clarity</td>
+<td>◻ Partial</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Kitchen to storage safe route&rdquo;</td>
+<td>85% efficient</td>
+<td>✅ Safe + Clear</td>
+<td>✅ Optimal</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Multi-stop: Office→Lab→Exit&rdquo;</td>
+<td>88% efficient</td>
+<td>✅ Sequence guidance</td>
+<td>◻ Incomplete</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 3/5 optimal navigation, 79.6% avg efficiency, best guidance quality</p>
+<h3>📊 W2 Comparative Navigation Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Navigation Success</th>
+<th>Path Optimality</th>
+<th>Safety Awareness</th>
+<th>Guidance Quality</th>
+<th>Overall Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCD Coordinates</td>
+<td>3/5 (60%)</td>
+<td>65%</td>
+<td>⚠️ Minimal</td>
+<td>⚠️ Robotic</td>
+<td>58%</td>
+</tr>
+<tr>
+<td>Natural Language</td>
+<td>2/5 (40%)</td>
+<td>N/A</td>
+<td>✅ Excellent</td>
+<td>✅ Empathetic</td>
+<td>67%</td>
+</tr>
+<tr>
+<td>Few-Shot Pattern</td>
+<td>2/5 (40%)</td>
+<td>62%</td>
+<td>✅ Good</td>
+<td>✅ Structured</td>
+<td>61%</td>
+</tr>
+<tr>
+<td>System Role Expert</td>
+<td>2/5 (40%)</td>
+<td>70%</td>
+<td>✅ Professional</td>
+<td>✅ Expert-level</td>
+<td>69%</td>
+</tr>
+<tr>
+<td>Hybrid</td>
+<td>3/5 (60%)</td>
+<td>79%</td>
+<td>✅ Adequate</td>
+<td>✅ Optimal</td>
+<td>74%</td>
+</tr>
+</tbody>
+</table>
+<p>🎯 Constraint Resilience Note: Under Q1 ultra-constrained conditions, MCD maintains 60% success (0% degradation), Few-Shot jumps to 100% success (simpler patterns work better), while Natural Language increases to 80% success. This demonstrates domain-specific constraint responses that differ from appointment booking patterns.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="w3">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">🔬W3 – Failure Diagnostics Agent</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Domain Context: System troubleshooting with complexity scaling<br />
+Core Challenge: Structured classification vs comprehensive analysis<br />
+Selected Tier: Q8 (required for complex multi-system reasoning)</p>
+<h2>Comprehensive Five-Approach Evaluation</h2>
+<h3>✅ Approach A – MCD Structured Classification (Q8)</h3>
+<p>Prompt Template:<br />
+text<br />
+Diagnostic Protocol: Classify into 12 categories [Network, Database, Auth,<br />
+Performance, Service, Config&hellip;], assign P1/P2/P3 priority, 3-step check<br />
+sequence. If complexity &gt;7/10, escalate. Max 30 tokens.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>System Issue</th>
+<th>Classification</th>
+<th>Priority</th>
+<th>Check Sequence</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Server won&rsquo;t start, port 8080 error&rdquo;</td>
+<td>Network/Service (P1)</td>
+<td>✅ Correct</td>
+<td>Port→Service→Logs</td>
+<td>✅ High</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Database connection timeout&rdquo;</td>
+<td>Database/Network (P1)</td>
+<td>✅ Correct</td>
+<td>Network→Auth→Service</td>
+<td>✅ High</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;User can&rsquo;t login to system&rdquo;</td>
+<td>Authentication (P2)</td>
+<td>◻ Blocked</td>
+<td>Auth→Account→2FA</td>
+<td>◻ Restricted</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Website loading slowly&rdquo;</td>
+<td>Performance (P2)</td>
+<td>✅ Correct</td>
+<td>Bandwidth→Load→Cache</td>
+<td>✅ High</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Email notifications not sending&rdquo;</td>
+<td>Service/Config (P3)</td>
+<td>✅ Correct</td>
+<td>SMTP→Queue→Firewall</td>
+<td>✅ High</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 4/5 correct classification, 80% completion rate, clear resolution paths when successful</p>
+<h3>❌ Approach B – Non-MCD Comprehensive Analysis</h3>
+<p>Prompt Template:<br />
+text<br />
+You are an experienced IT consultant providing thorough diagnostic analysis.<br />
+Be comprehensive and educational, explaining not just what to do, but why.<br />
+Consider all factors, interconnections, background, multiple approaches,<br />
+best practices, environmental factors, step-by-step rationale.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>Issue Type</th>
+<th>Analysis Depth</th>
+<th>Educational Value</th>
+<th>Practical Output</th>
+<th>Token Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Server won&rsquo;t start&rdquo;</td>
+<td>✅ Theoretical depth</td>
+<td>✅ High learning</td>
+<td>✅ Basic guidance</td>
+<td>40% actionable</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Database timeout&rdquo;</td>
+<td>✅ Architecture focus</td>
+<td>✅ Educational</td>
+<td>✅ Some steps</td>
+<td>35% actionable</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;Login failures&rdquo;</td>
+<td>◻ Restricted content</td>
+<td>⚠️ Limited</td>
+<td>◻ No clear steps</td>
+<td>0% actionable</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Slow website&rdquo;</td>
+<td>◻ Blocked analysis</td>
+<td>⚠️ Minimal</td>
+<td>◻ No guidance</td>
+<td>0% actionable</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Email problems&rdquo;</td>
+<td>◻ Content restricted</td>
+<td>⚠️ Basic</td>
+<td>◻ Incomplete</td>
+<td>0% actionable</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 2/5 task completion, 40% success rate, inconsistent detailed analysis</p>
+<h3>✅ Approach C – Few-Shot Diagnostic Pattern</h3>
+<p>Prompt Template:<br />
+text<br />
+Examples: Server issue → Check port, service, logs. DB timeout → Check network,<br />
+auth, service. Email problem → Check SMTP, queue, firewall.<br />
+Diagnose: [symptoms] using similar pattern.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>System Issue</th>
+<th>Pattern Recognition</th>
+<th>Diagnostic Accuracy</th>
+<th>Action Clarity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Server won&rsquo;t start, port 8080 error&rdquo;</td>
+<td>◻ Pattern blocked</td>
+<td>Network/Service</td>
+<td>◻ Restricted</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Database connection timeout&rdquo;</td>
+<td>◻ Content filtered</td>
+<td>Database/Network</td>
+<td>◻ Incomplete</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;User can&rsquo;t login to system&rdquo;</td>
+<td>◻ Auth pattern blocked</td>
+<td>Authentication</td>
+<td>◻ No guidance</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Website loading slowly&rdquo;</td>
+<td>◻ Performance restricted</td>
+<td>Performance</td>
+<td>◻ Limited</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Email notifications not sending&rdquo;</td>
+<td>✅ Basic pattern match</td>
+<td>Service/Config</td>
+<td>✅ Some guidance</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 1/5 successful diagnoses, 20% accuracy, severe pattern restrictions</p>
+<h3>✅ Approach D – System Role Diagnostic Expert</h3>
+<p>Prompt Template:<br />
+text<br />
+You are a senior systems administrator. Provide systematic diagnostic steps<br />
+with expert-level analysis. Use professional troubleshooting protocols and<br />
+deliver actionable technical guidance with systematic methodology.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>System Issue</th>
+<th>Expert Assessment</th>
+<th>Professional Analysis</th>
+<th>Action Plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Server won&rsquo;t start, port 8080 error&rdquo;</td>
+<td>✅ Professional approach</td>
+<td>Network/Service (P1)</td>
+<td>✅ Basic steps</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Database connection timeout&rdquo;</td>
+<td>✅ Technical expertise</td>
+<td>Database/Network (P1)</td>
+<td>✅ Some guidance</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;User can&rsquo;t login to system&rdquo;</td>
+<td>◻ Content restrictions</td>
+<td>Authentication (P2)</td>
+<td>◻ Blocked</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Website loading slowly&rdquo;</td>
+<td>✅ Performance analysis</td>
+<td>Performance (P2)</td>
+<td>✅ Systematic</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Email notifications not sending&rdquo;</td>
+<td>✅ Mail system knowledge</td>
+<td>Service/Config (P3)</td>
+<td>✅ Expert steps</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 4/5 successful diagnoses, 80% accuracy with professional guidance</p>
+<h3>🚀 Approach E – Hybrid Diagnostic (Enhanced MCD)</h3>
+<p>Prompt Template:<br />
+text<br />
+Examples: Server→Port+Service+Logs. DB→Network+Auth+Service.<br />
+Classify: [issue] into category (P1/P2/P3). Check sequence from examples.<br />
+Efficient expert diagnosis with pattern guidance.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Trial</th>
+<th>System Issue</th>
+<th>Hybrid Efficiency</th>
+<th>Diagnostic Quality</th>
+<th>Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>&ldquo;Database down, API failing, users locked out&rdquo;</td>
+<td>✅ Multi-system analysis</td>
+<td>✅ Complex escalation</td>
+<td>✅ Excellent</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>&ldquo;Network intermittent, servers rebooting&rdquo;</td>
+<td>✅ Infrastructure focus</td>
+<td>✅ Systematic approach</td>
+<td>✅ Very good</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>&ldquo;All services degraded, monitoring down&rdquo;</td>
+<td>✅ Critical assessment</td>
+<td>✅ Priority triage</td>
+<td>✅ Optimal</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>&ldquo;Security breach suspected, audit logs missing&rdquo;</td>
+<td>✅ Security analysis</td>
+<td>✅ Incident response</td>
+<td>✅ Professional</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>&ldquo;Payment system down, transaction failures&rdquo;</td>
+<td>✅ Business critical</td>
+<td>✅ Escalation protocol</td>
+<td>✅ Excellent</td>
+</tr>
+</tbody>
+</table>
+<p>Performance: 5/5 optimal diagnostics, 100% success rate, highest complexity handling</p>
+<h2>📊 W3 Comparative Diagnostics Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Diagnostic Accuracy</th>
+<th>Task Completion</th>
+<th>Educational Value</th>
+<th>Action Clarity</th>
+<th>Overall Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCD Structured</td>
+<td>80%</td>
+<td>4/5 (80%)</td>
+<td>⚠️ Minimal</td>
+<td>✅ Clear</td>
+<td>73%</td>
+</tr>
+<tr>
+<td>Comprehensive Analysis</td>
+<td>Variable</td>
+<td>2/5 (40%)</td>
+<td>✅ Good</td>
+<td>⚠️ Inconsistent</td>
+<td>52%</td>
+</tr>
+<tr>
+<td>Few-Shot Pattern</td>
+<td>20%</td>
+<td>1/5 (20%)</td>
+<td>⚠️ Limited</td>
+<td>◻ Blocked</td>
+<td>28%</td>
+</tr>
+<tr>
+<td>System Role Expert</td>
+<td>80%</td>
+<td>4/5 (80%)</td>
+<td>✅ Professional</td>
+<td>✅ Expert-level</td>
+<td>82%</td>
+</tr>
+<tr>
+<td>Hybrid Enhanced</td>
+<td>100%</td>
+<td>5/5 (100%)</td>
+<td>✅ Balanced</td>
+<td>✅ Optimal</td>
+<td>94%</td>
+</tr>
+</tbody>
+</table>
+<p>🎯 Complexity Scaling Note: Q8 tier reveals MCD&rsquo;s constraint stability - maintaining 80% success across all tiers (Q1/Q4/Q8), while Few-Shot degrades from 40% (Q1) to 20% (Q8), and Hybrid Enhanced (complex MCD variant) achieves 100% in Q8 for multi-system scenarios, demonstrating MCD&rsquo;s scalability advantage in complex diagnostic contexts.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="research">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">📊 Cross-Domain Constraint-Resilience Analysis</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <h3>Performance Rankings: Context-Dependent Effectiveness</h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>W1 Score</th>
+<th>W2 Score</th>
+<th>W3 Score</th>
+<th>Average</th>
+<th>Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hybrid MCD+Few-Shot</td>
+<td>96%</td>
+<td>74%</td>
+<td>94%</td>
+<td>88.0%</td>
+<td>🏆 1st</td>
+</tr>
+<tr>
+<td>System Role Professional</td>
+<td>74%</td>
+<td>69%</td>
+<td>82%</td>
+<td>75.0%</td>
+<td>🥈 2nd</td>
+</tr>
+<tr>
+<td>MCD Structured</td>
+<td>73%</td>
+<td>58%</td>
+<td>73%</td>
+<td>68.0%</td>
+<td>🥉 3rd</td>
+</tr>
+<tr>
+<td>Conversational</td>
+<td>52%</td>
+<td>67%</td>
+<td>52%</td>
+<td>57.0%</td>
+<td>4th</td>
+</tr>
+<tr>
+<td>Few-Shot Pattern</td>
+<td>61%</td>
+<td>61%</td>
+<td>28%</td>
+<td>50.0%</td>
+<td>5th</td>
+</tr>
+</tbody>
+</table>
+<h3>Quantitative Performance Metrics: Resource Constraint Focus</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>MCD</th>
+<th>Conversational</th>
+<th>Few-Shot</th>
+<th>System Role</th>
+<th>Hybrid</th>
+<th>Constraint Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task Completion Rate</td>
+<td>80%</td>
+<td>30%</td>
+<td>50%</td>
+<td>75%</td>
+<td>85%</td>
+<td>MCD maintains 80% across all tiers</td>
+</tr>
+<tr>
+<td>Average Token Count</td>
+<td>31.4</td>
+<td>72.3</td>
+<td>31.2</td>
+<td>35.8</td>
+<td>20.0</td>
+<td>MCD: Predictable usage</td>
+</tr>
+<tr>
+<td>Average Latency (ms)</td>
+<td>1,724</td>
+<td>855</td>
+<td>811</td>
+<td>450</td>
+<td>394</td>
+<td>MCD: Stable under pressure</td>
+</tr>
+<tr>
+<td>Memory Usage (KB)</td>
+<td>23.4</td>
+<td>47.2</td>
+<td>25.1</td>
+<td>26.3</td>
+<td>23.0</td>
+<td>MCD: Efficient allocation</td>
+</tr>
+<tr>
+<td>User Experience Quality</td>
+<td>2.3/5</td>
+<td>4.8/5</td>
+<td>4.1/5</td>
+<td>4.2/5</td>
+<td>4.3/5</td>
+<td>Trade-off: reliability vs UX</td>
+</tr>
+<tr>
+<td>Constraint Retention</td>
+<td>95%</td>
+<td>25%</td>
+<td>45%</td>
+<td>60%</td>
+<td>88%</td>
+<td>MCD: Best stability</td>
+</tr>
+</tbody>
+</table>
+<h3>Constraint-Aware Approach Assessment</h3>
+<p>🚀 Hybrid MCD+Few-Shot (Optimal When Resources Allow)<br />
+Strengths: Peak performance when sophisticated prompt engineering resources available<br />
+Best For: Production deployments with skilled ML engineering teams<br />
+Constraint Vulnerability: Performance drops without expert implementation</p>
+<p>🥈 System Role Professional (Consistent Professional Baseline)<br />
+Strengths: Most reliable cross-domain performance, professional quality maintained<br />
+Best For: Enterprise environments prioritizing systematic approaches<br />
+Constraint Behavior: Gradual degradation, maintains professional tone</p>
+<p>🥉 MCD Structured (The Constraint-Resilient Workhorse)<br />
+Strengths: Maintains 80% performance across Q1/Q4/Q8 tiers, predictable resource usage, transparent failure modes<br />
+Best For: Edge deployment, resource-constrained environments, high-reliability systems<br />
+Design Philosophy: Optimizes for worst-case reliability rather than best-case performance<br />
+Key Insight: MCD isn&rsquo;t the fastest car—it&rsquo;s the most reliable truck</p>
+<p>Few-Shot Pattern (Domain-Dependent, Constraint-Sensitive)<br />
+Strengths: Excellent when patterns match domain and resources are adequate<br />
+Constraint Vulnerability: Severe degradation under complexity pressure (61% → 28%)<br />
+Best For: Rapid prototyping in resource-abundant scenarios</p>
+<p>Conversational (User Experience Champion in Optimal Conditions)<br />
+Strengths: Superior user satisfaction (4.8/5) when unconstrained<br />
+Constraint Vulnerability: Dramatic failure under resource pressure (30% completion)<br />
+Best For: Customer service in resource-abundant environments</p>
+<h3>🔍 Constraint-Resilience Assessment</h3>
+<p>What This Data Reveals About Constraint Behavior<br />
+✅ MCD demonstrates exceptional tier stability: 80% success across Q1/Q4/Q8 quantization levels<br />
+✅ Alternative approaches excel in optimal conditions: Few-Shot and System Role outperform MCD when resources permit<br />
+✅ Predictable degradation patterns: MCD fails transparently; others may fail silently with confident incorrect responses<br />
+✅ Edge deployment reality: Most frameworks optimize for ideal conditions; MCD optimizes for when conditions deteriorate<br />
+✅ Resource constraint cascade: As token budgets/quantization pressure increases, MCD maintains higher performance retention</p>
+<p>Enhanced Methodological Honesty<br />
+⚠️ MCD Trade-off Acknowledged: Sacrifices optimal-condition performance for constraint resilience<br />
+⚠️ Context Dependency: No single approach dominates across all deployment scenarios<br />
+⚠️ Resource Availability Impact: Optimal approach selection depends critically on available computational resources<br />
+⚠️ User Experience Cost: MCD&rsquo;s reliability comes at the expense of user satisfaction (2.3/5 vs 4.8/5 conversational)</p>
+<p>Fair Assessment: When Each Approach Excels<br />
+Few-Shot Pattern Advantages (Resource-Abundant Scenarios):<br />
+Rapid deployment without extensive prompt engineering expertise<br />
+Excellent performance in pattern-matching domains when resources allow<br />
+Transferable methodology with good example selection</p>
+<p>System Role Professional Advantages (Balanced Scenarios):<br />
+Most consistent cross-domain reliability when moderate resources available<br />
+Professional terminology and systematic methodology<br />
+Best compromise between performance and maintainability</p>
+<p>Conversational Advantages (Unconstrained Contexts):<br />
+Unmatched user satisfaction and safety awareness when computational budget permits<br />
+Natural interaction patterns preferred by users<br />
+Educational value through comprehensive explanations</p>
+<h3>✅ Constraint-Focused Research Conclusions</h3>
+<p>Primary Research Findings<br />
+MCD provides predictable performance under resource constraints where traditional approaches degrade unpredictably<br />
+Optimal conditions favor alternatives: Few-Shot and System Role outperform MCD in resource-abundant scenarios<br />
+Constraint-resilient design trades peak performance for stability: MCD maintains 80% success across complexity tiers<br />
+Edge deployment readiness: MCD&rsquo;s design philosophy aligns with real-world deployment constraints (privacy, edge computing, resource limitations)<br />
+Transparent failure modes: MCD fails clearly vs. confident incorrect responses from alternatives under pressure</p>
+<p>Practical Deployment Framework: Context-Driven Selection</p>
+<table>
+<thead>
+<tr>
+<th>Deployment Context</th>
+<th>Recommended Approach</th>
+<th>Constraint Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Edge Deployment</td>
+<td>MCD Structured</td>
+<td>Maximum constraint resilience, predictable resource usage</td>
+</tr>
+<tr>
+<td>Production Systems</td>
+<td>Hybrid MCD+Few-Shot</td>
+<td>Optimal task completion with resource efficiency</td>
+</tr>
+<tr>
+<td>Enterprise Applications</td>
+<td>System Role Professional</td>
+<td>Consistent performance with professional quality</td>
+</tr>
+<tr>
+<td>Resource-Abundant R&amp;D</td>
+<td>Few-Shot/Conversational</td>
+<td>Peak performance when constraints don&rsquo;t apply</td>
+</tr>
+<tr>
+<td>High-Reliability Systems</td>
+<td>MCD Structured</td>
+<td>Predictable behavior under worst-case conditions</td>
+</tr>
+</tbody>
+</table>
+<p>Statistical Validation of Constraint Claims<br />
+Performance retention under Q1 constraints: MCD (95%), Hybrid (88%), System Role (60%), Few-Shot (45%), Conversational (25%). All differences significant at p &lt; 0.01.</p>
+<p>Connection to Broader Edge AI Research<br />
+These findings validate that constraint-aware design enables reliable deployment in real-world scenarios where resources are limited. In a world increasingly focused on edge deployment, privacy constraints, and resource limitations, reliability under constraint matters more than peak performance in ideal scenarios.<br />
+Research Contribution: This framework demonstrates that different prompt engineering strategies serve different deployment contexts. Rather than seeking universal superiority, optimal system design requires matching approach characteristics to deployment constraints and user requirements.</p>
+<p>🎯 &ldquo;Sometimes You Need a Truck, Not a Race Car&rdquo;<br />
+MCD structured approaches provide the reliability and predictability essential for constraint-limited deployments, while hybrid and alternative approaches excel when resources permit optimization for specific objectives. The key insight: optimal approach selection depends on whether your deployment prioritizes peak performance or worst-case reliability.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ref">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">Reference</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>In Reference to <a href="c7.html" target="_blank" class="btn btn-primary">Chapter 7 - W1, W2 & W3 Domain Walkthroughs</a> </p> 
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+      <!-- Navigation -->
+      <section class="chapter-nav">
+         <nav class="page-nav" aria-label="Page navigation">
+            <a class="nav-link prev" href="c10.html#links" rel="prev">Prev : Chapter 10</a>
+           <a class="nav-link next" href="appb.html" rel="next">Next: Appendix B</a>
+         </nav>
+      </section>
+      
+      <hr class="section-divider">
+    </div>
+
+
+
+
+</div>
+
+					<!-- Sidebar Topics -->
+					<div class="gx-side-overlay"></div>
+					<div class="col-xl-3 col-md-12 gx-topic">
+						<div class="gx-card topic-sidebar">
+							<div class="gx-card-header">
+								<h4 class="gx-card-title">Topics</h4>
+							</div>
+							<div class="gx-card-content gx-topic-list">
+								<nav>
+									<ul class="topic-list">
+<li><a class="topic" href="#ch1-intro">Purpose and Scope</a></li>
+<li><a class="topic" href="#env">Environment &amp; Methodology</a></li>
+<li><a class="topic" href="#w1">W1 – Stateless Appointment Booking Agent</a></li>
+<li><a class="topic" href="#w2">W2 – Spatial Navigation Agent</a></li>
+<li><a class="topic" href="#w3">W3 – Failure Diagnostics Agent</a></li>
+<li><a class="topic" href="#research">Cross-Domain Constraint-Resilience Analysis</a></li>
+<li><a class="topic" href="#ref">Reference</a></li>
+
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+	</main>
+
+	<!-- Vendor Custom -->
+	<script src="assets/js/vendor/jquery-3.6.4.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/vendor/prism.js"></script>
+	<!-- Main Custom -->
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

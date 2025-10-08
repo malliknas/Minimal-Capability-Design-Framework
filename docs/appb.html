@@ -1,0 +1,870 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Appendix B">
+	<title>Appendix B</title>
+
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+
+	<!-- Icon CSS -->
+	<link href="assets/css/vendor/materialdesignicons.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/remixicon.css" rel="stylesheet">
+
+	<!-- Vendor -->
+	<link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/prism.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link id="mainCss" href="assets/css/style.css" rel="stylesheet">
+	<style>
+	 /* Light-only document scheme */
+:root{ 
+  color-scheme: only light;
+  /* Core palette */
+  --text:   #1a1a1a;      /* slightly softer than pure black */
+  --text-body: #2d2d2d;   /* body text */
+  --muted:  #6b7280;      /* gray-500 */
+  --bg-soft:#f9fafb;      /* very light grey */
+  --surface:#ffffff;      /* white */
+  --border: #e5e7eb;      /* light divider */
+  --accent: #4b5563;      /* gray-600 */
+}
+
+/* Global base */
+html, body{ 
+  color:var(--text-body); 
+  background:var(--surface); 
+  font-weight:400;
+}
+a{ color:var(--accent); text-decoration:none; font-weight:500; }
+a:hover{ color:var(--text); }
+h1, h2, h3, h4, h5, h6{ color:var(--text) !important; font-weight:600; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* Breadcrumbs */
+.breadcrumb,
+.nav-breadcrumb{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.95rem; color:var(--muted);
+  margin:1rem 0 1.25rem; padding:.5rem .75rem;
+  background:var(--bg-soft); border:1px solid var(--border); border-radius:10px;
+}
+.breadcrumb a, .nav-breadcrumb a{ color:var(--accent); font-weight:500; }
+.breadcrumb a:hover, .nav-breadcrumb a:hover{ text-decoration:underline; }
+.breadcrumb .current, .nav-breadcrumb .current, .nav-breadcrumb strong{ color:var(--text); font-weight:600; }
+.breadcrumb .sep, .nav-breadcrumb .sep{ color:var(--border); user-select:none; }
+.gx-header .breadcrumb{ font-size:clamp(.85rem, .8rem + .2vw, .95rem); padding:.4rem .6rem; }
+
+/* Page navigation */
+.page-nav{
+  margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; text-align:center;
+}
+.page-nav .nav-link{
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1rem; border:1px solid var(--border); border-radius:8px;
+  font-weight:500;
+  box-shadow:0 1px 1px rgba(0,0,0,.02);
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.page-nav .nav-link:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.page-nav .nav-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.page-nav .prev::before{ content:"← "; }
+.page-nav .next::after{ content:" →"; }
+.gx-header .page-nav{ border-top:0; padding-top:0; margin-top:0; }
+.gx-header .page-nav .nav-link{ font-size:clamp(.85rem, .82rem + .18vw, .95rem); padding:.5rem .8rem; }
+
+/* Thesis title */
+.thesis-title{ 
+  color:var(--text) !important; 
+  margin-bottom:0.5rem; 
+  font-size:clamp(1.8rem, 1.4rem + 1.2vw, 2.2rem); 
+  line-height:1.3;
+  font-weight:700;
+}
+.thesis-subtitle{ 
+  color:var(--muted) !important; 
+  font-size:clamp(1rem, .96rem + .3vw, 1.2rem); 
+  font-style:italic; 
+  margin-bottom:1.5rem;
+  line-height:1.4;
+  font-weight:400;
+}
+
+/* Cards */
+.gx-block{ margin-bottom:1rem; }
+.gx-card-content{ padding:1rem 1.25rem; }
+.gx-card-header{ padding:0.75rem 1rem; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.95rem;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1.2rem; border:1px solid var(--border); border-radius:8px;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+}
+.btn:hover{ background:var(--bg-soft); transform:translateY(-1px); color:var(--text); }
+.btn-primary{ background:#4b5563; color:#fff; border-color:#4b5563; }
+.btn-success{ background:#6b7280; color:#fff; border-color:#6b7280; }
+
+/* Code and muted */
+pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(--text); }
+.muted{ color:var(--muted); }
+
+/* Topics sidebar */
+.gx-topic .topic-sidebar{
+  position:sticky; top:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topic-sidebar .gx-card-header{ background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1rem; }
+.topic-sidebar .gx-card-title{ margin:0; color:var(--text); font-size:.95rem; font-weight:600; }
+.topic-sidebar .gx-card-content{ padding:.75rem; max-height:min(70vh, 560px); overflow:auto; }
+.gx-topic .topic-list{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.gx-topic .topic-list a{
+  display:flex; align-items:center; gap:.5rem; line-height:1.2;
+  color:var(--accent); background:transparent; font-weight:450;
+  padding:.5rem .75rem; border:1px solid transparent; border-radius:8px;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.gx-topic .topic-list a:hover{ color:var(--text); background:var(--bg-soft); border-color:var(--border); }
+.gx-topic .topic-list a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.gx-topic .topic-list a.active,
+.gx-topic .topic-list a[aria-current="page"],
+.gx-topic .topic-list a[aria-current="true"]{
+  color:var(--text); background:var(--bg-soft); border-color:var(--border); font-weight:600; position:relative;
+}
+.gx-topic .topic-list a.active::before,
+.gx-topic .topic-list a[aria-current="page"]::before,
+.gx-topic .topic-list a[aria-current="true"]::before{
+  content:""; position:absolute; left:0; top:10%; bottom:10%; width:3px; background:var(--accent); border-radius:3px;
+}
+
+/* Intro content - readable and compact */
+.intro{
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.5;
+  color:var(--text-body);
+}
+
+.intro p{
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;    
+font-feature-settings: "liga", "kern";
+  -webkit-font-feature-settings: "liga", "kern";
+  -moz-font-feature-settings: "liga", "kern";
+  -ms-font-feature-settings: "liga", "kern";
+  -o-font-feature-settings: "liga", "kern";  
+}
+
+
+
+.intro h3{
+  font-size:1.15rem;
+  font-weight:600;
+  color:var(--text);
+  margin:1rem 0 0.5rem;
+  line-height:1.3;
+}
+
+.intro h4{
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--text);
+  margin:0.8rem 0 0.4rem;
+  line-height:1.3;
+}
+
+.intro strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+/* Compact lists with better readability */
+.intro ul,
+.intro ol{
+  margin:0.4rem 0 0.6rem;
+  padding-left:1.25rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin:0.15rem 0;
+  padding-left:0.2rem;
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.45;
+  color:var(--text-body);
+}
+
+.intro ul li::marker{
+  color:var(--muted);
+  font-size:0.75rem;
+}
+
+.intro ol li::marker{
+  color:var(--muted);
+  font-weight:500;
+}
+
+/* Clean, readable tables */
+.intro table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.75rem 0;
+  background:var(--surface);
+  font-size:0.95rem;
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.intro table th{
+  padding:0.6rem 0.75rem;
+  text-align:left;
+  background:var(--bg-soft);
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+  color:var(--text);
+  line-height:1.4;
+}
+
+.intro table td{
+  padding:0.55rem 0.75rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  line-height:1.45;
+  font-weight:400;
+  color:var(--text-body);
+}
+
+.intro table td strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.intro table tbody tr:hover{
+  background:rgba(249, 250, 251, 0.5);
+}
+
+/* Responsive */
+@media (max-width:640px){
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
+</style>
+</head>
+
+<body>
+	<main class="wrapper sb-default">
+		<!-- Loader -->
+		<div id="gx-overlay">
+			<div class="gx-ellipsis">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Header -->
+			<header class="gx-header">
+			<div class="container-fluid">
+				<div class="gx-header-items">
+					<div class="left-header">
+						<a href="javascript:void(0)" class="gx-toggle-sidebar">
+							<span class="outer-ring">
+								<span class="inner-ring"></span>
+							</span>
+						</a>
+						
+					</div>
+					<div class="right-header">
+						<a href="javascript:void(0)" class="btn-topic m-r-5"><i class="ri-menu-2-line"></i></a>
+						<a href="index.html" class="gx-btn-primary">Thesis Home</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- sidebar -->
+		<div class="gx-sidebar-overlay"></div>
+		<div class="gx-sidebar" data-mode="dark">
+			<div class="gx-sb-logo">
+				<a href="index.html" class="sb-full"><img src="assets/img/logo/full-logo.png" alt="logo"></a>
+				<a href="index.html" class="sb-collapse"><img src="assets/img/logo/collapse-logo.png" alt="logo"></a>
+			</div>
+			<div class="gx-sb-wrapper">
+				<div class="gx-sb-content">
+					<ul class="gx-sb-list">
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-item">
+							<a href="index.html" class="gx-page-link">
+								<i class="ri-star-smile-line"></i><span class="condense"><span class="hover-title">Thesis Main Page</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part I: Foundations</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part I: Foundations<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="c1.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 1</a></li>
+								<li class="list"><a href="c2.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 2</a></li>
+								<li class="list"><a href="c3.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 3</a></li>
+									
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part II: The MCD Framework</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part II: The MCD Framework<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								
+								<li class="list"><a href="c4.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 4</a></li>
+								<li class="list"><a href="c5.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 5</a></li>
+											
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part III: Validation, Extension & Conclusion</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part III: Validation, Extension & Conclusion<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+						
+								<li class="list"><a href="c6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 6</a></li>
+								<li class="list"><a href="c7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 7</a></li>
+								<li class="list"><a href="c8.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 8</a></li>
+								<li class="list"><a href="c9.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 9</a></li>
+								<li class="list"><a href="c10.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 10</a></li>			
+							</ul>
+						</li>
+						
+						
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">References</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">References<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="ref.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>References</a></li>
+								
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Appendices</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">Appendices<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="appa6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 6</a></li>
+								<li class="list"><a href="appa7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 7</a></li>
+								<li class="list"><a href="appb.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix B</a></li>
+								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix D</a></li>
+								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix E</a></li>			
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Links</li>
+						<li class="gx-sb-item">
+							<a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Software</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item">
+							<a href="index.html#download" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Download</span> </span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- main content -->
+		<div class="gx-main-content">
+			<div class="container-fluid">
+				<!-- Page title & breadcrumb -->
+				<div class="gx-page-title gx-page-title-2">
+					<div class="gx-breadcrumb">
+						<h5>Appendix B</h5>
+						<ul>
+							<li><a href="index.html">Thesis Main Page</a></li>
+							<li>Appendix B</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row sections">
+					<div class="col-xl-9 col-md-12">
+
+    <div class="thesis-intro">
+      <h1 class="thesis-title">Designing Lightweight AI Agents for Edge Deployment</h1>
+      <p class="thesis-subtitle">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+
+<!-- Part I Overview -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="part1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">Appendix B: Configuration</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Documents the configuration environment and experimental setup, including hardware specifications, model pools, memory and token budget parameters, validation frameworks, and reproducibility protocols crucial for the reliability of the study. </br>  This configuration framework ensures reproducible, statistically valid results while maintaining the ecological validity of real-world deployment constraints. All parameters were optimized for browser-based execution environments typical of edge AI deployment scenarios.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="b1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">B.1 Test Environment Specifications</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <h4>B.1.1 Hardware Configuration</h4>
+<p>The MCD framework validation was conducted using the following standardized hardware configuration:<br />
+Primary Testing Platform:<br />
+Platform: Windows 11 (NT 10.0, Win64 x64)<br />
+Memory: 8GB RAM<br />
+CPU Cores: 8 cores<br />
+GPU Support: WebGPU Available<br />
+Browser: Chrome 140.0.0.0 (also tested on Edge 140.0.0.0)<br />
+Runtime Environment: WebAssembly (WASM) with local browser execution</p>
+<p>Browser Engine Details:<br />
+User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0<br />
+JavaScript Engine: V8<br />
+WebGPU: Supported and Available<br />
+WebAssembly: Full WASM support enabled</p>
+<h4>B.1.2 Model Configuration and Quantization Tiers</h4>
+<p>Available Model Pool (135+ models tested):<br />
+The testing framework included access to 135+ quantized models across different parameter scales and optimization levels.</p>
+<p>Primary Test Models by Quantization Tier:<br />
+Q1 Tier (Ultra-Minimal - ~300MB)<br />
+Primary: Qwen2-0.5B-Instruct-q4f161-MLC<br />
+Backup: SmolLM2-360M-Instruct-q4f161-MLC<br />
+Memory Target: &lt;300MB<br />
+Use Case: Ultra-constrained environments, proof-of-concept validation</p>
+<p>Q4 Tier (Balanced - ~600MB)<br />
+Primary: TinyLlama-1.1B-Chat-v1.0-q4f161-MLC<br />
+Secondary: Qwen2.5-0.5B-Instruct-q4f161-MLC<br />
+Memory Target: 500-700MB<br />
+Use Case: Production deployment, optimal efficiency-quality balance</p>
+<p>Q8 Tier (Performance - ~800MB+)<br />
+Primary: Llama-3.2-1B-Instruct-q4f321-MLC<br />
+Secondary: Llama-3.1-8B-Instruct-q4f161-MLC-1k<br />
+Memory Target: 600-1200MB<br />
+Use Case: Complex reasoning, fallback tier for Q4 failures</p>
+<p>Extended Model Pool (Validation Coverage):<br />
+Llama Family: 3.2-1B, 3.2-3B, 3.1-8B variants<br />
+Qwen Family: 2.5 series (0.5B-7B), 3.0 series (0.6B-8B)<br />
+Specialized Models: DeepSeek-R1-Distill, Hermes-3, Phi-3.5, SmolLM2<br />
+Domain-Specific: WizardMath-7B, Qwen2.5-Coder series</p>
+                     
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="b2">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">B.2 Execution Parameters</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <h4>B.2.1 Token Budget Configuration</h4>
+<p>Tier-Specific Token Limits:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th style="text-align: right;">Max Tokens</th>
+<th style="text-align: right;">Temperature</th>
+<th style="text-align: right;">Top-P</th>
+<th style="text-align: right;">Frequency Penalty</th>
+<th style="text-align: right;">Presence Penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">0.1</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td style="text-align: right;">90-120</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.3</td>
+</tr>
+<tr>
+<td>Q8</td>
+<td style="text-align: right;">144-200</td>
+<td style="text-align: right;">0.2-0.3</td>
+<td style="text-align: right;">0.8-0.9</td>
+<td style="text-align: right;">0.1-0.5</td>
+<td style="text-align: right;">0.05-0.3</td>
+</tr>
+</tbody>
+</table>
+<p>Prompt Engineering Parameters:<br />
+System Prompt: Null (stateless by design)<br />
+Dynamic Prompting: Enabled for all tiers<br />
+Template Protection: Added to prevent contamination<br />
+Context Window: Optimized per model (1k-4k tokens)</p>
+<h4>B.2.2 Memory Management Configuration</h4>
+<p>Memory Monitoring:<br />
+Pre-execution Memory: Baseline measurement before each test<br />
+Post-execution Memory: Memory usage after completion<br />
+Memory Delta: Tracked for resource efficiency scoring<br />
+Stability Threshold: ±50MB considered stable<br />
+Memory Budget: 512MB target, 1GB maximum</p>
+<p>Resource Limits:<br />
+Latency Budget: 500ms average, 2000ms maximum per query<br />
+CPU Usage: Monitored but not limited<br />
+Browser Stability: Crash detection and recovery enabled<br />
+Batch Processing: Disabled to ensure isolation</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="b3">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">B.3 Test Suite Configuration</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <h4>B.3.1 Cross-Validation Settings</h4>
+<p>Statistical Configuration:<br />
+K-Fold Validation: k=5 for all comparative tests<br />
+Significance Level: p&lt;0.001 for statistical validity<br />
+Confidence Intervals: 95% CI calculated for completion rates<br />
+Trial Count: 5 repetitions per variant per test<br />
+Random Seed: Fixed for reproducibility</p>
+<p>Measurement Tools:<br />
+Primary: performance.now() for high-resolution timing<br />
+Secondary: Browser DevTools integration<br />
+Validation: Cross-platform compatibility testing<br />
+Error Handling: Comprehensive failure classification</p>
+<h4>B.3.2 Domain-Specific Parameters</h4>
+<p>W1: Medical Appointment Domain<br />
+Slot Requirements: Doctor, Date, Time, Patient Name, Reason<br />
+Validation Rules: Date format, time slot availability, doctor specialization<br />
+Success Criteria: ≥4/5 slots correctly extracted<br />
+Fallback Depth: Maximum 3 clarification loops</p>
+<p>W2: Spatial Navigation Domain<br />
+Safety Classification: Critical path validation required<br />
+Hazard Types: Wet floors, construction zones, restricted areas<br />
+Route Validation: Point-to-point pathfinding accuracy<br />
+Memory Constraints: Stateless route recalculation required</p>
+<p>W3: Failure Diagnostics Domain<br />
+Error Categories: Server, Database, User Access, Performance, Communication<br />
+Response Structure: Component identification + structured troubleshooting<br />
+Technical Depth: Appropriate for Q1 (basic) to Q8 (detailed) tiers<br />
+Template Protection: Anti-contamination filters for formal language patterns</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Thesis Roadmap -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="b4">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">B.4 Validation Framework Configuration</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <h4>B.4.1 MCD Compliance Scoring</h4>
+<p>Alignment Metrics:<br />
+Minimality Score: Token efficiency relative to semantic value<br />
+Boundedness Score: Adherence to reasoning depth limits (≤3 steps)<br />
+Degeneracy Score: Component utilization rates (≥10% threshold)<br />
+Stateless Score: Context reconstruction success without persistent memory</p>
+<p>Classification Thresholds:<br />
+MCD-Compliant: Score ≥0.7<br />
+MCD-Compatible: Score 0.4-0.69<br />
+Non-MCD: Score &lt;0.4<br />
+Over-Engineered: Redundancy Index &gt;10</p>
+<h4>B.4.2 Performance Classification</h4>
+<p>Tier Performance Categories:<br />
+Excellent: ≥90% completion rate, optimal resource usage<br />
+Good: 75-89% completion rate, acceptable efficiency<br />
+Acceptable: 60-74% completion rate, within memory bounds<br />
+Poor: &lt;60% completion rate or excessive resource consumption</p>
+<p>Edge Deployment Classification:<br />
+Edge-Superior: &lt;400ms latency, &lt;300MB memory, 100% success<br />
+Edge-Optimized: &lt;500ms latency, &lt;500MB memory, ≥90% success<br />
+Edge-Compatible: &lt;750ms latency, &lt;700MB memory, ≥75% success<br />
+Edge-Risky: &lt;1000ms latency, &lt;1GB memory, ≥60% success<br />
+Deployment-Hostile: Exceeds edge deployment constraints</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="b5">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">B.5 Data Collection and Storage</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <h4>B.5.1 Experimental Data Format</h4>
+<p>Primary Data Structure:<br />
+json</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;exportType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Unified Comprehensive Analysis T1-T10&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ISO-8601 format&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;testBedInfo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;environment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;browser&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Win32&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8GB&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;cores&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;webgpu&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Supported&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;selectedModels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Q1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model_identifier&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;Q4&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model_identifier&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;Q8&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model_identifier&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;systemSpecs&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hardware configuration&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;performanceMetrics&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aggregated results&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Data Integrity Measures:<br />
+Contamination Detection: Template and placeholder pattern recognition<br />
+Backend Readiness: Model loading and availability verification<br />
+Tier Optimization: Quantization-specific parameter validation<br />
+Storage Integrity: Complete data capture confirmation</p>
+<h4>B.5.2 Result Classification Schema</h4>
+<p>Success Determination:<br />
+Technical Success: Task completion within resource constraints<br />
+Semantic Success: Meaningful and contextually appropriate responses<br />
+MCD Alignment: Adherence to framework principles<br />
+Edge Viability: Deployment compatibility in constrained environments</p>
+<p>Failure Categories:<br />
+Technical Failure: Crashes, timeouts, resource exhaustion<br />
+Semantic Failure: Hallucination, irrelevant responses, safety violations<br />
+Framework Violation: Non-compliance with MCD principles<br />
+Template Contamination: Use of placeholder text or formal letter patterns</p>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="gx-block">
+  <div class="gx-card gx-page-block" id="b6">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">B.6 Reproducibility Parameters</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <h4>B.6.1 Environment Standardization</h4>
+<p>Browser Configuration:<br />
+Cache Management: Cleared before each test session<br />
+Extension Isolation: Clean browser profiles used<br />
+Network Conditions: Local execution only, no external API calls<br />
+Resource Monitoring: Real-time memory and CPU tracking</p>
+<p>Model Loading Protocol:<br />
+Pre-load Phase: All three tiers loaded before testing begins<br />
+Warm-up Period: Initial inference to stabilize performance<br />
+Baseline Measurement: Resource usage recorded before first test<br />
+Isolation Protocol: Memory reset between test variants</p>
+<h4>B.6.2 Statistical Validity Assurance</h4>
+<p>Randomization Controls:<br />
+Test Order: Randomized variant presentation<br />
+Model Selection: Systematic tier progression (Q1→Q4→Q8)<br />
+Cross-Validation: Stratified sampling across approach types<br />
+Temporal Controls: Time-of-day effects minimized through session distribution</p>
+<p>Quality Assurance:<br />
+Inter-Rater Reliability: Automated scoring validation<br />
+Test-Retest Stability: Repeated measures for key findings<br />
+External Validation: Cross-platform compatibility verification<br />
+Data Auditing: Complete experimental trace logging</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ref">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">References</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+      <p>Chapter 4, Section 4.6: MCD Subsystem Definitions<br />
+Chapter 5: Instantiated Agent Design Patterns<br />
+Chapter 6, Tests T1-T10: Empirical validation of layer interactions<br />
+Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <!-- Navigation -->
+      <section class="chapter-nav">
+         <nav class="page-nav" aria-label="Page navigation">
+            <a class="nav-link prev" href="c10.html#links" rel="prev">Prev : Chapter 10</a>
+           <a class="nav-link next" href="appd.html" rel="next">Next: Appendix D</a>
+         </nav>
+      </section>
+      
+      <hr class="section-divider">
+    </div>
+
+
+
+
+</div>
+
+					<!-- Sidebar Topics -->
+					<div class="gx-side-overlay"></div>
+					<div class="col-xl-3 col-md-12 gx-topic">
+						<div class="gx-card topic-sidebar">
+							<div class="gx-card-header">
+								<h4 class="gx-card-title">Topics</h4>
+							</div>
+							<div class="gx-card-content gx-topic-list">
+								<nav>
+									<ul class="topic-list">
+<li><a class="topic" href="#b1">B.1 Test Environment Specifications</a></li>
+<li><a class="topic" href="#b2">B.2 Execution Parameters</a></li>
+<li><a class="topic" href="#b3">B.3 Test Suite Configuration</a></li>
+<li><a class="topic" href="#b4">B.4 Validation Framework Configuration</a></li>
+<li><a class="topic" href="#b5">B.5 Data Collection and Storage</a></li>
+<li><a class="topic" href="#b6">B.6 Reproducibility Parameters</a></li>
+<li><a class="topic" href="#ref">Reference</a></li>
+
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+	</main>
+
+	<!-- Vendor Custom -->
+	<script src="assets/js/vendor/jquery-3.6.4.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/vendor/prism.js"></script>
+	<!-- Main Custom -->
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

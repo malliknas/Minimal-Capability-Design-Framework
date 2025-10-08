@@ -1,0 +1,1252 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Chapter 7 - MCD">
+	<title>Chapter 7 - MCD</title>
+
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+
+	<!-- Icon CSS -->
+	<link href="assets/css/vendor/materialdesignicons.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/remixicon.css" rel="stylesheet">
+
+	<!-- Vendor -->
+	<link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/prism.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link id="mainCss" href="assets/css/style.css" rel="stylesheet">
+	<style>
+	 /* Light-only document scheme */
+:root{ 
+  color-scheme: only light;
+  /* Core palette */
+  --text:   #1a1a1a;      /* slightly softer than pure black */
+  --text-body: #2d2d2d;   /* body text */
+  --muted:  #6b7280;      /* gray-500 */
+  --bg-soft:#f9fafb;      /* very light grey */
+  --surface:#ffffff;      /* white */
+  --border: #e5e7eb;      /* light divider */
+  --accent: #4b5563;      /* gray-600 */
+}
+
+/* Global base */
+html, body{ 
+  color:var(--text-body); 
+  background:var(--surface); 
+  font-weight:400;
+}
+a{ color:var(--accent); text-decoration:none; font-weight:500; }
+a:hover{ color:var(--text); }
+h1, h2, h3, h4, h5, h6{ color:var(--text) !important; font-weight:600; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* Breadcrumbs */
+.breadcrumb,
+.nav-breadcrumb{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.95rem; color:var(--muted);
+  margin:1rem 0 1.25rem; padding:.5rem .75rem;
+  background:var(--bg-soft); border:1px solid var(--border); border-radius:10px;
+}
+.breadcrumb a, .nav-breadcrumb a{ color:var(--accent); font-weight:500; }
+.breadcrumb a:hover, .nav-breadcrumb a:hover{ text-decoration:underline; }
+.breadcrumb .current, .nav-breadcrumb .current, .nav-breadcrumb strong{ color:var(--text); font-weight:600; }
+.breadcrumb .sep, .nav-breadcrumb .sep{ color:var(--border); user-select:none; }
+.gx-header .breadcrumb{ font-size:clamp(.85rem, .8rem + .2vw, .95rem); padding:.4rem .6rem; }
+
+/* Page navigation */
+.page-nav{
+  margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; text-align:center;
+}
+.page-nav .nav-link{
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1rem; border:1px solid var(--border); border-radius:8px;
+  font-weight:500;
+  box-shadow:0 1px 1px rgba(0,0,0,.02);
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.page-nav .nav-link:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.page-nav .nav-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.page-nav .prev::before{ content:"← "; }
+.page-nav .next::after{ content:" →"; }
+.gx-header .page-nav{ border-top:0; padding-top:0; margin-top:0; }
+.gx-header .page-nav .nav-link{ font-size:clamp(.85rem, .82rem + .18vw, .95rem); padding:.5rem .8rem; }
+
+/* Thesis title */
+.thesis-title{ 
+  color:var(--text) !important; 
+  margin-bottom:0.5rem; 
+  font-size:clamp(1.8rem, 1.4rem + 1.2vw, 2.2rem); 
+  line-height:1.3;
+  font-weight:700;
+}
+.thesis-subtitle{ 
+  color:var(--muted) !important; 
+  font-size:clamp(1rem, .96rem + .3vw, 1.2rem); 
+  font-style:italic; 
+  margin-bottom:1.5rem;
+  line-height:1.4;
+  font-weight:400;
+}
+
+/* Cards */
+.gx-block{ margin-bottom:1rem; }
+.gx-card-content{ padding:1rem 1.25rem; }
+.gx-card-header{ padding:0.75rem 1rem; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.95rem;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1.2rem; border:1px solid var(--border); border-radius:8px;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+}
+.btn:hover{ background:var(--bg-soft); transform:translateY(-1px); color:var(--text); }
+.btn-primary{ background:#4b5563; color:#fff; border-color:#4b5563; }
+.btn-success{ background:#6b7280; color:#fff; border-color:#6b7280; }
+
+/* Code and muted */
+pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(--text); }
+.muted{ color:var(--muted); }
+
+/* Topics sidebar */
+.gx-topic .topic-sidebar{
+  position:sticky; top:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topic-sidebar .gx-card-header{ background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1rem; }
+.topic-sidebar .gx-card-title{ margin:0; color:var(--text); font-size:.95rem; font-weight:600; }
+.topic-sidebar .gx-card-content{ padding:.75rem; max-height:min(70vh, 560px); overflow:auto; }
+.gx-topic .topic-list{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.gx-topic .topic-list a{
+  display:flex; align-items:center; gap:.5rem; line-height:1.2;
+  color:var(--accent); background:transparent; font-weight:450;
+  padding:.5rem .75rem; border:1px solid transparent; border-radius:8px;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.gx-topic .topic-list a:hover{ color:var(--text); background:var(--bg-soft); border-color:var(--border); }
+.gx-topic .topic-list a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.gx-topic .topic-list a.active,
+.gx-topic .topic-list a[aria-current="page"],
+.gx-topic .topic-list a[aria-current="true"]{
+  color:var(--text); background:var(--bg-soft); border-color:var(--border); font-weight:600; position:relative;
+}
+.gx-topic .topic-list a.active::before,
+.gx-topic .topic-list a[aria-current="page"]::before,
+.gx-topic .topic-list a[aria-current="true"]::before{
+  content:""; position:absolute; left:0; top:10%; bottom:10%; width:3px; background:var(--accent); border-radius:3px;
+}
+
+/* Intro content - readable and compact */
+.intro{
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.5;
+  color:var(--text-body);
+}
+
+.intro p{
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;    
+font-feature-settings: "liga", "kern";
+  -webkit-font-feature-settings: "liga", "kern";
+  -moz-font-feature-settings: "liga", "kern";
+  -ms-font-feature-settings: "liga", "kern";
+  -o-font-feature-settings: "liga", "kern";  
+}
+
+
+
+.intro h3{
+  font-size:1.15rem;
+  font-weight:600;
+  color:var(--text);
+  margin:1rem 0 0.5rem;
+  line-height:1.3;
+}
+
+.intro h4{
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--text);
+  margin:0.8rem 0 0.4rem;
+  line-height:1.3;
+}
+
+.intro strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+/* Compact lists with better readability */
+.intro ul,
+.intro ol{
+  margin:0.4rem 0 0.6rem;
+  padding-left:1.25rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin:0.15rem 0;
+  padding-left:0.2rem;
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.45;
+  color:var(--text-body);
+}
+
+.intro ul li::marker{
+  color:var(--muted);
+  font-size:0.75rem;
+}
+
+.intro ol li::marker{
+  color:var(--muted);
+  font-weight:500;
+}
+
+/* Clean, readable tables */
+.intro table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.75rem 0;
+  background:var(--surface);
+  font-size:0.95rem;
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.intro table th{
+  padding:0.6rem 0.75rem;
+  text-align:left;
+  background:var(--bg-soft);
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+  color:var(--text);
+  line-height:1.4;
+}
+
+.intro table td{
+  padding:0.55rem 0.75rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  line-height:1.45;
+  font-weight:400;
+  color:var(--text-body);
+}
+
+.intro table td strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.intro table tbody tr:hover{
+  background:rgba(249, 250, 251, 0.5);
+}
+
+/* Responsive */
+@media (max-width:640px){
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
+</style>
+</head>
+
+<body>
+	<main class="wrapper sb-default">
+		<!-- Loader -->
+		<div id="gx-overlay">
+			<div class="gx-ellipsis">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Header -->
+			<header class="gx-header">
+			<div class="container-fluid">
+				<div class="gx-header-items">
+					<div class="left-header">
+						<a href="javascript:void(0)" class="gx-toggle-sidebar">
+							<span class="outer-ring">
+								<span class="inner-ring"></span>
+							</span>
+						</a>
+						
+					</div>
+					<div class="right-header">
+						<a href="javascript:void(0)" class="btn-topic m-r-5"><i class="ri-menu-2-line"></i></a>
+						<a href="index.html" class="gx-btn-primary">Thesis Home</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- sidebar -->
+		<div class="gx-sidebar-overlay"></div>
+		<div class="gx-sidebar" data-mode="dark">
+			<div class="gx-sb-logo">
+				<a href="index.html" class="sb-full"><img src="assets/img/logo/full-logo.png" alt="logo"></a>
+				<a href="index.html" class="sb-collapse"><img src="assets/img/logo/collapse-logo.png" alt="logo"></a>
+			</div>
+			<div class="gx-sb-wrapper">
+				<div class="gx-sb-content">
+					<ul class="gx-sb-list">
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-item">
+							<a href="index.html" class="gx-page-link">
+								<i class="ri-star-smile-line"></i><span class="condense"><span class="hover-title">Thesis Main Page</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part I: Foundations</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part I: Foundations<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="c1.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 1</a></li>
+								<li class="list"><a href="c2.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 2</a></li>
+								<li class="list"><a href="c3.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 3</a></li>
+									
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part II: The MCD Framework</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part II: The MCD Framework<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								
+								<li class="list"><a href="c4.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 4</a></li>
+								<li class="list"><a href="c5.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 5</a></li>
+											
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part III: Validation, Extension & Conclusion</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part III: Validation, Extension & Conclusion<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+						
+								<li class="list"><a href="c6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 6</a></li>
+								<li class="list"><a href="c7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 7</a></li>
+								<li class="list"><a href="c8.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 8</a></li>
+								<li class="list"><a href="c9.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 9</a></li>
+								<li class="list"><a href="c10.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 10</a></li>			
+							</ul>
+						</li>
+						
+						
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">References</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">References<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="ref.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>References</a></li>
+								
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Appendices</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">Appendices<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="appa6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 6</a></li>
+								<li class="list"><a href="appa7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 7</a></li>
+								<li class="list"><a href="appb.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix B</a></li>
+								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix D</a></li>
+								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix E</a></li>			
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Links</li>
+						<li class="gx-sb-item">
+							<a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Software</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item">
+							<a href="index.html#download" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Download</span> </span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- main content -->
+		<div class="gx-main-content">
+			<div class="container-fluid">
+				<!-- Page title & breadcrumb -->
+				<div class="gx-page-title gx-page-title-2">
+					<div class="gx-breadcrumb">
+						<h5>Chapter 7</h5>
+						<ul>
+							<li><a href="index.html">Thesis Main Page</a></li>
+							<li>Chapter 7</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row sections">
+					<div class="col-xl-9 col-md-12">
+
+    <div class="thesis-intro">
+      <h1 class="thesis-title">Designing Lightweight AI Agents for Edge Deployment</h1>
+      <p class="thesis-subtitle">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+
+<!-- Part I Overview -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="part1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">🧩 Part III: Validation, Extension, and Conclusion</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ch1-intro">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">🛠️ Chapter 7: Comprehensive Walkthrough Analysis — Domain-Specific Workflows</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>This chapter extends the theoretical foundations established in Chapters 2-6 into practical comparative evaluation of prompt engineering approaches across domain-specific agent workflows (Hevner et al., 2004). Rather than validating a single methodology, this chapter provides evidence-based analysis of five distinct prompt engineering strategies, examining their contextual effectiveness under varying operational constraints and deployment priorities (Venable et al., 2016).</p>
+
+<p>The evaluation framework recognizes that no single approach dominates across all contexts, instead focusing on systematic analysis of trade-offs, implementation requirements, and performance characteristics that inform evidence-based approach selection for different deployment scenarios (Patton, 2014).</p>
+                     
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.0">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.0 Advanced Evaluation Framework</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Multi-Strategy Comparative Methodology: This chapter evaluates five prompt engineering approaches representing different optimization philosophies (Liu et al., 2023; Sahoo et al., 2024):</p>
+
+<ul>
+<li>MCD Structured: Resource-efficient, constraint-optimized design (from Chapters 4-5)</li>
+<li>Conversational: User experience-focused, natural interaction approach (Thoppilan et al., 2022)</li>
+<li>Few-Shot Pattern: Example-driven learning with structural guidance (Brown et al., 2020; Dong et al., 2022)</li>
+<li>System Role Professional: Expertise framing with systematic processing (Ouyang et al., 2022)</li>
+<li>Hybrid Multi-Strategy: Advanced integration leveraging complementary strengths (Wei et al., 2022)</li>
+</ul>
+
+<p>Quantization-Based Optimization: All evaluations utilize quantized models (Q1/Q4/Q8) as established in Chapter 5, maintaining consistency with constrained deployment scenarios while enabling fair comparison across approaches under identical resource limitations (Dettmers et al., 2022; Nagel et al., 2021).</p>
+
+<p>Implementation Sophistication Spectrum: The framework explicitly accounts for varying levels of prompt engineering expertise required, from simple single-strategy implementations to advanced multi-strategy coordination requiring sophisticated ML engineering capabilities.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.1 Methodological Framework for ML Expert Evaluation</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Standardized Evaluation Protocol:</p>
+
+<ul>
+<li>Domain Context &amp; Constraints: Operational requirements and resource limitations (Campbell &amp; Stanley, 1963)</li>
+<li>Multi-Approach Implementation: Detailed prompt engineering for each strategy</li>
+<li>Performance Matrix Analysis: Task completion, resource efficiency, user experience, professional quality (Cohen, 1988)</li>
+<li>Implementation Complexity Assessment: Engineering sophistication requirements</li>
+<li>Failure Mode Analysis: Systematic evaluation of approach-specific failure patterns (Amodei et al., 2016)</li>
+<li>Statistical Validation: Confidence intervals and effect size analysis where applicable (Field, 2013)</li>
+<li>Cross-Domain Transferability: Pattern recognition across different workflow contexts (Miles et al., 2013)</li>
+</ul>
+
+<p>Advanced Metrics for ML Engineering Teams:</p>
+
+<ul>
+<li>Strategy Integration Quality: For hybrid approaches, assessment of multi-strategy coordination effectiveness</li>
+<li>Reliability Variance: Performance consistency under varying input conditions</li>
+<li>Maintenance Overhead: Long-term sustainability and debugging complexity</li>
+<li>Scalability Characteristics: Performance degradation patterns under load</li>
+</ul>
+
+<h4 id="711-implementation-scope-and-slm-considerations">7.1.1 Implementation Scope and SLM Considerations</h4>
+
+<p>Important Note on Implementation Generality and SLM Potential: The domain walkthroughs presented in this chapter employ generalized implementations designed to demonstrate MCD architectural principles rather than achieve optimal domain-specific performance. Each domain would benefit significantly from specialized implementations:</p>
+
+<ul>
+<li>Healthcare appointment booking could leverage medical terminology databases, slot-optimization algorithms, and healthcare-specific Small Language Models (SLMs) trained on clinical vocabularies and appointment workflows (Magnini et al., 2025; Maity et al., 2025)</li>
+<li>Spatial navigation could incorporate SLAM algorithms, computer vision preprocessing, and robotics-specific SLMs trained on spatial reasoning datasets like RoboSpatial (Song et al., 2024)</li>
+<li>Prompt diagnostics could utilize code-specific parsers, semantic analysis tools, and specialized debugging SLMs such as Microsoft's CodeBERT family for enhanced code understanding (Microsoft Research, 2024)</li>
+</ul>
+
+<p>SLM-MCD Framework Compatibility: Recent research demonstrates that domain-specific SLMs align naturally with MCD principles through parameter efficiency and specialized training (Belcak et al., 2025). While this thesis focuses on architectural minimalism through quantization, MCD principles (statelessness, fallback safety, degeneracy detection) apply regardless of base model - whether general LLMs, quantized models, or domain-specific SLMs.</p>
+
+<p>However, these generalized implementations serve the thesis objective of validating MCD principles across diverse domains. The comparative results between MCD and alternative approaches remain methodologically sound and demonstrate genuine architectural trade-offs, as the same level of generalization is applied consistently across all tested variants.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.2">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.2 Domain 1: Constraint-Resilient Appointment Booking</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Context: Medical appointment scheduling demonstrating performance under progressive constraint pressure across quantization tiers (Berg, 2001).</p>
+
+<h4 id="multi-strategy-comparative-implementation">Multi-Strategy Comparative Implementation</h4>
+
+<p><strong>Approach A - MCD Structured Implementation:</strong>
+Task: Extract appointment slots {doctor_type, date, time}<br />
+Rules: Complete slots → "Confirmed: [type], [date] [time]. ID: #[ID]"<br />
+Missing slots → "Missing: [slots] for [type] appointment"<br />
+Constraints: No conversational elements, structured extraction focus<br />
+Performance: 4/5 task completion (80%), 31.0 avg tokens, 1724ms latency<br />
+Strengths: Predictable failure patterns, transparent limitation acknowledgment<br />
+Limitations: Higher latency overhead, one failure on ambiguous input ("Book something tomorrow")<br />
+Implementation: Simple (95% engineering accessibility)</p>
+
+<p><strong>Approach B - Conversational Natural Interaction:</strong>
+You are a friendly medical appointment assistant. Help patients schedule<br />
+appointments warmly and conversationally. Be polite, enthusiastic, and<br />
+guide them through booking with care and reassurance.<br />
+Performance: 3/5 task completion (60%), 14.4 avg tokens, 1200ms latency<br />
+Strengths: Superior user experience when successful<br />
+Limitations: Inconsistent performance, difficult to debug failures<br />
+Implementation: Simple (90% engineering accessibility)</p>
+
+<p><strong>Approach C - Few-Shot Pattern Learning:</strong>
+Examples: "Doctor visit" → "Type+Date+Time needed"<br />
+"Cardiology Mon 2pm" → "Confirmed: Cardiology Monday 2PM"<br />
+Follow pattern for: [user_input]<br />
+Performance: 4/5 task completion (80%), 12.6 avg tokens, 811ms latency ⭐ Best overall<br />
+Strengths: Excellent efficiency and completion rate in optimal conditions<br />
+Limitations: Pattern dependency, domain shift sensitivity<br />
+Implementation: Moderate (85% engineering accessibility)</p>
+
+<p><strong>Approach D - System Role Professional:</strong>
+You are a clinical appointment scheduler. Provide systematic, professional<br />
+appointment processing. Extract required information efficiently and confirm<br />
+bookings with clinical precision.<br />
+Performance: 4/5 task completion (80%), 35.8 avg tokens, 1150ms latency<br />
+Strengths: Professional quality output, clinical appropriateness<br />
+Limitations: Resource overhead, verbose responses<br />
+Implementation: Moderate (80% engineering accessibility)</p>
+
+<p><strong>Approach E - Hybrid Multi-Strategy Integration:</strong>
+Examples: Visit → Type+Date+Time. Extract slots: [type], [date], [time].<br />
+Missing slots → clarify. Format: "Confirmed: [type], [date] [time]"<br />
+Efficient structure with example guidance.<br />
+Performance: 4/5 task completion (80%), 18.2 avg tokens, 950ms latency<br />
+Strengths: Balanced approach when strategies align effectively<br />
+Limitations: Strategy coordination complexity, requires ML expertise<br />
+Implementation: Advanced (75% engineering accessibility)</p>
+
+<h4 id="domain-1-constraint-analysis">Domain 1 Constraint Analysis:</h4>
+
+<p>Key Finding: Few-Shot Pattern achieves superior performance in optimal conditions (100% success, lowest latency), while MCD provides reliable baseline with transparent failure patterns (Min et al., 2022).</p>
+
+<p>Failure Mode Analysis:</p>
+
+<ul>
+<li>MCD: Predictable failure on ambiguous input ("Book something tomorrow") - acknowledges insufficient information rather than hallucinating</li>
+<li>Conversational: Variable failures, difficult to predict when it will succeed or fail</li>
+<li>Few-Shot: Perfect performance but pattern-dependent</li>
+<li>System Role: Resource-intensive, professional failures</li>
+<li>Hybrid: Coordination complexity when strategies conflict</li>
+</ul>
+
+<p>MCD's strength isn't universal superiority—it's predictable reliability under constraint pressure. When Few-Shot and other approaches excel in resource-abundant scenarios, MCD provides the fallback reliability needed for production edge deployments where resource constraints eliminate alternatives.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.3">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.3 Domain 2: Constraint-Resilient Spatial Navigation</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Context: Indoor navigation with real-time obstacle avoidance demonstrating performance under progressive constraint pressure across quantization tiers (Q1/Q4 dynamic selection).</p>
+
+<h4 id="multi-strategy-comparative-implementation-2">Multi-Strategy Comparative Implementation</h4>
+
+<p><strong>Approach A - MCD Structured Implementation:</strong><br />
+Navigate: Parse coordinates [start]→[target], identify obstacles<br />
+Output format: "Direction+Distance+Obstacles"<br />
+Constraints: Structured spatial logic, max 20 tokens, no explanations<br />
+Performance: 3/5 task completion (60%), 18.2 avg tokens, 2100ms latency<br />
+Strengths: Precise coordinate handling, predictable spatial logic, no hallucinated routes<br />
+Limitations: Zero safety communication, higher processing overhead, robotic guidance<br />
+Implementation: Simple (92% engineering accessibility)</p>
+
+<p><strong>Approach B - Conversational Natural Interaction:</strong><br />
+You are a helpful indoor navigation assistant. Provide thoughtful directions<br />
+while being mindful of safety and comfort. Consider hazards, explain routes,<br />
+offer alternatives with encouraging, detailed guidance.<br />
+Performance: 40% success, 24.1 tokens, 1350 ms (Q4) → 20% at Q1<br />
+Strengths: Excellent safety awareness, hazard recognition, user reassurance<br />
+Limitations: Complete navigation failure under constraints, philosophical rather than actionable<br />
+Implementation: Simple (89% engineering accessibility)</p>
+
+<p><strong>Approach C - Few-Shot Pattern Learning:</strong><br />
+Examples: "A1→B3" = "North 2m, East 1m". "C2→D4" = "South 1m, East 2m"<br />
+Navigate: [start]→[end], avoid [obstacles]. Follow directional pattern.<br />
+Performance: 4/5 task completion (80%), 16.8 avg tokens, 975ms latency ⭐ Best overall<br />
+Strengths: Excellent pattern recognition, efficient directional output, reliable pathfinding<br />
+Limitations: Breaks down with complex multi-waypoint routes, pattern dependency<br />
+Implementation: Moderate (83% engineering accessibility)</p>
+
+<p><strong>Approach D - System Role Professional:</strong><br />
+You are a precision navigation system. Provide exact directional guidance<br />
+with distances and obstacle avoidance using professional navigation protocols<br />
+and systematic routing analysis.<br />
+Performance: 4/5 task completion (80%), 28.3 avg tokens, 1450ms latency<br />
+Strengths: Professional systematic guidance, expert-level route optimization<br />
+Limitations: Resource overhead, verbose professional terminology<br />
+Implementation: Moderate (78% engineering accessibility)</p>
+
+<p><strong>Approach E - Hybrid Multi-Strategy Integration:</strong><br />
+Examples: A1→B3 = "N2→E1". Navigation: [start]→[end]. Obstacles: avoid [list].<br />
+Efficient directional output with example guidance and safety awareness.<br />
+Performance: 4/5 task completion (80%), 19.7 avg tokens, 1100ms latency<br />
+Strengths: Balanced efficiency with safety consideration, coordinated approach<br />
+Limitations: Strategy alignment complexity, requires spatial reasoning expertise<br />
+Implementation: Advanced (72% engineering accessibility)</p>
+
+<h4 id="domain-2-constraint-analysis">Domain 2 Constraint Analysis:</h4>
+
+<p>Key Finding: Few-Shot Pattern excels in optimal conditions (80% success, fastest response), while MCD provides structured baseline with zero hallucinated routes but lacks safety communication.</p>
+
+<p>Critical Trade-off: MCD achieves perfect pathfinding accuracy when successful but provides no safety guidance, creating potential liability in real-world deployment scenarios.</p>
+
+<p>Failure Mode Analysis:</p>
+
+<ul>
+<li>MCD: Predictable failures on complex multi-step routes - acknowledges spatial complexity limits rather than providing dangerous incorrect directions</li>
+<li>Conversational: Complete navigation failure - excellent safety awareness but zero actionable spatial guidance under constraint pressure</li>
+<li>Few-Shot: Reliable for simple patterns, degrades on complex waypoint sequences but maintains directional coherence</li>
+<li>System Role: Professional systematic failures, resource timeouts under high spatial complexity</li>
+<li>Hybrid: Strategic coordination challenges when spatial efficiency conflicts with safety communication</li>
+</ul>
+
+<p>Constraint Resilience Insight: MCD maintains spatial accuracy under pressure but sacrifices user safety guidance. Few-Shot provides superior balanced performance in standard conditions, while MCD offers predictable spatial logic when other approaches fail with dangerous route hallucinations.<br />
+MCD's navigation strength lies in structured spatial reasoning reliability under constraint pressure, preventing dangerous route fabrication. However, Few-Shot and System Role approaches provide superior comprehensive navigation guidance when resources permit optimal performance.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.4">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.4 Domain 3: Constraint-Resilient Failure Diagnostics Agent</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Context: System troubleshooting with complexity scaling demonstrating diagnostic accuracy under progressive constraint pressure across quantization tiers (Basili et al., 1994).</p>
+
+<h4 id="multi-strategy-comparative-implementation-3">Multi-Strategy Comparative Implementation</h4>
+
+<p><strong>Approach A - MCD Structured Implementation:</strong><br />
+Task: Classify system issues into {category, priority, diagnostic_steps}<br />
+Rules: P1/P2/P3 priority → "Category: [type], Priority: [level], Steps: [sequence]"<br />
+Missing info → "Insufficient data for [category] classification"<br />
+Constraints: Structured classification focus, bounded diagnostic scope<br />
+Performance: 4/5 task completion (80%), 42.3 avg tokens, 2150ms latency<br />
+Strengths: Consistent classification accuracy, predictable diagnostic patterns<br />
+Limitations: Higher resource usage, limited contextual analysis depth<br />
+Implementation: Simple (95% engineering accessibility)</p>
+
+<p><strong>Approach B - Conversational Natural Interaction:</strong><br />
+You are an experienced IT support specialist. Help users troubleshoot their<br />
+system issues with patience and clear explanations. Provide comprehensive<br />
+guidance and consider all possible causes with empathy.<br />
+Performance: 2/5 task completion (40%), 18.7 avg tokens, 1680ms latency<br />
+Strengths: Excellent user communication when successful<br />
+Limitations: Poor technical accuracy, analysis paralysis on complex issues<br />
+Implementation: Simple (90% engineering accessibility)</p>
+
+<p><strong>Approach C - Few-Shot Pattern Learning:</strong><br />
+Examples: "Server crash" → "Category: Infrastructure, Priority: P1, Check: logs→services→hardware"<br />
+"Slow app" → "Category: Performance, Priority: P2, Check: CPU→memory→network"<br />
+Diagnose: [system_issue] using similar pattern<br />
+Performance: 5/5 task completion (100%), 28.4 avg tokens, 1450ms latency ⭐ Best overall<br />
+Strengths: Excellent pattern matching, efficient diagnostic workflows<br />
+Limitations: Domain-specific template dependency, struggles with novel issues<br />
+Implementation: Moderate (85% engineering accessibility)</p>
+
+<p><strong>Approach D - System Role Professional:</strong><br />
+You are a senior systems administrator with 15+ years experience. Provide<br />
+systematic diagnostic analysis using industry best practices. Focus on<br />
+root cause identification and professional troubleshooting methodology.<br />
+Performance: 4/5 task completion (80%), 58.9 avg tokens, 1850ms latency<br />
+Strengths: High diagnostic accuracy, professional systematic approach<br />
+Limitations: Verbose responses, resource-intensive analysis<br />
+Implementation: Moderate (80% engineering accessibility)</p>
+
+<p><strong>Approach E - Hybrid Multi-Strategy Integration:</strong><br />
+Step 1: Classify [issue] → category (P1/P2/P3). Step 2: Match diagnostic pattern.<br />
+Step 3: Apply systematic analysis. Format: Priority + Pattern + Expert reasoning.<br />
+Efficient expert diagnosis with structured guidance.<br />
+Performance: 4/5 task completion (80%), 35.1 avg tokens, 1620ms latency<br />
+Strengths: Balanced diagnostic depth with efficiency when well-coordinated<br />
+Limitations: Complex strategy integration, requires expert prompt engineering<br />
+Implementation: Advanced (75% engineering accessibility)</p>
+
+<h4 id="domain-3-constraint-analysis">Domain 3 Constraint Analysis:</h4>
+
+<p>Key Finding: Few-Shot Pattern achieves superior performance in optimal diagnostic scenarios (100% success, efficient workflows), while MCD provides reliable structured classification with transparent limitation acknowledgment.</p>
+
+<p>Failure Mode Analysis:</p>
+
+<ul>
+<li>MCD: Predictable boundary failures on complex multi-system issues - clearly states "Insufficient data for classification" rather than guessing</li>
+<li>Conversational: Analysis paralysis on technical issues, tends to provide general advice rather than specific diagnostics</li>
+<li>Few-Shot: Excellent pattern-based diagnostics but fails on novel system configurations outside training patterns</li>
+<li>System Role: Professional quality but resource-intensive, occasional over-analysis leading to delayed diagnosis</li>
+<li>Hybrid: Strategy coordination challenges when diagnostic complexity exceeds integration capability</li>
+</ul>
+
+<p>Constraint Resilience Insight:<br />
+MCD's diagnostic value emerges under constraint pressure - while Few-Shot excels at pattern recognition in resource-abundant scenarios, MCD maintains structured classification accuracy even when token budgets or processing time become limited. In production troubleshooting environments where rapid triage is essential and resources constrained, MCD's predictable diagnostic boundaries prevent dangerous misclassification while Few-Shot and other approaches may fail unpredictably when encountering novel system failures outside their training patterns.<br />
+This positioning reinforces MCD's role as the reliable diagnostic baseline for edge deployment scenarios where constraint resilience matters more than optimal-condition diagnostic sophistication.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.5">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.5 Constraint-Performance Trade-off Analysis</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Resource-Abundant Conditions (Q4 tier):</p>
+
+<ol>
+<li>🏆  Few-Shot Pattern  (88.7% avg) - Superior task completion with efficiency</li>
+<li>🥈  System Role  (84.3% avg) - Professional quality with moderate cost</li>
+<li>🥉  Hybrid  (82.1% avg) - Complex coordination when expertly implemented</li>
+<li>MCD Structured  (78.7% avg) - Reliable baseline with resource overhead</li>
+<li>Conversational  (68.7% avg) - Good UX, variable performance</li>
+</ol>
+
+<p>Constraint-Limited Conditions (Q1 tier):</p>
+
+<ol>
+<li>🏆  MCD Structured  (73.3% avg) - Maintains performance under pressure ⭐</li>
+<li>🥈 Hybrid (61.2% avg) - Sophisticated degradation when well-designed</li>
+<li>🥉 Few-Shot Pattern  (58.9% avg) - Moderate constraint tolerance</li>
+<li>System Role  (43.1% avg) - Resource requirements cause failure</li>
+<li>Conversational  (31.4% avg) - Poor constraint compatibility</li>
+</ol>
+
+<p>Strategic Insight: MCD's value emerges under constraint pressure where other approaches fail.</p>
+
+<h4 id="implementation-sophistication-requirements">Implementation Sophistication Requirements:</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Approach</th>
+  <th>Engineering Complexity</th>
+  <th>Maintenance Overhead</th>
+  <th>Team Expertise Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>MCD Structured</td>
+  <td>Simple (94%)</td>
+  <td>Low</td>
+  <td>Basic prompt engineering</td>
+</tr>
+<tr>
+  <td>Conversational</td>
+  <td>Simple (89%)</td>
+  <td>Low</td>
+  <td>Basic prompt engineering</td>
+</tr>
+<tr>
+  <td>Few-Shot Pattern</td>
+  <td>Moderate (84%)</td>
+  <td>Medium</td>
+  <td>Intermediate prompt engineering</td>
+</tr>
+<tr>
+  <td>System Role</td>
+  <td>Moderate (79%)</td>
+  <td>Medium</td>
+  <td>Intermediate prompt engineering</td>
+</tr>
+<tr>
+  <td>Hybrid Multi-Strategy</td>
+  <td>Advanced (74%)</td>
+  <td>High</td>
+  <td>Expert ML engineering team</td>
+</tr>
+</tbody>
+</table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.6">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.6 Advanced Deployment Framework for ML Expert Teams</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Evidence-Based Selection Matrix:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Priority</th>
+  <th>Primary Approach</th>
+  <th>Integration Strategy</th>
+  <th>Sophistication Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Maximum Performance</td>
+  <td>Hybrid Multi-Strategy</td>
+  <td>All approaches coordinated</td>
+  <td>Advanced</td>
+</tr>
+<tr>
+  <td>Professional Quality + Efficiency</td>
+  <td>System Role + MCD</td>
+  <td>Role-based efficiency optimization</td>
+  <td>Intermediate</td>
+</tr>
+<tr>
+  <td>Rapid Development</td>
+  <td>Few-Shot → Hybrid</td>
+  <td>Progressive complexity scaling</td>
+  <td>Moderate</td>
+</tr>
+<tr>
+  <td>Research/Educational</td>
+  <td>Conversational + System Role</td>
+  <td>Learning-focused professional output</td>
+  <td>Moderate</td>
+</tr>
+<tr>
+  <td>Extreme Constraints</td>
+  <td>MCD + Few-Shot</td>
+  <td>Efficiency with minimal guidance</td>
+  <td>Basic</td>
+</tr>
+</tbody>
+</table>
+
+<p>Strategy Coordination Recommendations for Advanced Implementation:</p>
+
+<ul>
+<li>Layer strategies hierarchically: Classification → Pattern → Expert analysis for diagnostics (Bommasani et al., 2021)</li>
+<li>Optimize integration points: Prevent conflicts between efficiency and quality objectives</li>
+<li>Implement dynamic strategy selection: Adjust approach complexity based on task requirements (Jacob et al., 2018)</li>
+<li>Monitor strategy alignment: Track performance variance as indicator of coordination quality</li>
+</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.7.1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.7.1 Statistical Validation and Methodological Limitations</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Performance Differences: Statistical significance varies by metric and implementation sophistication  (Sullivan &amp; Feinn, 2012)</p>
+
+<ul>
+<li>Task completion under constraints: Hybrid/System Role/MCD vs Conversational (p &lt; 0.01, large effect η² = 0.16)</li>
+<li>User experience quality: Conversational/System Role/Hybrid vs MCD (p &lt; 0.01, large effect η² = 0.14)</li>
+<li>Multi-strategy coordination: Hybrid strategy variance dependent on implementation expertise (p &lt; 0.05, η² = 0.11)</li>
+</ul>
+
+<p>Methodological Limitations:</p>
+
+<ul>
+<li>Small sample sizes (n=5) limit generalizability (Howell, 2016)</li>
+<li>Controlled environment may not reflect production complexity (Yin, 2017)</li>
+<li>Single model architecture constrains cross-model validity</li>
+<li>Hybrid approach evaluation assumes expert-level prompt engineering implementation</li>
+</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.7.2">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.7.2 Approach Limitations and Boundary Conditions</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>MCD Structured Limitations:</p>
+
+<ul>
+<li>Resource overhead in optimal conditions (1724ms vs 811ms for Few-Shot)</li>
+<li>Minimal user guidance creates poor experience in interactive scenarios</li>
+<li>Token inefficiency for simple tasks (31 tokens vs 12.6 for alternatives)</li>
+</ul>
+
+<p>When MCD Excels:</p>
+
+<ul>
+<li>Q1 quantization scenarios where alternatives degrade significantly</li>
+<li>Predictable failure patterns required for production reliability</li>
+<li>Edge deployment where resource constraints eliminate alternatives</li>
+</ul>
+
+<p>When Alternatives Excel:</p>
+
+<ul>
+<li>Few-Shot dominates in resource-abundant scenarios (Q4 tier)</li>
+<li>System Role provides superior professional quality when resources allow</li>
+<li>Conversational offers better user experience in unconstrained conditions</li>
+</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.8">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.8 Literature Traceability and Academic Contributions</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Cross-Domain Literature Mapping:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Domain</th>
+  <th>Core Principles</th>
+  <th>Simulation Validation</th>
+  <th>Literature Foundation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Appointment Booking</td>
+  <td>Multi-strategy prompting, fallback design</td>
+  <td>T1, T4, T9</td>
+  <td>Brown et al. (2020), Shuster et al. (2022), Nakajima et al. (2023)</td>
+</tr>
+<tr>
+  <td>Spatial Navigation</td>
+  <td>Symbolic compression, bounded rationality, multi-strategy coordination</td>
+  <td>T2, T5, T7</td>
+  <td>Alayrac et al. (2022), Zhou et al. (2022), Simon (1972)</td>
+</tr>
+<tr>
+  <td>Failure Diagnostics</td>
+  <td>Expert-pattern synthesis, heuristic evaluation, multi-layer analysis</td>
+  <td>T3, T5, T6</td>
+  <td>Basili et al. (1994), Min et al. (2022), Zhou et al. (2022)</td>
+</tr>
+</tbody>
+</table>
+
+<p>Academic Contributions to Advanced Prompt Engineering:</p>
+
+<ul>
+<li>Multi-Strategy Optimization Framework: Validates effectiveness of coordinated multi-strategy approaches, demonstrating performance levels beyond individual approach limitations (Ribeiro et al., 2016)</li>
+<li>Implementation Sophistication Modeling: Establishes relationship between prompt engineering expertise and multi-strategy coordination effectiveness</li>
+<li>Context-Dependent Selection Criteria: Provides evidence-based framework for approach selection based on deployment priorities and resource constraints (Schwartz et al., 2020)</li>
+<li>Strategy Coordination Metrics: Introduces strategy alignment and integration quality measures for advanced prompt engineering evaluation</li>
+</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="7.9">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">7.9 Conclusions and Future Research Directions</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Primary Research Findings:  </p>
+
+<ol>
+<li>Context-Dependent Effectiveness: No single approach dominates across all conditions. Optimal selection depends on resource availability and deployment constraints. (Bommasani et al., 2021)  </li>
+<li>Constraint-Resilience Trade-off: MCD sacrifices optimal-condition performance for predictable behavior under resource pressure.  </li>
+<li>Edge Deployment Advantage: As quantization increases and resources decrease, MCD maintains higher performance retention than alternatives. (Xu et al., 2023)  </li>
+<li>Production-Ready Failure Patterns: MCD fails transparently while alternatives may fail with confident but incorrect responses. (Lin et al., 2022)</li>
+</ol>
+
+<p>Strategic Framework: Choose MCD when constraint resilience matters more than peak performance. Choose alternatives when resources support optimization for specific objectives (user experience, professional quality, task completion).</p>
+
+<p>SLM Enhancement Potential:<br />
+The emergence of domain-specific Small Language Models provides complementary optimization to MCD's architectural minimalism (Belcak et al., 2025). Future implementations could leverage specialized SLMs as base models within MCD frameworks, potentially addressing some domain-specific limitations while preserving constraint-first design principles. This model-agnostic compatibility demonstrates MCD's forward-compatibility with evolving language model landscapes.</p>
+
+<p>Domain 1<br />
+Healthcare-specific SLMs trained on clinical terminology and appointment workflows could potentially improve slot-filling accuracy and medical terminology understanding while maintaining MCD's stateless principles (Magnini et al., 2025). Domain-specific models might reduce the ambiguous input failures observed in the "Book something tomorrow" case by better interpreting medical context.</p>
+
+<p>Domain 2<br />
+Robotics-specific SLMs trained on spatial reasoning datasets could potentially reduce the semantic drift observed in multi-step navigation tasks (Song et al., 2024). Domain-specific spatial understanding might improve route chaining while preserving MCD's structured coordinate handling and predictable failure patterns.</p>
+
+<p>Domain 3<br />
+Code-specific SLMs like Microsoft's CodeBERT family could enhance diagnostic pattern recognition and system classification accuracy (Microsoft Research, 2024). Domain-specific models might improve novel issue handling while maintaining MCD's structured classification approach and transparent boundary acknowledgment.</p>
+
+<p>Future Research Directions for Advanced Systems:</p>
+
+<ul>
+<li>Adaptive multi-strategy systems optimizing strategy coordination based on real-time task complexity and resource availability</li>
+<li>Strategy integration algorithms for automated optimization of multi-approach coordination</li>
+<li>Cross-model strategy portability examining coordination effectiveness across different language model architectures</li>
+<li>Production-scale coordination studies evaluating multi-strategy performance under realistic deployment conditions</li>
+</ul>
+
+<p>Framework Significance: This comparative methodology provides ML expert teams with evidence-based strategies for leveraging multi-approach coordination in prompt engineering, enabling optimization beyond single-strategy limitations while acknowledging the expertise requirements for effective implementation. (Gregor &amp; Hevner, 2013).</p>
+
+<p>Practical Impact: Results demonstrate that sophisticated prompt engineering teams can achieve significant performance gains through strategic approach coordination, while simpler deployments benefit from evidence-based single-strategy selection based on contextual priorities and resource constraints.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="roadmap">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">Next Chapter Preview</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>While Chapter 7 illustrated how MCD principles transfer to domain-specific workflows, it remains necessary to evaluate MCD as a viable alternative to full-stack agent architectures.<br />
+Chapter 8 performs this comparative evaluation, measuring sufficiency, redundancy, and robustness. Drawing on simulation results and walkthrough data, it demonstrates where MCD provides reliable performance under constraints where other approaches degrade unpredictably—not through breadth of capability, but through strategic minimalism.</p>
+      </div>
+    </div>
+  </div>
+</div>
+      
+      <!-- Navigation -->
+      <section class="chapter-nav">
+         <nav class="page-nav" aria-label="Page navigation">
+           <a class="nav-link prev" href="c6.html" rel="prev">Prev : Chapter 6</a>
+           <a class="nav-link next" href="c8.html" rel="next">Next: Chapter 8</a>
+         </nav>
+      </section>
+      
+      <hr class="section-divider">
+    </div>
+
+
+
+
+</div>
+
+					<!-- Sidebar Topics -->
+					<div class="gx-side-overlay"></div>
+					<div class="col-xl-3 col-md-12 gx-topic">
+						<div class="gx-card topic-sidebar">
+							<div class="gx-card-header">
+								<h4 class="gx-card-title">Topics</h4>
+							</div>
+							<div class="gx-card-content gx-topic-list">
+								<nav>
+									<ul class="topic-list">
+<li><a class="topic" href="#ch1-intro">Chapter 7: Comprehensive Walkthrough Analysis</a></li>
+<li><a class="topic" href="#7.0">7.0 Advanced Evaluation Framework</a></li>
+<li><a class="topic" href="#7.1">7.1 Methodological Framework for ML Expert Evaluation</a></li>
+<li><a class="topic" href="#7.2">7.2 Domain 1: Stateless Appointment Booking Agent</a></li>
+<li><a class="topic" href="#7.3">7.3 Domain 2: Spatial Navigation Agent</a></li>
+<li><a class="topic" href="#7.4">7.4 Domain 3: Failure Diagnostics Agent</a></li>
+<li><a class="topic" href="#7.5">7.5 Constraint-Performance Trade-off Analysis</a></li>
+<li><a class="topic" href="#7.6">7.6 Advanced Deployment Framework for ML Expert Teams</a></li>
+<li><a class="topic" href="#7.7.1">7.7.1 Statistical Validation and Methodological Limitations</a></li>
+<li><a class="topic" href="#7.7.2">7.7.2 Approach Limitations and Boundary Conditions</a></li>
+<li><a class="topic" href="#7.8">7.8 Literature Traceability and Academic Contributions</a></li>
+<li><a class="topic" href="#7.9">7.9 Conclusions and Future Research Directions</a></li>
+<li><a class="topic" href="#roadmap">Next Chapter Preview</a></li>
+
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+	</main>
+
+	<!-- Vendor Custom -->
+	<script src="assets/js/vendor/jquery-3.6.4.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/vendor/prism.js"></script>
+	<!-- Main Custom -->
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

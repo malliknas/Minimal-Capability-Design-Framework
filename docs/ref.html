@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+		<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - References">
+	<title>References Page</title>
+
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+
+	<!-- Icon CSS -->
+	<link href="assets/css/vendor/materialdesignicons.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/remixicon.css" rel="stylesheet">
+
+	<!-- Vendor -->
+	<link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/prism.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link id="mainCss" href="assets/css/style.css" rel="stylesheet">
+	<style>
+	 /* Light-only document scheme */
+:root{ 
+  color-scheme: only light;
+  /* Core palette */
+  --text:   #1a1a1a;      /* slightly softer than pure black */
+  --text-body: #2d2d2d;   /* body text */
+  --muted:  #6b7280;      /* gray-500 */
+  --bg-soft:#f9fafb;      /* very light grey */
+  --surface:#ffffff;      /* white */
+  --border: #e5e7eb;      /* light divider */
+  --accent: #4b5563;      /* gray-600 */
+}
+
+/* Global base */
+html, body{ 
+  color:var(--text-body); 
+  background:var(--surface); 
+  font-weight:400;
+}
+a{ color:var(--accent); text-decoration:none; font-weight:500; }
+a:hover{ color:var(--text); }
+h1, h2, h3, h4, h5, h6{ color:var(--text) !important; font-weight:600; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* Breadcrumbs */
+.breadcrumb,
+.nav-breadcrumb{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.95rem; color:var(--muted);
+  margin:1rem 0 1.25rem; padding:.5rem .75rem;
+  background:var(--bg-soft); border:1px solid var(--border); border-radius:10px;
+}
+.breadcrumb a, .nav-breadcrumb a{ color:var(--accent); font-weight:500; }
+.breadcrumb a:hover, .nav-breadcrumb a:hover{ text-decoration:underline; }
+.breadcrumb .current, .nav-breadcrumb .current, .nav-breadcrumb strong{ color:var(--text); font-weight:600; }
+.breadcrumb .sep, .nav-breadcrumb .sep{ color:var(--border); user-select:none; }
+.gx-header .breadcrumb{ font-size:clamp(.85rem, .8rem + .2vw, .95rem); padding:.4rem .6rem; }
+
+/* Page navigation */
+.page-nav{
+  margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; text-align:center;
+}
+.page-nav .nav-link{
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1rem; border:1px solid var(--border); border-radius:8px;
+  font-weight:500;
+  box-shadow:0 1px 1px rgba(0,0,0,.02);
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.page-nav .nav-link:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.page-nav .nav-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.page-nav .prev::before{ content:"← "; }
+.page-nav .next::after{ content:" →"; }
+.gx-header .page-nav{ border-top:0; padding-top:0; margin-top:0; }
+.gx-header .page-nav .nav-link{ font-size:clamp(.85rem, .82rem + .18vw, .95rem); padding:.5rem .8rem; }
+
+/* Thesis title */
+.thesis-title{ 
+  color:var(--text) !important; 
+  margin-bottom:0.5rem; 
+  font-size:clamp(1.8rem, 1.4rem + 1.2vw, 2.2rem); 
+  line-height:1.3;
+  font-weight:700;
+}
+.thesis-subtitle{ 
+  color:var(--muted) !important; 
+  font-size:clamp(1rem, .96rem + .3vw, 1.2rem); 
+  font-style:italic; 
+  margin-bottom:1.5rem;
+  line-height:1.4;
+  font-weight:400;
+}
+
+/* Cards */
+.gx-block{ margin-bottom:1rem; }
+.gx-card-content{ padding:1rem 1.25rem; }
+.gx-card-header{ padding:0.75rem 1rem; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.95rem;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1.2rem; border:1px solid var(--border); border-radius:8px;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+}
+.btn:hover{ background:var(--bg-soft); transform:translateY(-1px); color:var(--text); }
+.btn-primary{ background:#4b5563; color:#fff; border-color:#4b5563; }
+.btn-success{ background:#6b7280; color:#fff; border-color:#6b7280; }
+
+/* Code and muted */
+pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(--text); }
+.muted{ color:var(--muted); }
+
+/* Topics sidebar */
+.gx-topic .topic-sidebar{
+  position:sticky; top:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topic-sidebar .gx-card-header{ background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1rem; }
+.topic-sidebar .gx-card-title{ margin:0; color:var(--text); font-size:.95rem; font-weight:600; }
+.topic-sidebar .gx-card-content{ padding:.75rem; max-height:min(70vh, 560px); overflow:auto; }
+.gx-topic .topic-list{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.gx-topic .topic-list a{
+  display:flex; align-items:center; gap:.5rem; line-height:1.2;
+  color:var(--accent); background:transparent; font-weight:450;
+  padding:.5rem .75rem; border:1px solid transparent; border-radius:8px;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.gx-topic .topic-list a:hover{ color:var(--text); background:var(--bg-soft); border-color:var(--border); }
+.gx-topic .topic-list a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.gx-topic .topic-list a.active,
+.gx-topic .topic-list a[aria-current="page"],
+.gx-topic .topic-list a[aria-current="true"]{
+  color:var(--text); background:var(--bg-soft); border-color:var(--border); font-weight:600; position:relative;
+}
+.gx-topic .topic-list a.active::before,
+.gx-topic .topic-list a[aria-current="page"]::before,
+.gx-topic .topic-list a[aria-current="true"]::before{
+  content:""; position:absolute; left:0; top:10%; bottom:10%; width:3px; background:var(--accent); border-radius:3px;
+}
+
+/* Intro content - readable and compact */
+.intro{
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.5;
+  color:var(--text-body);
+}
+
+.intro p{
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;    
+font-feature-settings: "liga", "kern";
+  -webkit-font-feature-settings: "liga", "kern";
+  -moz-font-feature-settings: "liga", "kern";
+  -ms-font-feature-settings: "liga", "kern";
+  -o-font-feature-settings: "liga", "kern";  
+}
+
+
+
+.intro h3{
+  font-size:1.15rem;
+  font-weight:600;
+  color:var(--text);
+  margin:1rem 0 0.5rem;
+  line-height:1.3;
+}
+
+.intro h4{
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--text);
+  margin:0.8rem 0 0.4rem;
+  line-height:1.3;
+}
+
+.intro strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+/* Compact lists with better readability */
+.intro ul,
+.intro ol{
+  margin:0.4rem 0 0.6rem;
+  padding-left:1.25rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin:0.15rem 0;
+  padding-left:0.2rem;
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.45;
+  color:var(--text-body);
+}
+
+.intro ul li::marker{
+  color:var(--muted);
+  font-size:0.75rem;
+}
+
+.intro ol li::marker{
+  color:var(--muted);
+  font-weight:500;
+}
+
+/* Clean, readable tables */
+.intro table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.75rem 0;
+  background:var(--surface);
+  font-size:0.95rem;
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.intro table th{
+  padding:0.6rem 0.75rem;
+  text-align:left;
+  background:var(--bg-soft);
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+  color:var(--text);
+  line-height:1.4;
+}
+
+.intro table td{
+  padding:0.55rem 0.75rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  line-height:1.45;
+  font-weight:400;
+  color:var(--text-body);
+}
+
+.intro table td strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.intro table tbody tr:hover{
+  background:rgba(249, 250, 251, 0.5);
+}
+
+/* Responsive */
+@media (max-width:640px){
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
+</style>
+</head>
+
+<body>
+	<main class="wrapper sb-default">
+		<!-- Loader -->
+		<div id="gx-overlay">
+			<div class="gx-ellipsis">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Header -->
+			<header class="gx-header">
+			<div class="container-fluid">
+				<div class="gx-header-items">
+					<div class="left-header">
+						<a href="javascript:void(0)" class="gx-toggle-sidebar">
+							<span class="outer-ring">
+								<span class="inner-ring"></span>
+							</span>
+						</a>
+						
+					</div>
+					<div class="right-header">
+						<a href="javascript:void(0)" class="btn-topic m-r-5"><i class="ri-menu-2-line"></i></a>
+						<a href="index.html" class="gx-btn-primary">Thesis Home</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- sidebar -->
+		<div class="gx-sidebar-overlay"></div>
+		<div class="gx-sidebar" data-mode="dark">
+			<div class="gx-sb-logo">
+				<a href="index.html" class="sb-full"><img src="assets/img/logo/full-logo.png" alt="logo"></a>
+				<a href="index.html" class="sb-collapse"><img src="assets/img/logo/collapse-logo.png" alt="logo"></a>
+			</div>
+			<div class="gx-sb-wrapper">
+				<div class="gx-sb-content">
+					<ul class="gx-sb-list">
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-item">
+							<a href="index.html" class="gx-page-link">
+								<i class="ri-star-smile-line"></i><span class="condense"><span class="hover-title">Thesis Main Page</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part I: Foundations</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part I: Foundations<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="c1.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 1</a></li>
+								<li class="list"><a href="c2.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 2</a></li>
+								<li class="list"><a href="c3.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 3</a></li>
+									
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part II: The MCD Framework</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part II: The MCD Framework<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								
+								<li class="list"><a href="c4.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 4</a></li>
+								<li class="list"><a href="c5.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 5</a></li>
+											
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part III: Validation, Extension & Conclusion</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part III: Validation, Extension & Conclusion<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+						
+								<li class="list"><a href="c6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 6</a></li>
+								<li class="list"><a href="c7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 7</a></li>
+								<li class="list"><a href="c8.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 8</a></li>
+								<li class="list"><a href="c9.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 9</a></li>
+								<li class="list"><a href="c10.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 10</a></li>			
+							</ul>
+						</li>
+						
+						
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">References</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">References<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="ref.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>References</a></li>
+								
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Appendices</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">Appendices<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="appa6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 6</a></li>
+								<li class="list"><a href="appa7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 7</a></li>
+								<li class="list"><a href="appb.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix B</a></li>
+								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix D</a></li>
+								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix E</a></li>			
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Links</li>
+						<li class="gx-sb-item">
+							<a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Software</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item">
+							<a href="index.html#download" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Download</span> </span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- main content -->
+		<div class="gx-main-content">
+			<div class="container-fluid">
+				<!-- Page title & breadcrumb -->
+				<div class="gx-page-title gx-page-title-2">
+					<div class="gx-breadcrumb">
+						<h5>References</h5>
+						<ul>
+							<li><a href="index.html">Thesis Main Page</a></li>
+							<li>References</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row sections">
+					<div class="col-xl-9 col-md-12">
+
+    <div class="thesis-intro">
+      <h1 class="thesis-title">Designing Lightweight AI Agents for Edge Deployment</h1>
+      <p class="thesis-subtitle">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ref">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">References</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>           </p>
+      </div>
+    </div>
+  </div>
+</div>
+      
+      <!-- Navigation -->
+      <section class="chapter-nav">
+         <nav class="page-nav" aria-label="Page navigation">
+            <a class="nav-link prev" href="c10.html#links" rel="prev">Prev : Chapter 10</a>
+           <a class="nav-link next" href="#" rel="next">End</a>
+         </nav>
+      </section>
+      
+      <hr class="section-divider">
+    </div>
+
+
+
+
+</div>
+
+					<!-- Sidebar Topics -->
+					<div class="gx-side-overlay"></div>
+					<div class="col-xl-3 col-md-12 gx-topic">
+						<div class="gx-card topic-sidebar">
+							<div class="gx-card-header">
+								<h4 class="gx-card-title">Topics</h4>
+							</div>
+							<div class="gx-card-content gx-topic-list">
+								<nav>
+									<ul class="topic-list">
+										<li><a class="topic" href="#ref">References</a></li>
+
+
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+	</main>
+
+	<!-- Vendor Custom -->
+	<script src="assets/js/vendor/jquery-3.6.4.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/vendor/prism.js"></script>
+	<!-- Main Custom -->
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

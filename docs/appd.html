@@ -1,0 +1,846 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Appendix D">
+	<title>Appendix D</title>
+
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+
+	<!-- Icon CSS -->
+	<link href="assets/css/vendor/materialdesignicons.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/remixicon.css" rel="stylesheet">
+
+	<!-- Vendor -->
+	<link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/prism.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link id="mainCss" href="assets/css/style.css" rel="stylesheet">
+	<style>
+	 /* Light-only document scheme */
+:root{ 
+  color-scheme: only light;
+  /* Core palette */
+  --text:   #1a1a1a;      /* slightly softer than pure black */
+  --text-body: #2d2d2d;   /* body text */
+  --muted:  #6b7280;      /* gray-500 */
+  --bg-soft:#f9fafb;      /* very light grey */
+  --surface:#ffffff;      /* white */
+  --border: #e5e7eb;      /* light divider */
+  --accent: #4b5563;      /* gray-600 */
+}
+
+/* Global base */
+html, body{ 
+  color:var(--text-body); 
+  background:var(--surface); 
+  font-weight:400;
+}
+a{ color:var(--accent); text-decoration:none; font-weight:500; }
+a:hover{ color:var(--text); }
+h1, h2, h3, h4, h5, h6{ color:var(--text) !important; font-weight:600; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* Breadcrumbs */
+.breadcrumb,
+.nav-breadcrumb{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.95rem; color:var(--muted);
+  margin:1rem 0 1.25rem; padding:.5rem .75rem;
+  background:var(--bg-soft); border:1px solid var(--border); border-radius:10px;
+}
+.breadcrumb a, .nav-breadcrumb a{ color:var(--accent); font-weight:500; }
+.breadcrumb a:hover, .nav-breadcrumb a:hover{ text-decoration:underline; }
+.breadcrumb .current, .nav-breadcrumb .current, .nav-breadcrumb strong{ color:var(--text); font-weight:600; }
+.breadcrumb .sep, .nav-breadcrumb .sep{ color:var(--border); user-select:none; }
+.gx-header .breadcrumb{ font-size:clamp(.85rem, .8rem + .2vw, .95rem); padding:.4rem .6rem; }
+
+/* Page navigation */
+.page-nav{
+  margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; text-align:center;
+}
+.page-nav .nav-link{
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1rem; border:1px solid var(--border); border-radius:8px;
+  font-weight:500;
+  box-shadow:0 1px 1px rgba(0,0,0,.02);
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.page-nav .nav-link:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.page-nav .nav-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.page-nav .prev::before{ content:"← "; }
+.page-nav .next::after{ content:" →"; }
+.gx-header .page-nav{ border-top:0; padding-top:0; margin-top:0; }
+.gx-header .page-nav .nav-link{ font-size:clamp(.85rem, .82rem + .18vw, .95rem); padding:.5rem .8rem; }
+
+/* Thesis title */
+.thesis-title{ 
+  color:var(--text) !important; 
+  margin-bottom:0.5rem; 
+  font-size:clamp(1.8rem, 1.4rem + 1.2vw, 2.2rem); 
+  line-height:1.3;
+  font-weight:700;
+}
+.thesis-subtitle{ 
+  color:var(--muted) !important; 
+  font-size:clamp(1rem, .96rem + .3vw, 1.2rem); 
+  font-style:italic; 
+  margin-bottom:1.5rem;
+  line-height:1.4;
+  font-weight:400;
+}
+
+/* Cards */
+.gx-block{ margin-bottom:1rem; }
+.gx-card-content{ padding:1rem 1.25rem; }
+.gx-card-header{ padding:0.75rem 1rem; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.95rem;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1.2rem; border:1px solid var(--border); border-radius:8px;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+}
+.btn:hover{ background:var(--bg-soft); transform:translateY(-1px); color:var(--text); }
+.btn-primary{ background:#4b5563; color:#fff; border-color:#4b5563; }
+.btn-success{ background:#6b7280; color:#fff; border-color:#6b7280; }
+
+/* Code and muted */
+pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(--text); }
+.muted{ color:var(--muted); }
+
+/* Topics sidebar */
+.gx-topic .topic-sidebar{
+  position:sticky; top:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topic-sidebar .gx-card-header{ background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1rem; }
+.topic-sidebar .gx-card-title{ margin:0; color:var(--text); font-size:.95rem; font-weight:600; }
+.topic-sidebar .gx-card-content{ padding:.75rem; max-height:min(70vh, 560px); overflow:auto; }
+.gx-topic .topic-list{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.gx-topic .topic-list a{
+  display:flex; align-items:center; gap:.5rem; line-height:1.2;
+  color:var(--accent); background:transparent; font-weight:450;
+  padding:.5rem .75rem; border:1px solid transparent; border-radius:8px;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.gx-topic .topic-list a:hover{ color:var(--text); background:var(--bg-soft); border-color:var(--border); }
+.gx-topic .topic-list a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.gx-topic .topic-list a.active,
+.gx-topic .topic-list a[aria-current="page"],
+.gx-topic .topic-list a[aria-current="true"]{
+  color:var(--text); background:var(--bg-soft); border-color:var(--border); font-weight:600; position:relative;
+}
+.gx-topic .topic-list a.active::before,
+.gx-topic .topic-list a[aria-current="page"]::before,
+.gx-topic .topic-list a[aria-current="true"]::before{
+  content:""; position:absolute; left:0; top:10%; bottom:10%; width:3px; background:var(--accent); border-radius:3px;
+}
+
+/* Intro content - readable and compact */
+.intro{
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.5;
+  color:var(--text-body);
+}
+
+.intro p{
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;    
+font-feature-settings: "liga", "kern";
+  -webkit-font-feature-settings: "liga", "kern";
+  -moz-font-feature-settings: "liga", "kern";
+  -ms-font-feature-settings: "liga", "kern";
+  -o-font-feature-settings: "liga", "kern";  
+}
+
+
+
+.intro h3{
+  font-size:1.15rem;
+  font-weight:600;
+  color:var(--text);
+  margin:1rem 0 0.5rem;
+  line-height:1.3;
+}
+
+.intro h4{
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--text);
+  margin:0.8rem 0 0.4rem;
+  line-height:1.3;
+}
+
+.intro strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+/* Compact lists with better readability */
+.intro ul,
+.intro ol{
+  margin:0.4rem 0 0.6rem;
+  padding-left:1.25rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin:0.15rem 0;
+  padding-left:0.2rem;
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.45;
+  color:var(--text-body);
+}
+
+.intro ul li::marker{
+  color:var(--muted);
+  font-size:0.75rem;
+}
+
+.intro ol li::marker{
+  color:var(--muted);
+  font-weight:500;
+}
+
+/* Clean, readable tables */
+.intro table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.75rem 0;
+  background:var(--surface);
+  font-size:0.95rem;
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.intro table th{
+  padding:0.6rem 0.75rem;
+  text-align:left;
+  background:var(--bg-soft);
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+  color:var(--text);
+  line-height:1.4;
+}
+
+.intro table td{
+  padding:0.55rem 0.75rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  line-height:1.45;
+  font-weight:400;
+  color:var(--text-body);
+}
+
+.intro table td strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.intro table tbody tr:hover{
+  background:rgba(249, 250, 251, 0.5);
+}
+
+/* Responsive */
+@media (max-width:640px){
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
+</style>
+</head>
+
+<body>
+	<main class="wrapper sb-default">
+		<!-- Loader -->
+		<div id="gx-overlay">
+			<div class="gx-ellipsis">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Header -->
+			<header class="gx-header">
+			<div class="container-fluid">
+				<div class="gx-header-items">
+					<div class="left-header">
+						<a href="javascript:void(0)" class="gx-toggle-sidebar">
+							<span class="outer-ring">
+								<span class="inner-ring"></span>
+							</span>
+						</a>
+						
+					</div>
+					<div class="right-header">
+						<a href="javascript:void(0)" class="btn-topic m-r-5"><i class="ri-menu-2-line"></i></a>
+						<a href="index.html" class="gx-btn-primary">Thesis Home</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- sidebar -->
+		<div class="gx-sidebar-overlay"></div>
+		<div class="gx-sidebar" data-mode="dark">
+			<div class="gx-sb-logo">
+				<a href="index.html" class="sb-full"><img src="assets/img/logo/full-logo.png" alt="logo"></a>
+				<a href="index.html" class="sb-collapse"><img src="assets/img/logo/collapse-logo.png" alt="logo"></a>
+			</div>
+			<div class="gx-sb-wrapper">
+				<div class="gx-sb-content">
+					<ul class="gx-sb-list">
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-item">
+							<a href="index.html" class="gx-page-link">
+								<i class="ri-star-smile-line"></i><span class="condense"><span class="hover-title">Thesis Main Page</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part I: Foundations</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part I: Foundations<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="c1.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 1</a></li>
+								<li class="list"><a href="c2.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 2</a></li>
+								<li class="list"><a href="c3.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 3</a></li>
+									
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part II: The MCD Framework</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part II: The MCD Framework<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								
+								<li class="list"><a href="c4.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 4</a></li>
+								<li class="list"><a href="c5.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 5</a></li>
+											
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part III: Validation, Extension & Conclusion</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part III: Validation, Extension & Conclusion<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+						
+								<li class="list"><a href="c6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 6</a></li>
+								<li class="list"><a href="c7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 7</a></li>
+								<li class="list"><a href="c8.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 8</a></li>
+								<li class="list"><a href="c9.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 9</a></li>
+								<li class="list"><a href="c10.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 10</a></li>			
+							</ul>
+						</li>
+						
+						
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">References</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">References<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="ref.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>References</a></li>
+								
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Appendices</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">Appendices<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="appa6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 6</a></li>
+								<li class="list"><a href="appa7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 7</a></li>
+								<li class="list"><a href="appb.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix B</a></li>
+								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix D</a></li>
+								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix E</a></li>			
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Links</li>
+						<li class="gx-sb-item">
+							<a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Software</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item">
+							<a href="index.html#download" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Download</span> </span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- main content -->
+		<div class="gx-main-content">
+			<div class="container-fluid">
+				<!-- Page title & breadcrumb -->
+				<div class="gx-page-title gx-page-title-2">
+					<div class="gx-breadcrumb">
+						<h5>Appendix D</h5>
+						<ul>
+							<li><a href="index.html">Thesis Main Page</a></li>
+							<li>Appendix D</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row sections">
+					<div class="col-xl-9 col-md-12">
+
+    <div class="thesis-intro">
+      <h1 class="thesis-title">Designing Lightweight AI Agents for Edge Deployment</h1>
+      <p class="thesis-subtitle">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+
+<!-- Part I Overview -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="part1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">Appendix D: Agent Layer Diagrams</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <h3>Contents Overview</h3>
+<p>This appendix provides detailed architectural diagrams for each of the MCD layers: the Prompt Layer, the Stateless Control Layer, the Execution Layer, and the Fallback Layer. These visual representations clarify how MCD avoids orchestration-heavy pipelines while maintaining architectural discipline.</p>
+<h3>Purpose Statement</h3>
+<p>To visually link the subsystem designs from Chapter 4 with the instantiated agent architecture in Chapter 5, demonstrating how MCD principles manifest in concrete system architecture without requiring complex orchestration frameworks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="d1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">D.1 MCD Three-Layer Architectural Stack</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Figure D.1: Complete MCD Layer Architecture<br />
+text</p>
+<div class="highlight"><pre><span></span><code><span class="err">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">                      </span><span class="n">PROMPT</span><span class="w"> </span><span class="n">LAYER</span><span class="w"> </span><span class="p">(</span><span class="n">Section</span><span class="w"> </span><span class="mf">4.3</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span><span class="w">           </span><span class="err">│</span>
+<span class="err">├─────────────────────────────────────────────────────────────┤</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="mi">90</span><span class="o">-</span><span class="n">token</span><span class="w"> </span><span class="n">capability</span><span class="w"> </span><span class="n">ceiling</span><span class="w"> </span><span class="p">(</span><span class="n">Bounded</span><span class="w"> </span><span class="n">Rationality</span><span class="p">)</span><span class="w">        </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Zero</span><span class="o">-</span><span class="n">shot</span><span class="w"> </span><span class="n">baseline</span><span class="w"> </span><span class="n">prompting</span><span class="w"> </span><span class="p">(</span><span class="n">Minimality</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">Default</span><span class="p">)</span><span class="w">     </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Embedded</span><span class="w"> </span><span class="n">fallback</span><span class="w"> </span><span class="n">logic</span><span class="w"> </span><span class="p">(</span><span class="n">Degeneracy</span><span class="w"> </span><span class="n">Detection</span><span class="p">)</span><span class="w">           </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Modality</span><span class="w"> </span><span class="n">anchoring</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">multi</span><span class="o">-</span><span class="n">modal</span><span class="w"> </span><span class="n">inputs</span><span class="w">                </span><span class="err">│</span>
+<span class="err">│</span><span class="w">                                                             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Input</span><span class="p">:</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="n">Query</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Intent</span><span class="w"> </span><span class="n">Router</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Decision</span><span class="w"> </span><span class="n">Prompt</span><span class="w">        </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Output</span><span class="p">:</span><span class="w"> </span><span class="n">Symbolic</span><span class="w"> </span><span class="n">routing</span><span class="w"> </span><span class="n">tokens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Execution</span><span class="w"> </span><span class="n">instructions</span><span class="w">   </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────────────────┘</span>
+<span class="w">                              </span><span class="err">↓</span>
+<span class="err">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">               </span><span class="n">STATELESS</span><span class="w"> </span><span class="n">CONTROL</span><span class="w"> </span><span class="n">LAYER</span><span class="w"> </span><span class="p">(</span><span class="n">Section</span><span class="w"> </span><span class="mf">4.3</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span><span class="w">       </span><span class="err">│</span>
+<span class="err">├─────────────────────────────────────────────────────────────┤</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">In</span><span class="o">-</span><span class="n">prompt</span><span class="w"> </span><span class="n">routing</span><span class="w"> </span><span class="n">logic</span><span class="w"> </span><span class="p">(</span><span class="n">No</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">orchestration</span><span class="p">)</span><span class="w">      </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Deterministic</span><span class="w"> </span><span class="n">fallback</span><span class="w"> </span><span class="n">paths</span><span class="w"> </span><span class="p">(</span><span class="n">Bounded</span><span class="w"> </span><span class="n">Rationality</span><span class="p">)</span><span class="w">       </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Symbolic</span><span class="w"> </span><span class="n">decision</span><span class="w"> </span><span class="n">trees</span><span class="w"> </span><span class="p">(</span><span class="n">Token</span><span class="o">-</span><span class="n">level</span><span class="w"> </span><span class="n">cues</span><span class="p">)</span><span class="w">               </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Context</span><span class="w"> </span><span class="n">regeneration</span><span class="w"> </span><span class="n">without</span><span class="w"> </span><span class="n">persistent</span><span class="w"> </span><span class="n">memory</span><span class="w">           </span><span class="err">│</span>
+<span class="err">│</span><span class="w">                                                             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Flow</span><span class="p">:</span><span class="w"> </span><span class="n">Intent</span><span class="w"> </span><span class="n">Classification</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Route</span><span class="w"> </span><span class="n">Selection</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Context</span><span class="w">    </span><span class="err">│</span>
+<span class="err">│</span><span class="w">        </span><span class="n">Anchoring</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Execution</span><span class="w"> </span><span class="n">Triggering</span><span class="w">                     </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────────────────┘</span>
+<span class="w">                              </span><span class="err">↓</span>
+<span class="err">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">                </span><span class="n">EXECUTION</span><span class="w"> </span><span class="n">LAYER</span><span class="w"> </span><span class="p">(</span><span class="n">Section</span><span class="w"> </span><span class="mf">4.3</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span><span class="w">              </span><span class="err">│</span>
+<span class="err">├─────────────────────────────────────────────────────────────┤</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Q1</span><span class="o">/</span><span class="n">Q4</span><span class="o">/</span><span class="n">Q8</span><span class="w"> </span><span class="n">quantization</span><span class="w"> </span><span class="n">tiers</span><span class="w"> </span><span class="p">(</span><span class="n">Hardware</span><span class="o">-</span><span class="n">aware</span><span class="p">)</span><span class="w">             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Local</span><span class="w"> </span><span class="n">inference</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="p">(</span><span class="n">WebAssembly</span><span class="o">/</span><span class="n">llama</span><span class="o">.</span><span class="n">cpp</span><span class="p">)</span><span class="w">             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Dynamic</span><span class="w"> </span><span class="n">tier</span><span class="w"> </span><span class="n">selection</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">complexity</span><span class="w">               </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="mi">512</span><span class="n">MB</span><span class="w"> </span><span class="n">RAM</span><span class="w"> </span><span class="n">constraints</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="n">ms</span><span class="w"> </span><span class="n">latency</span><span class="w"> </span><span class="n">budgets</span><span class="w">             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">                                                             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Components</span><span class="p">:</span><span class="w"> </span><span class="n">Quantized</span><span class="w"> </span><span class="n">LLM</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Local</span><span class="w"> </span><span class="n">Runtime</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Response</span><span class="w">       </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────────────────┘</span>
+</code></pre></div>
+                     
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="d2">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">D.2 Prompt Layer Internal Architecture</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Figure D.2: Prompt Layer Design Pattern<br />
+text</p>
+<div class="highlight"><pre><span></span><code>USER INPUT
+     ↓
+┌─────────────────────────────────────────────────┐
+│           PROMPT STRUCTURE                      │
+├─────────────────────────────────────────────────┤
+│  System: [Lightweight stateless assistant]      │
+│  Context: [Compressed state tokens]             │
+│  Intent Router:                                 │
+│    • if intent=booking → appointment_logic      │
+│    • if intent=query → information_logic        │
+│    • if intent=unclear → clarification_logic    │
+│  Fallback: [Safe default responses]             │
+│  Output Format: [Structured symbolic tokens]    │
+└─────────────────────────────────────────────────┘
+     ↓
+SYMBOLIC ROUTING DECISION
+     ↓
+EXECUTION PATHWAY
+</code></pre></div>
+
+<p>Key Components:<br />
+- Token-efficient context packing: intent=book, time=today, specialty=neuro<br />
+- Embedded routing logic: Decision branches encoded as token patterns<br />
+- Fallback safety: Default actions for ambiguous inputs<br />
+- Modality anchoring: Visual/audio → symbolic token conversion</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="d3">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">D.3 Stateless Control Layer Flow</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Figure D.3: Control Layer Decision Logic<br />
+text</p>
+<div class="highlight"><pre><span></span><code><span class="n">PROMPT</span><span class="w"> </span><span class="n">INPUT</span>
+<span class="w">     </span><span class="err">↓</span>
+<span class="err">┌─────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">         </span><span class="n">INTENT</span><span class="w"> </span><span class="n">CLASSIFICATION</span><span class="w">                    </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">┌─────────────┐</span><span class="w">  </span><span class="err">┌─────────────┐</span><span class="w">  </span><span class="err">┌──────────┐</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="n">BOOKING</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">    </span><span class="n">QUERY</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">UNCLEAR</span><span class="w"> </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="n">Route</span><span class="w"> </span><span class="n">A</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="n">Route</span><span class="w"> </span><span class="n">B</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">Route</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">└─────────────┘</span><span class="w">  </span><span class="err">└─────────────┘</span><span class="w">  </span><span class="err">└──────────┘</span><span class="w"> </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────┘</span>
+<span class="w">     </span><span class="err">↓</span><span class="w">              </span><span class="err">↓</span><span class="w">              </span><span class="err">↓</span>
+<span class="n">ROUTE</span><span class="w"> </span><span class="n">A</span><span class="p">:</span><span class="w"> </span><span class="n">Appointment</span><span class="w"> </span><span class="n">Logic</span><span class="w">    </span><span class="n">ROUTE</span><span class="w"> </span><span class="n">C</span><span class="p">:</span><span class="w"> </span><span class="n">Fallback</span>
+<span class="err">┌─────────────────────────┐</span><span class="w">  </span><span class="err">┌─────────────────┐</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">required</span><span class="w"> </span><span class="n">fields</span><span class="w"> </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Clarification</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Validate</span><span class="w"> </span><span class="n">constraints</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Safe</span><span class="w"> </span><span class="n">exit</span><span class="w">     </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Generate</span><span class="w"> </span><span class="n">confirmation</span><span class="w"> </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="n">recovery</span><span class="err">│</span>
+<span class="err">└─────────────────────────┘</span><span class="w">  </span><span class="err">└─────────────────┘</span>
+<span class="w">     </span><span class="err">↓</span><span class="w">                           </span><span class="err">↓</span>
+<span class="n">EXECUTION</span><span class="w"> </span><span class="n">LAYER</span><span class="w">             </span><span class="n">CONTROLLED</span><span class="w"> </span><span class="n">FAILURE</span>
+</code></pre></div>
+
+<p>Control Flow Characteristics:<br />
+- No persistent state: Each decision cycle is self-contained<br />
+- Symbolic routing: Token patterns trigger execution paths<br />
+- Bounded fallback: Maximum 2-loop recovery prevents drift<br />
+- Context regeneration: State reconstructed from prompt tokens</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="d4">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">D.4 Execution Layer Quantization Architecture</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>Figure D.4: Tiered Execution Model<br />
+text</p>
+<div class="highlight"><pre><span></span><code><span class="nx">TASK</span><span class="w"> </span><span class="nx">COMPLEXITY</span><span class="w"> </span><span class="nx">ASSESSMENT</span>
+<span class="w">     </span><span class="err">↓</span>
+<span class="err">┌─────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">              </span><span class="nx">TIER</span><span class="w"> </span><span class="nx">SELECTION</span><span class="w"> </span><span class="nx">LOGIC</span><span class="w">               </span><span class="err">│</span>
+<span class="err">├─────────────────────────────────────────────────┤</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">Q1</span><span class="p">:</span><span class="w"> </span><span class="nx">Ultra</span><span class="o">-</span><span class="nx">minimal</span><span class="w"> </span><span class="p">(</span><span class="mi">300</span><span class="nx">MB</span><span class="p">,</span><span class="w"> </span><span class="nx">simple</span><span class="w"> </span><span class="nx">tasks</span><span class="p">)</span><span class="w">        </span><span class="err">│</span>
+<span class="err">│</span><span class="w">      </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="nx">semantic</span><span class="w"> </span><span class="nx">drift</span><span class="w"> </span><span class="nx">detected</span><span class="p">)</span><span class="w">             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">Q4</span><span class="p">:</span><span class="w"> </span><span class="nx">Optimal</span><span class="w"> </span><span class="nx">balance</span><span class="w"> </span><span class="p">(</span><span class="mi">600</span><span class="nx">MB</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="o">%</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">tasks</span><span class="p">)</span><span class="w">      </span><span class="err">│</span>
+<span class="err">│</span><span class="w">      </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="nx">timeout</span><span class="o">/</span><span class="nx">low</span><span class="w"> </span><span class="nx">confidence</span><span class="p">)</span><span class="w">              </span><span class="err">│</span><span class="w"> </span>
+<span class="err">│</span><span class="w">  </span><span class="nx">Q8</span><span class="p">:</span><span class="w"> </span><span class="nx">Strategic</span><span class="w"> </span><span class="nx">fallback</span><span class="w"> </span><span class="p">(</span><span class="mi">800</span><span class="nx">MB</span><span class="p">,</span><span class="w"> </span><span class="nx">complex</span><span class="w"> </span><span class="nx">tasks</span><span class="p">)</span><span class="w">  </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────┘</span>
+<span class="w">     </span><span class="err">↓</span>
+<span class="err">┌─────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">            </span><span class="nx">LOCAL</span><span class="w"> </span><span class="nx">EXECUTION</span><span class="w"> </span><span class="nx">RUNTIME</span><span class="w">              </span><span class="err">│</span>
+<span class="err">├─────────────────────────────────────────────────┤</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">WebAssembly</span><span class="w"> </span><span class="nx">Runtime</span><span class="w"> </span><span class="p">(</span><span class="nx">Browser</span><span class="p">)</span><span class="w">                  </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">OR</span><span class="w">                                             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">llama</span><span class="p">.</span><span class="nx">cpp</span><span class="w"> </span><span class="p">(</span><span class="nx">Native</span><span class="p">)</span><span class="w">                             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">OR</span><span class="w">                                             </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">WebLLM</span><span class="w"> </span><span class="p">(</span><span class="nx">JavaScript</span><span class="p">)</span><span class="w">                            </span><span class="err">│</span>
+<span class="err">│</span><span class="w">                                                 </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="nx">Constraints</span><span class="p">:</span><span class="w">                                   </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="nx">No</span><span class="w"> </span><span class="nx">backend</span><span class="w"> </span><span class="nx">servers</span><span class="w">                           </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="nx">Local</span><span class="w"> </span><span class="nx">inference</span><span class="w"> </span><span class="nx">only</span><span class="w">                         </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="mi">430</span><span class="nx">ms</span><span class="w"> </span><span class="nx">average</span><span class="w"> </span><span class="nx">latency</span><span class="w">                        </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="nx">Memory</span><span class="w"> </span><span class="nx">bounds</span><span class="w"> </span><span class="nx">enforced</span><span class="w">                       </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────┘</span>
+<span class="w">     </span><span class="err">↓</span>
+<span class="nx">RESPONSE</span><span class="w"> </span><span class="nx">OUTPUT</span>
+</code></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="d5">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">D.5 Integrated Fallback Layer</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Figure D.5: Fallback Recovery Paths<br />
+text</p>
+<div class="highlight"><pre><span></span><code><span class="n">TASK</span><span class="w"> </span><span class="n">EXECUTION</span>
+<span class="w">     </span><span class="err">↓</span>
+<span class="n">MONITORING</span><span class="w"> </span><span class="n">LAYER</span>
+<span class="err">┌─────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Semantic</span><span class="w"> </span><span class="n">Drift</span><span class="w"> </span><span class="n">Detection</span><span class="w"> </span><span class="p">(</span><span class="o">&gt;</span><span class="mi">10</span><span class="o">%</span><span class="w"> </span><span class="n">threshold</span><span class="p">)</span><span class="w">      </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Confidence</span><span class="w"> </span><span class="n">Scoring</span><span class="w"> </span><span class="p">(</span><span class="n">below</span><span class="w"> </span><span class="n">fallback</span><span class="w"> </span><span class="n">threshold</span><span class="p">)</span><span class="w">  </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Response</span><span class="w"> </span><span class="n">Timeout</span><span class="w"> </span><span class="p">(</span><span class="o">&gt;</span><span class="n">timeout</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w">              </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Input</span><span class="w"> </span><span class="n">Ambiguity</span><span class="w"> </span><span class="p">(</span><span class="n">unclear</span><span class="w"> </span><span class="n">intent</span><span class="p">)</span><span class="w">               </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────┘</span>
+<span class="w">     </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">detected</span><span class="p">)</span>
+<span class="err">┌─────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">              </span><span class="n">FALLBACK</span><span class="w"> </span><span class="n">SEQUENCE</span><span class="w">                  </span><span class="err">│</span>
+<span class="err">├─────────────────────────────────────────────────┤</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Loop</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">Re</span><span class="o">-</span><span class="n">prompt</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clarification</span><span class="w">            </span><span class="err">│</span>
+<span class="err">│</span><span class="w">    </span><span class="s">&quot;Please specify [missing information]&quot;</span><span class="w">       </span><span class="err">│</span>
+<span class="err">│</span><span class="w">         </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">still</span><span class="w"> </span><span class="n">unclear</span><span class="p">)</span><span class="w">                    </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Loop</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="n">Provide</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">constraints</span><span class="w">         </span><span class="err">│</span>
+<span class="err">│</span><span class="w">    </span><span class="s">&quot;Available options: [list]&quot;</span><span class="w">                  </span><span class="err">│</span>
+<span class="err">│</span><span class="w">         </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">continued</span><span class="w"> </span><span class="n">failure</span><span class="p">)</span><span class="w">                </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="n">Loop</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="n">Safe</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">clear</span><span class="w"> </span><span class="n">limitation</span><span class="w">        </span><span class="err">│</span>
+<span class="err">│</span><span class="w">    </span><span class="s">&quot;Unable to complete. Please try again.&quot;</span><span class="w">      </span><span class="err">│</span>
+<span class="err">└─────────────────────────────────────────────────┘</span>
+<span class="w">     </span><span class="err">↓</span>
+<span class="n">CONTROLLED</span><span class="w"> </span><span class="n">TERMINATION</span>
+</code></pre></div>
+
+<p>Fallback Characteristics:<br />
+- Bounded loops: Maximum 3 recovery attempts<br />
+- Progressive degradation: Each loop reduces complexity<br />
+- Safe termination: Clear limitation acknowledgment<br />
+- Stateless recovery: No dependency on session memory</p>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="gx-block">
+  <div class="gx-card gx-page-block" id="d6">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">D.6 Cross-Layer Integration Diagram</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Figure D.6: Complete MCD Agent Lifecycle<br />
+text</p>
+<div class="highlight"><pre><span></span><code><span class="nv">USER</span><span class="w"> </span><span class="nv">QUERY</span>
+<span class="w">     </span>↓
+┌─────────────────────────────────────────────────┐
+│<span class="w">  </span><span class="nv">PROMPT</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Intent</span><span class="w"> </span><span class="nv">parsing</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Route</span><span class="w"> </span><span class="nv">selection</span><span class="w"> </span>│
+├─────────────────────────────────────────────────┤
+│<span class="w">  </span><span class="nv">CONTROL</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Symbolic</span><span class="w"> </span><span class="nv">routing</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Context</span><span class="w"> </span><span class="nv">mgmt</span><span class="w"> </span>│
+├─────────────────────────────────────────────────┤
+│<span class="w">  </span><span class="nv">EXECUTION</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Q</span><span class="o">-</span><span class="nv">tier</span><span class="w"> </span><span class="nv">selection</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Local</span><span class="w"> </span><span class="k">exec</span><span class="w"> </span>│
+├─────────────────────────────────────────────────┤
+│<span class="w">  </span><span class="nv">FALLBACK</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Error</span><span class="w"> </span><span class="nv">detection</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Recovery</span><span class="w">     </span>│
+└─────────────────────────────────────────────────┘
+<span class="w">     </span>↓
+┌─────────────────────────────────────────────────┐
+│<span class="w">               </span><span class="nv">SUCCESS</span><span class="w"> </span><span class="nv">PATH</span><span class="w">                      </span>│
+│<span class="w">  </span><span class="nv">Task</span><span class="w"> </span><span class="nv">Completion</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Symbolic</span><span class="w"> </span><span class="nv">Response</span><span class="w"> </span><span class="nv">Output</span><span class="w">     </span>│
+└─────────────────────────────────────────────────┘
+<span class="w">     </span><span class="nv">OR</span>
+┌─────────────────────────────────────────────────┐
+│<span class="w">               </span><span class="nv">FALLBACK</span><span class="w"> </span><span class="nv">PATH</span><span class="w">                     </span>│
+│<span class="w">  </span><span class="nv">Controlled</span><span class="w"> </span><span class="nv">Degradation</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Safe</span><span class="w"> </span><span class="k">Exit</span><span class="w"> </span><span class="nv">State</span><span class="w">       </span>│
+└─────────────────────────────────────────────────┘
+</code></pre></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ref">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">References</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>Chapter 4, Section 4.6: MCD Subsystem Definitions<br />
+Chapter 5: Instantiated Agent Design Patterns<br />
+Chapter 6, Tests T1-T10: Empirical validation of layer interactions<br />
+Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p>
+<hr />
+<p>This configuration framework ensures reproducible, statistically valid results while maintaining the ecological validity of real-world deployment constraints. All parameters were optimized for browser-based execution environments typical of edge AI deployment scenarios.</p>
+      </div>
+    </div>
+  </div>
+</div>
+      <!-- Navigation -->
+      <section class="chapter-nav">
+         <nav class="page-nav" aria-label="Page navigation">
+            <a class="nav-link prev" href="c10.html#links" rel="prev">Prev : Chapter 10</a>
+           <a class="nav-link next" href="appe.html" rel="next">Next: Appendix E</a>
+         </nav>
+      </section>
+      
+      <hr class="section-divider">
+    </div>
+
+
+
+
+</div>
+
+					<!-- Sidebar Topics -->
+					<div class="gx-side-overlay"></div>
+					<div class="col-xl-3 col-md-12 gx-topic">
+						<div class="gx-card topic-sidebar">
+							<div class="gx-card-header">
+								<h4 class="gx-card-title">Topics</h4>
+							</div>
+							<div class="gx-card-content gx-topic-list">
+								<nav>
+									<ul class="topic-list">
+<li><a class="topic" href="#part1">Contents Overview</a></li>
+<li><a class="topic" href="#d1">D.1 MCD Three-Layer Architectural Stack</a></li>
+<li><a class="topic" href="#d2">D.2 Prompt Layer Internal Architecture</a></li>
+<li><a class="topic" href="#d3">D.3 Stateless Control Layer Flow</a></li>
+<li><a class="topic" href="#d4">D.4 Execution Layer Quantization Architecture</a></li>
+<li><a class="topic" href="#d5">D.5 Integrated Fallback Layer</a></li>
+<li><a class="topic" href="#d6">D.6 Cross-Layer Integration Diagram</a></li>
+<li><a class="topic" href="#ref">References</a></li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+	</main>
+
+	<!-- Vendor Custom -->
+	<script src="assets/js/vendor/jquery-3.6.4.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/vendor/prism.js"></script>
+	<!-- Main Custom -->
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>

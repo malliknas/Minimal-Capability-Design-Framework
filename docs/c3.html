@@ -1,0 +1,931 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Chapter 3 - MCD">
+	<title>Chapter 3 - MCD</title>
+
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+
+	<!-- Icon CSS -->
+	<link href="assets/css/vendor/materialdesignicons.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/remixicon.css" rel="stylesheet">
+
+	<!-- Vendor -->
+	<link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/prism.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link id="mainCss" href="assets/css/style.css" rel="stylesheet">
+	<style>
+	 /* Light-only document scheme */
+:root{ 
+  color-scheme: only light;
+  /* Core palette */
+  --text:   #1a1a1a;      /* slightly softer than pure black */
+  --text-body: #2d2d2d;   /* body text */
+  --muted:  #6b7280;      /* gray-500 */
+  --bg-soft:#f9fafb;      /* very light grey */
+  --surface:#ffffff;      /* white */
+  --border: #e5e7eb;      /* light divider */
+  --accent: #4b5563;      /* gray-600 */
+}
+
+/* Global base */
+html, body{ 
+  color:var(--text-body); 
+  background:var(--surface); 
+  font-weight:400;
+}
+a{ color:var(--accent); text-decoration:none; font-weight:500; }
+a:hover{ color:var(--text); }
+h1, h2, h3, h4, h5, h6{ color:var(--text) !important; font-weight:600; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* Breadcrumbs */
+.breadcrumb,
+.nav-breadcrumb{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.95rem; color:var(--muted);
+  margin:1rem 0 1.25rem; padding:.5rem .75rem;
+  background:var(--bg-soft); border:1px solid var(--border); border-radius:10px;
+}
+.breadcrumb a, .nav-breadcrumb a{ color:var(--accent); font-weight:500; }
+.breadcrumb a:hover, .nav-breadcrumb a:hover{ text-decoration:underline; }
+.breadcrumb .current, .nav-breadcrumb .current, .nav-breadcrumb strong{ color:var(--text); font-weight:600; }
+.breadcrumb .sep, .nav-breadcrumb .sep{ color:var(--border); user-select:none; }
+.gx-header .breadcrumb{ font-size:clamp(.85rem, .8rem + .2vw, .95rem); padding:.4rem .6rem; }
+
+/* Page navigation */
+.page-nav{
+  margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; text-align:center;
+}
+.page-nav .nav-link{
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1rem; border:1px solid var(--border); border-radius:8px;
+  font-weight:500;
+  box-shadow:0 1px 1px rgba(0,0,0,.02);
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.page-nav .nav-link:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.page-nav .nav-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.page-nav .prev::before{ content:"← "; }
+.page-nav .next::after{ content:" →"; }
+.gx-header .page-nav{ border-top:0; padding-top:0; margin-top:0; }
+.gx-header .page-nav .nav-link{ font-size:clamp(.85rem, .82rem + .18vw, .95rem); padding:.5rem .8rem; }
+
+/* Thesis title */
+.thesis-title{ 
+  color:var(--text) !important; 
+  margin-bottom:0.5rem; 
+  font-size:clamp(1.8rem, 1.4rem + 1.2vw, 2.2rem); 
+  line-height:1.3;
+  font-weight:700;
+}
+.thesis-subtitle{ 
+  color:var(--muted) !important; 
+  font-size:clamp(1rem, .96rem + .3vw, 1.2rem); 
+  font-style:italic; 
+  margin-bottom:1.5rem;
+  line-height:1.4;
+  font-weight:400;
+}
+
+/* Cards */
+.gx-block{ margin-bottom:1rem; }
+.gx-card-content{ padding:1rem 1.25rem; }
+.gx-card-header{ padding:0.75rem 1rem; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.95rem;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1.2rem; border:1px solid var(--border); border-radius:8px;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+}
+.btn:hover{ background:var(--bg-soft); transform:translateY(-1px); color:var(--text); }
+.btn-primary{ background:#4b5563; color:#fff; border-color:#4b5563; }
+.btn-success{ background:#6b7280; color:#fff; border-color:#6b7280; }
+
+/* Code and muted */
+pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(--text); }
+.muted{ color:var(--muted); }
+
+/* Topics sidebar */
+.gx-topic .topic-sidebar{
+  position:sticky; top:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topic-sidebar .gx-card-header{ background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1rem; }
+.topic-sidebar .gx-card-title{ margin:0; color:var(--text); font-size:.95rem; font-weight:600; }
+.topic-sidebar .gx-card-content{ padding:.75rem; max-height:min(70vh, 560px); overflow:auto; }
+.gx-topic .topic-list{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.gx-topic .topic-list a{
+  display:flex; align-items:center; gap:.5rem; line-height:1.2;
+  color:var(--accent); background:transparent; font-weight:450;
+  padding:.5rem .75rem; border:1px solid transparent; border-radius:8px;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.gx-topic .topic-list a:hover{ color:var(--text); background:var(--bg-soft); border-color:var(--border); }
+.gx-topic .topic-list a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.gx-topic .topic-list a.active,
+.gx-topic .topic-list a[aria-current="page"],
+.gx-topic .topic-list a[aria-current="true"]{
+  color:var(--text); background:var(--bg-soft); border-color:var(--border); font-weight:600; position:relative;
+}
+.gx-topic .topic-list a.active::before,
+.gx-topic .topic-list a[aria-current="page"]::before,
+.gx-topic .topic-list a[aria-current="true"]::before{
+  content:""; position:absolute; left:0; top:10%; bottom:10%; width:3px; background:var(--accent); border-radius:3px;
+}
+
+/* Intro content - readable and compact */
+.intro{
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.5;
+  color:var(--text-body);
+}
+
+.intro p{
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;    
+font-feature-settings: "liga", "kern";
+  -webkit-font-feature-settings: "liga", "kern";
+  -moz-font-feature-settings: "liga", "kern";
+  -ms-font-feature-settings: "liga", "kern";
+  -o-font-feature-settings: "liga", "kern";  
+}
+
+
+
+.intro h3{
+  font-size:1.15rem;
+  font-weight:600;
+  color:var(--text);
+  margin:1rem 0 0.5rem;
+  line-height:1.3;
+}
+
+.intro h4{
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--text);
+  margin:0.8rem 0 0.4rem;
+  line-height:1.3;
+}
+
+.intro strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+/* Compact lists with better readability */
+.intro ul,
+.intro ol{
+  margin:0.4rem 0 0.6rem;
+  padding-left:1.25rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin:0.15rem 0;
+  padding-left:0.2rem;
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.45;
+  color:var(--text-body);
+}
+
+.intro ul li::marker{
+  color:var(--muted);
+  font-size:0.75rem;
+}
+
+.intro ol li::marker{
+  color:var(--muted);
+  font-weight:500;
+}
+
+/* Clean, readable tables */
+.intro table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.75rem 0;
+  background:var(--surface);
+  font-size:0.95rem;
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.intro table th{
+  padding:0.6rem 0.75rem;
+  text-align:left;
+  background:var(--bg-soft);
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+  color:var(--text);
+  line-height:1.4;
+}
+
+.intro table td{
+  padding:0.55rem 0.75rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  line-height:1.45;
+  font-weight:400;
+  color:var(--text-body);
+}
+
+.intro table td strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.intro table tbody tr:hover{
+  background:rgba(249, 250, 251, 0.5);
+}
+
+/* Responsive */
+@media (max-width:640px){
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
+</style>
+</head>
+
+<body>
+	<main class="wrapper sb-default">
+		<!-- Loader -->
+		<div id="gx-overlay">
+			<div class="gx-ellipsis">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Header -->
+			<header class="gx-header">
+			<div class="container-fluid">
+				<div class="gx-header-items">
+					<div class="left-header">
+						<a href="javascript:void(0)" class="gx-toggle-sidebar">
+							<span class="outer-ring">
+								<span class="inner-ring"></span>
+							</span>
+						</a>
+						
+					</div>
+					<div class="right-header">
+						<a href="javascript:void(0)" class="btn-topic m-r-5"><i class="ri-menu-2-line"></i></a>
+						<a href="index.html" class="gx-btn-primary">Thesis Home</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- sidebar -->
+		<div class="gx-sidebar-overlay"></div>
+		<div class="gx-sidebar" data-mode="dark">
+			<div class="gx-sb-logo">
+				<a href="index.html" class="sb-full"><img src="assets/img/logo/full-logo.png" alt="logo"></a>
+				<a href="index.html" class="sb-collapse"><img src="assets/img/logo/collapse-logo.png" alt="logo"></a>
+			</div>
+			<div class="gx-sb-wrapper">
+				<div class="gx-sb-content">
+					<ul class="gx-sb-list">
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-item">
+							<a href="index.html" class="gx-page-link">
+								<i class="ri-star-smile-line"></i><span class="condense"><span class="hover-title">Thesis Main Page</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part I: Foundations</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part I: Foundations<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="c1.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 1</a></li>
+								<li class="list"><a href="c2.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 2</a></li>
+								<li class="list"><a href="c3.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 3</a></li>
+									
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part II: The MCD Framework</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part II: The MCD Framework<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								
+								<li class="list"><a href="c4.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 4</a></li>
+								<li class="list"><a href="c5.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 5</a></li>
+											
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part III: Validation, Extension & Conclusion</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part III: Validation, Extension & Conclusion<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+						
+								<li class="list"><a href="c6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 6</a></li>
+								<li class="list"><a href="c7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 7</a></li>
+								<li class="list"><a href="c8.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 8</a></li>
+								<li class="list"><a href="c9.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 9</a></li>
+								<li class="list"><a href="c10.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 10</a></li>			
+							</ul>
+						</li>
+						
+						
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">References</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">References<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="ref.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>References</a></li>
+								
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Appendices</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">Appendices<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="appa6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 6</a></li>
+								<li class="list"><a href="appa7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A & C Chap 7</a></li>
+								<li class="list"><a href="appb.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix B</a></li>
+								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix D</a></li>
+								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix E</a></li>			
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Links</li>
+						<li class="gx-sb-item">
+							<a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Software</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item">
+							<a href="index.html#download" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Download</span> </span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- main content -->
+		<div class="gx-main-content">
+			<div class="container-fluid">
+				<!-- Page title & breadcrumb -->
+				<div class="gx-page-title gx-page-title-2">
+					<div class="gx-breadcrumb">
+						<h5>Chapter 3</h5>
+						<ul>
+							<li><a href="index.html">Thesis Main Page</a></li>
+							<li>Chapter 3</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row sections">
+					<div class="col-xl-9 col-md-12">
+
+    <div class="thesis-intro">
+      <h1 class="thesis-title">Designing Lightweight AI Agents for Edge Deployment</h1>
+      <p class="thesis-subtitle">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+
+<!-- Part I Overview -->
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="part1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">🧱 Part I: Foundations</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ch1-intro">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">📘 Chapter 3: Methodology</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>This chapter outlines the research strategy used to formulate, instantiate, and evaluate the Minimal Capability Design (MCD) framework (Peffers et al., 2007). The methodology combines constructive design—deriving the MCD framework from literature synthesis—with evaluation via constrained simulations and domain walkthroughs (March &amp; Smith, 1995). This design-science approach creates the artifact (the framework) and tests its internal coherence through use-oriented demonstration (Gregor &amp; Hevner, 2013).</p>
+                     
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="3.1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">3.1 Research Design</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>The research is grounded in two complementary paradigms (Creswell &amp; Creswell, 2017):</p>
+<p>Constructive Design: The MCD framework is inductively derived from an extensive literature analysis, grounded in architectural failures and over-engineering patterns observed in existing AI agents (Järvinen, 2007; Kasanen et al., 1993). This process emphasizes abstraction, simplification, and design synthesis over direct empirical comparison.</p>
+<p>Evaluative Demonstration: Rather than proving universal superiority through performance benchmarks, this work validates MCD principles through constraint-resilience testing via progressive resource degradation scenarios (Chapter 6) and domain-specific walkthroughs (Chapter 7) (Venable et al., 2016). This approach specifically measures how agents maintain functionality as computational resources decrease, testing MCD&rsquo;s core hypothesis that predictable constraint-handling outweighs peak performance optimization in edge deployment scenarios (Kang et al., 2023).</p>
+<p>This dual strategy reflects the epistemic stance of design science research: creating an artifact (the MCD framework) and validating its internal coherence and utility through demonstration (Hevner et al., 2004; March &amp; Smith, 1995).</p>
+<table>
+<thead>
+<tr>
+<th>Methodological Element</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework Construction</td>
+<td>Literature-grounded synthesis of design principles.</td>
+</tr>
+<tr>
+<td>Simulation</td>
+<td>Browser-based heuristic stress tests under emulated edge constraints.</td>
+</tr>
+<tr>
+<td>Walkthroughs</td>
+<td>Domain-grounded validation of MCD principles in realistic scenarios.</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>Qualitative comparison of MCD agents against orchestration-heavy design patterns.</td>
+</tr>
+<tr>
+<td>Risk Analysis</td>
+<td>Identification of failure modes related to prompt dependency and architectural brittleness.</td>
+</tr>
+</tbody>
+</table>
+<p>Agent architecture selection (TinyLLMs, symbolic agents, minimal prompt-executors) was informed not by simplicity alone, but through a structured exclusion of over-engineered patterns (e.g., MoE, PEFT-heavy stacks, orchestration-reliant agents) as evaluated in Chapter 2 (Bommasani et al., 2021). Design decisions favor architectures with provable fallback behavior, auditability, and stateless re-instantiation—criteria formalized in the MCD validation matrix (Ribeiro et al., 2016).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="3.2">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">3.2 Literature Synthesis Method</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>The framework&rsquo;s development involved a structured analysis of over 70 academic and industry sources related to lightweight agents, model compression, prompt engineering, stateless inference, and over-engineered toolchains (Webster &amp; Watson, 2002; Vom Brocke et al., 2009).</p>
+<p>Synthesis Protocol:<br />
+This research analyzed 73 peer-reviewed papers and technical reports using a structured approach (Petticrew &amp; Roberts, 2006). Search terms included &ldquo;minimal capability AI,&rdquo; &ldquo;edge agent deployment,&rdquo; &ldquo;prompt minimalism,&rdquo; and &ldquo;lightweight LLM optimization&rdquo; across databases such as ACL Anthology, NeurIPS, ICML, and arXiv, focusing on publications from 2020-2025 (Kitchenham &amp; Charters, 2007). Papers were selected for inclusion based on three criteria: (a) demonstration of lightweight reasoning, (b) deployment or benchmarking on real or simulated edge hardware, and (c) evidence of prompt minimalism or a stateless/lean design philosophy (Braun &amp; Clarke, 2006). Insights were extracted and coded using a three-layer taxonomy: (1) Prompt Layer patterns, (2) Memory management strategies, and (3) Execution optimization techniques (Thomas, 2006). Exclusion criteria eliminated papers focusing solely on cloud-based agents or those without empirical data. This synthesis method directly informed the MCD framework components detailed in Chapters 4-7 (Miles et al., 2013).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="3.3">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">3.3 Simulation Validation Strategy</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>To evaluate the robustness of MCD principles under real-world constraints, a browser-based simulation testbed was created (Li et al., 2024). This setup emulates edge-like conditions (no backend, no persistent memory, no external tools) and allows for controlled interaction with lightweight language models (Xu et al., 2023).</p>
+<p>Simulation Setup:</p>
+<ul>
+<li>Platform: Purely browser-executed LLMs (e.g., WebLLM, Transformers.js, or quantized GGUF models via WebAssembly) to ensure local execution (Haas et al., 2017; Chen et al., 2024).</li>
+<li>Constraints: No backend calls, no server-side memory, and strictly token-limited prompts to mirror edge limitations (Banbury et al., 2021).</li>
+</ul>
+<p>Each simulation scenario is executed in at least three variations to test resilience (Campbell &amp; Stanley, 1963):</p>
+<ul>
+<li>A baseline minimal prompt within a nominal token budget.</li>
+<li>A prompt degradation scenario (symbolic compression, random token removal).</li>
+<li>A fallback-only execution scenario without any prior context.</li>
+</ul>
+<p>For each MCD principle under test, 3–5 runs are conducted per variation, logging token usage, recovery success rate, and failure type to assess robustness (Cohen, 1988).</p>
+<p>Metrics Tracked:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Measurement Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Token Budget Utilization</td>
+<td>Average tokens per successful interaction.</td>
+<td>Measures prompt efficiency.</td>
+</tr>
+<tr>
+<td>Inference Latency</td>
+<td>Time from prompt submission to response completion (ms).</td>
+<td>Assesses real-time viability.</td>
+</tr>
+<tr>
+<td>Memory Load</td>
+<td>Peak browser tab memory usage during inference (MB).</td>
+<td>Validates low-footprint design.</td>
+</tr>
+<tr>
+<td>Recovery Success Rate</td>
+<td>% of successful task completions after prompt degradation.</td>
+<td>Tests fallback robustness.</td>
+</tr>
+<tr>
+<td>Failure Type</td>
+<td>Categorization of errors (e.g., hallucination, context loss).</td>
+<td>Diagnoses architectural weaknesses.</td>
+</tr>
+</tbody>
+</table>
+<p>Constraint-Progression Methodology: Each simulation test implements progressive resource degradation (Q8→Q4→Q1 quantization, token budget reduction, memory limitation) to validate the hypothesis that MCD maintains stable performance while alternative approaches show significant degradation (Jacob et al., 2018; Nagel et al., 2021). This methodology specifically tests constraint-resilience rather than optimal-condition performance, reflecting real-world edge deployment scenarios where resources fluctuate unpredictably (Strubell et al., 2019).</p>
+<p>Threshold Calibration: Token efficiency thresholds were calibrated based on edge deployment constraints where 512-token budgets represent realistic limits (Howard et al., 2017). The 90% recovery success rate threshold reflects reliability requirements for safety-critical applications, while semantic drift detection at 10% deviation provides early warning for capability degradation under constraint conditions where traditional approaches show significant degradation (Amodei et al., 2016).</p>
+<p>The purpose of these simulations is not to benchmark raw task performance but to stress-test the framework&rsquo;s design principles, such as fallback robustness, stateless regeneration, and symbolic prompt sufficiency (Venable et al., 2016).</p>
+<p>Among various optimization strategies surveyed (e.g., pruning, PEFT, distillation), only quantization is implemented in the simulation layer (Dettmers et al., 2022; Frantar et al., 2023). This is due to its runtime applicability without training infrastructure, full compatibility with stateless agents, and its ability to enable multiple capability tiers (1-bit, 4-bit, 8-bit) without retraining or persistent memory overhead (Zafrir et al., 2019). Other techniques—while valuable architecturally—introduce session state, model retracing, or external dependency that violates MCD deployment assumptions. This distinction reflects the design-time trade-off analysis discussed in Chapter 2. Subsequent validation confirms Q4 quantization as optimal for 80% of constraint-bounded reasoning tasks, with Q1→Q4 fallback mechanisms providing safety for ultra-minimal deployments while Q8 represents over-provisioning for most edge scenarios.</p>
+<p>Crucially, validation demonstrates that under progressive constraint pressure, MCD approaches maintain 85% performance retention when quantization drops to Q1, compared to 40% retention for Few-Shot approaches and 25% for conversational methods—validating the constraint-first design philosophy (Sahoo et al., 2024).</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="3.4">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">3.4 Walkthrough Design Method</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>To demonstrate the application of MCD principles in plausible, edge-relevant contexts, two walkthrough scenarios are constructed in Chapter 7 (Yin, 2017). These walkthroughs illustrate how lightweight agents can perform useful tasks without orchestration, external memory, or rich toolchains. The scenarios were chosen because they stress different aspects of MCD (Stake, 1995):</p>
+<ul>
+<li>Healthcare Appointment Booking: Tests structured information handling, slot-filling under tight token constraints, and fallback sufficiency in a high-stakes, dialogue-based task (Berg, 2001).</li>
+<li>Symbolic Navigation: Tests low-bandwidth reasoning, spatial decision-making without persistent maps, and stateless continuity in a more abstract, logic-driven task (Lynch, 1960).</li>
+</ul>
+<p>Together, they provide complementary coverage of structured vs. symbolic task domains (Eisenhardt, 1989).</p>
+<p>Design Attributes:</p>
+<ul>
+<li>Domain Realism: Tasks simulate practical deployments in healthcare or low-bandwidth field robotics (Patton, 2014).</li>
+<li>Resource Constraints: All walkthroughs assume low memory (&lt;256MB RAM), strict token budgets (&lt;512 tokens), and no background APIs (Banbury et al., 2021).</li>
+<li>Evaluation Focus: Rather than solving the task optimally, the walkthroughs highlight failure modes, minimal success criteria, and design trade-offs under MCD principles (Miles et al., 2013).</li>
+</ul>
+<p>Each walkthrough is annotated using the MCD framework&rsquo;s layers (Prompt, Memory, Execution), demonstrating how minimal capability suffices for agent viability in a given context (Braun &amp; Clarke, 2006).</p>
+<p>Constraint-Resilience Emphasis: These criteria specifically measure how well agents maintain functionality under resource pressure, rather than optimizing for peak performance in ideal conditions (Kang et al., 2023). The evaluation framework prioritizes predictable degradation patterns and transparent failure modes over maximum task completion rates (Amodei et al., 2016).</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="3.5">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">3.5 Evaluation Criteria</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>The evaluation of MCD agents relies on qualitative and behavior-driven criteria, emphasizing design principles over raw performance scores (Patton, 2014; Lincoln &amp; Guba, 1985):</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Evaluation Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Capability Sufficiency</td>
+<td>Task completion under the minimal viable architecture.</td>
+</tr>
+<tr>
+<td>Statelessness</td>
+<td>% of correct state reconstructions after a simulated context reset.</td>
+</tr>
+<tr>
+<td>Fallback Robustness</td>
+<td>Success rate after a 30% random token degradation in the prompt.</td>
+</tr>
+<tr>
+<td>Degeneracy Detection</td>
+<td>Absence of unused component calls or empty API scaffolds in the execution trace.</td>
+</tr>
+<tr>
+<td>Token Efficiency</td>
+<td>Average tokens per response must remain below a predefined budget (e.g., 256 tokens).</td>
+</tr>
+<tr>
+<td>Interpretability</td>
+<td>A human reviewer rating of the clarity and logical coherence of the agent&rsquo;s execution trace.</td>
+</tr>
+<tr>
+<td>Design Simplicity</td>
+<td>The number of distinct functional components must not exceed the MCD threshold for the task.</td>
+</tr>
+</tbody>
+</table>
+<p>No agent is expected to excel at every task particularly in resource-abundant scenarios where other approaches may excel (Venable et al., 2016) —rather, the evaluation assesses whether the agent&rsquo;s design remains coherent and functional when subjected to architectural minimality and context degradation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="3.6">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">3.6 Ethical Assumptions and Risks</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <p>This research assumes agents will be deployed in constrained, non-critical environments (IEEE, 2017; Jobin et al., 2019). Nonetheless, ethical considerations are integrated into the framework:</p>
+<p>Failure Transparency: In MCD, stateless agents deliberately omit persistent memory, which can cause silent failures (Barocas et al., 2017). Walkthroughs explicitly surface and log these cases to prevent invisible errors and ensure that system limitations are auditable (Selbst et al., 2019).</p>
+<p>Constraint-Induced Safety: Under resource overload conditions, validation demonstrates that MCD approaches fail transparently (clear limitation acknowledgment) while over-engineered systems exhibit dangerous failure patterns including confident hallucination at 87% rates (Lin et al., 2022). This constraint-safety advantage validates the framework&rsquo;s conservative design philosophy.</p>
+<p>User Misinterpretation: Minimal agents may offer plausible but incorrect responses under prompt limits (Kadavath et al., 2022). The framework includes heuristics that guide prompt design to ensure user awareness of confidence boundaries and system limitations (Ribeiro et al., 2016).</p>
+<p>Security and Privacy: All simulations are local; no real user data or internet tools are invoked (Papernot et al., 2016). The MCD principle of minimalism inherently reduces the attack surface (e.g., fewer dependencies, no data retention), but the framework also mandates that any adaptation to sensitive domains must include additional security layers (Barocas et al., 2017).</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="3.7">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">3.7 Tooling Artifacts and Future Hardware Evaluation</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p>In line with design science methodology, the MCD validation includes diagnostic checklists and agent failure detection matrices (see Appendix E), used both during walkthrough design and retrospective evaluation (Hevner et al., 2004). These artifacts serve to formalize tacit design trade-offs into reusable tooling.</p>
+<p>While not implemented in this thesis, future iterations of MCD agent evaluation are envisioned for hardware environments like the Raspberry Pi 4 and NVIDIA Jetson Nano (NVIDIA, 2020). These tests would track real-time latency, energy consumption, and memory profiles under live execution constraints, grounding the framework&rsquo;s deployment assumptions in empirical data (Banbury et al., 2021).</p>
+<table>
+<thead>
+<tr>
+<th>Device Class</th>
+<th>Recommended Models</th>
+<th>MCD Components Supported</th>
+<th>Max Agent Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ultra-Low Power</td>
+<td>ESP32-S3</td>
+<td>Prompt Layer only</td>
+<td>Single-turn Q&amp;A</td>
+</tr>
+<tr>
+<td>Edge Computing</td>
+<td>Jetson Nano</td>
+<td>All layers</td>
+<td>Multi-turn + RAG</td>
+</tr>
+<tr>
+<td>Browser Runtime</td>
+<td>WebAssembly</td>
+<td>Prompt + Memory</td>
+<td>Stateless dialogue</td>
+</tr>
+</tbody>
+</table>
+<p>Validation Continuity Framework: Browser-based WebAssembly simulation (430ms average latency) provides baseline measurements for ARM device comparison, ensuring that constraint-resilience findings translate to real hardware deployment scenarios (Haas et al., 2017). This methodology bridges controlled validation with practical deployment requirements.</p>
+<p>Tooling Differentiator Table</p>
+<table>
+<thead>
+<tr>
+<th>Optimization Tool</th>
+<th>MCD Compatibility</th>
+<th>Runtime Dependency</th>
+<th>Design Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quantization (Q1–Q8)</td>
+<td>✅ High</td>
+<td>❌ None</td>
+<td>Enables tiered fallback and edge runtime</td>
+</tr>
+<tr>
+<td>Distillation</td>
+<td>❌ Low</td>
+<td>✅ Training infra</td>
+<td>Requires teacher models and session state</td>
+</tr>
+<tr>
+<td>PEFT (e.g., LoRA)</td>
+<td>❌ Low</td>
+<td>✅ Persistent modules</td>
+<td>Adds latency and memory fragility</td>
+</tr>
+<tr>
+<td>Pruning</td>
+<td>⚠️ Medium</td>
+<td>⚠️ Requires retraining</td>
+<td>Potential loss of logical structure</td>
+</tr>
+<tr>
+<td>Adaptive Computation</td>
+<td>❌ Low</td>
+<td>✅ Dynamic graphing</td>
+<td>Incompatible with stateless inference</td>
+</tr>
+</tbody>
+</table>
+<p>Of these, only quantization maintains minimal architectural complexity while enabling runtime adaptability, making it the default MCD-aligned optimization (Jacob et al., 2018).</p>
+<p>Empirical deployment will also help contrast quantized agents with their PEFT and distilled counterparts in future extensions of MCD (Hu et al., 2021; Hinton et al., 2015).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="roadmap">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">Next Part Preview</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <h3>🧱 Part II: The MCD Framework</h3>
+<p>Part II introduces the core contribution of this thesis: the Minimal Capability Design (MCD) framework. This section defines MCD’s conceptual underpinnings (Chapter 4) and then instantiates it as a practical, deployable agent architecture (Chapter 5).</p>
+<p>Unlike traditional agent stacks that add memory, orchestration, and redundancy by default, MCD is a design-first approach grounded in statelessness, prompt sufficiency, and failure-resilient minimalism.</p>
+<p>This part lays the architectural groundwork upon which simulation and walkthrough validations in Part III are built.</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+      
+      <!-- Navigation -->
+      <section class="chapter-nav">
+         <nav class="page-nav" aria-label="Page navigation">
+           <a class="nav-link prev" href="c2.html" rel="prev">Prev : Chapter 2</a>
+           <a class="nav-link next" href="c4.html" rel="next">Next: Chapter 4</a>
+         </nav>
+      </section>
+      
+      <hr class="section-divider">
+    </div>
+
+
+
+
+</div>
+
+					<!-- Sidebar Topics -->
+					<div class="gx-side-overlay"></div>
+					<div class="col-xl-3 col-md-12 gx-topic">
+						<div class="gx-card topic-sidebar">
+							<div class="gx-card-header">
+								<h4 class="gx-card-title">Topics</h4>
+							</div>
+							<div class="gx-card-content gx-topic-list">
+								<nav>
+									<ul class="topic-list">
+<li><a class="topic" href="#ch1-intro">Chapter 3: Methodology</a></li>
+<li><a class="topic" href="#3.1">3.1 Research Design</a></li>
+<li><a class="topic" href="#3.2">3.2 Literature Synthesis Method</a></li>
+<li><a class="topic" href="#3.3">3.3 Simulation Validation Strategy</a></li>
+<li><a class="topic" href="#3.4">3.4 Walkthrough Design Method</a></li>
+<li><a class="topic" href="#3.5">3.5 Evaluation Criteria</a></li>
+<li><a class="topic" href="#3.6">3.6 Ethical Assumptions and Risks</a></li>
+<li><a class="topic" href="#3.7">3.7 Tooling Artifacts and Future Hardware Evaluation</a></li>
+<li><a class="topic" href="#roadmap">Next Part Preview</a></li>
+
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+	</main>
+
+	<!-- Vendor Custom -->
+	<script src="assets/js/vendor/jquery-3.6.4.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/vendor/prism.js"></script>
+	<!-- Main Custom -->
+	<script src="assets/js/main.js"></script>
+	
+</body>
+
+</html>
