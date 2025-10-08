@@ -282,6 +282,74 @@ font-feature-settings: "liga", "kern";
 }
 
 </style>
+<style>
+/* Responsive table wrapper */
+.table-responsive {
+  margin: 20px 0;
+  width: 100%;
+}
+
+/* Desktop (769px and above): Normal full-width behavior */
+@media (min-width: 769px) {
+  .table-responsive {
+    overflow-x: visible; /* No scroll on desktop */
+  }
+  
+  .table-responsive table {
+    width: 100%;
+    table-layout: auto;
+    white-space: normal; /* Allow text wrapping */
+  }
+}
+
+/* Tablet and Mobile (768px and below): Enable scrolling */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px -15px; /* Extend to screen edges */
+    border-radius: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .table-responsive table {
+    min-width: 600px; /* Force horizontal scroll for wide tables */
+    width: auto;
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+  
+  .table-responsive th,
+  .table-responsive td {
+    padding: 8px 10px !important;
+  }
+  
+  /* Visual indicator for swipe on mobile */
+  .table-responsive::after {
+    content: '← Swipe to see more →';
+    display: block;
+    text-align: center;
+    padding: 8px;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-style: italic;
+  }
+}
+
+/* Extra small mobile (480px and below) */
+@media (max-width: 480px) {
+  .table-responsive table {
+    font-size: 0.75rem;
+    min-width: 500px;
+  }
+  
+  .table-responsive th,
+  .table-responsive td {
+    padding: 6px 8px !important;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -841,6 +909,23 @@ Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p
 	<script src="assets/js/vendor/prism.js"></script>
 	<!-- Main Custom -->
 	<script src="assets/js/main.js"></script>
+		<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tables = document.querySelectorAll('table');
+  
+  tables.forEach(function(table) {
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'table-responsive';
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+  
+  console.log(`Wrapped ${tables.length} tables for responsive behavior`);
+});
+</script>
+	
 </body>
 
 </html>
