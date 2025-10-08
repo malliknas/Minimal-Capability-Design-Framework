@@ -5,6 +5,17 @@
 *A browser-based research framework supporting the thesis on resource-efficient LLM deployment strategies through systematic quantization tier validation and domain-specific walkthrough analysis*
 
 ***
+## 📖 **Supporting Academic Thesis**
+
+> **🎓 This repository implements the validation framework for the complete academic thesis:**
+> ### **[Read Full Thesis →](https://malliknas.github.io/Minimal-Capability-Design-Framework)**
+>
+> The thesis presents the complete **Minimal Capability Design (MCD) methodology** with theoretical foundations, literature review, and research contributions. This repository provides the **empirical validation tools** that generate the supporting evidence and data presented throughout the thesis.
+
+**Key Integration:**
+- **Thesis Chapters 6-7** ↔ **T1-T10 Tests + W1-W3 Domain Walkthroughs**  
+- **Thesis Appendices** ↔ **Automated Research Data Export**  
+- **Academic Framework** ↔ **Browser-Based Interactive Validation**
 
 ## 📋 **Table of Contents**
 
