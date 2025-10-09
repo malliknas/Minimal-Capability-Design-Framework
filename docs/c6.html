@@ -1291,11 +1291,38 @@ Extended natural baselines illustrate that comprehensive narratives are viable i
 <p>These findings support constraint-resilient design principles that systematic fallback patterns enable reliable recovery with optimal resource utilization in edge‑like environments.</p>
 <h4>Quantitative Performance Summary with Cross-Validation</h4>
 <p>Resource-Efficient Recovery Performance: Structured fallback achieved 100% recovery rate while consuming 7% fewer tokens (66 vs 71 average) and 21% faster processing (1300ms vs 1072ms) compared to conversational approaches under identical constraint conditions.</p>
-<p>Recovery Performance Matrix:<br />
-| Approach       | Recovery Rate   | Avg Tokens | Avg Latency | Resource Efficiency | Constraint Resilience |<br />
-|----------------|------------------|-----------:|------------:|---------------------|-----------------------|<br />
-| Structured MCD | 5/5 (100%)       |         66 |      1300ms | ✅ Optimized        | ✅ High               |<br />
-| Conversational | 5/5 (100%)       |         71 |      1072ms | ⚠️ Moderate         | ⚠️ Resource-dependent |</p>
+<h4>Recovery Performance Matrix</h4>
+<table>
+     <thead>
+    <tr>
+      <th>Approach</th>
+      <th>Recovery Rate</th>
+      <th>Avg Tokens</th>
+      <th>Avg Latency</th>
+      <th>Resource Efficiency</th>
+      <th>Constraint Resilience</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Structured MCD</td>
+      <td>5/5 (100%)</td>
+      <td>66</td>
+      <td>1300ms</td>
+      <td>✅ Optimized</td>
+      <td>✅ High</td>
+    </tr>
+    <tr>
+      <td>Conversational</td>
+      <td>5/5 (100%)</td>
+      <td>71</td>
+      <td>1072ms</td>
+      <td>⚠️ Moderate</td>
+      <td>⚠️ Resource-dependent</td>
+    </tr>
+  </tbody>
+</table>
+
 <p>Research Contribution: This analysis validates that constraint-resilient recovery design can achieve equivalent task effectiveness to conversational approaches while optimizing computational resource utilization – demonstrating that systematic information gathering provides reliable fallback mechanisms suitable for resource-constrained edge deployments without compromising recovery success rates.</p>
       </div>
     </div>
@@ -1380,11 +1407,38 @@ Extended natural baselines illustrate that comprehensive narratives are viable i
 <p>This aligns with constraint-resilience principles that systematic context management creates deployment-independent reliability, while implicit approaches remain effective in resource-permitting stateful systems.</p>
 <h4>Quantitative Performance Summary with Cross-Validation</h4>
 <p>Resource-Efficient Context Management: Structured context reinjection achieved 100% task completion with complete context preservation using 7% additional tokens (120 vs 112 average), while implicit reference achieved equivalent task success with superior token efficiency but inference-dependent context reconstruction.</p>
-<p>Multi-Turn Performance Matrix:<br />
-| Approach        | Task Success   | Avg Tokens | Context Completeness | Resource Efficiency | Deployment Resilience |<br />
-|-----------------|----------------|-----------:|----------------------|---------------------|-----------------------|<br />
-| Structured MCD  | 5/5 (100%)     |        120 | ✅ Complete          | ⚠️ Moderate        | ✅ High               |<br />
-| Implicit Reference | 5/5 (100%)  |        112 | ⚠️ Inference-Dependent | ✅ High           | ⚠️ Model-Dependent   |</p>
+<h4>Multi-Turn Performance Matrix</h4>
+<table>
+    <thead>
+    <tr>
+      <th>Approach</th>
+      <th>Task Success</th>
+      <th>Avg Tokens</th>
+      <th>Context Completeness</th>
+      <th>Resource Efficiency</th>
+      <th>Deployment Resilience</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Structured MCD</td>
+      <td>5/5 (100%)</td>
+      <td>120</td>
+      <td>✅ Complete</td>
+      <td>⚠️ Moderate</td>
+      <td>✅ High</td>
+    </tr>
+    <tr>
+      <td>Implicit Reference</td>
+      <td>5/5 (100%)</td>
+      <td>112</td>
+      <td>⚠️ Inference-Dependent</td>
+      <td>✅ High</td>
+      <td>⚠️ Model-Dependent</td>
+    </tr>
+  </tbody>
+</table>
+
 <p>Research Contribution: This analysis validates that constraint-resilient context management enables deployment-independent multi-turn reliability through systematic information reinjection, while implicit approaches provide equivalent task effectiveness with better resource efficiency in inference-capable environments - demonstrating context-dependent optimization strategies for different deployment constraints (Campbell &amp; Stanley, 1963).</p>
       </div>
     </div>
