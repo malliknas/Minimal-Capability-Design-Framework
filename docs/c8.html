@@ -731,17 +731,22 @@ MCD agents achieve a significantly lower resource footprint by design—primaril
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>A core MCD heuristic is establishing capability sufficiency: the minimum architectural capability required to complete a task within bounded tokens, without memory, and without tool orchestration (Simon, 1955; Kahneman, 2011).</p>
-<p>Measurement Approach:<br />
-This threshold is derived from the Prompt Budget Collapse simulation (T3). The process involves progressively compressing prompts until critical information loss occurs and recording the token threshold where task fidelity drops below an acceptable level (Min et al., 2022). Applying this across different domains helps define sufficiency boundaries.</p>
-<p>Example Findings:<br />
-- Appointment Booking (Walkthrough 1): 80% success rate under Q4 conditions, maintaining 75% performance retention under Q1 constraint pressure—demonstrating constraint-resilience advantages compared to 40% retention for Few-Shot approaches under identical conditions (31.0 avg tokens, n=75).<br />
-- Symbolic Navigation (Walkthrough 2): Context-dependent performance validated through systematic domain testing, with stable token usage patterns across constraint tiers.<br />
-- Prompt Diagnostics (Walkthrough 3): Systematic prompt optimization demonstrated through iterative compression testing within established token boundaries.</p>
-<p>Constraint-Resilience Validation: 85% performance retention when quantization drops to Q1, compared to 40% retention for Few-Shot and 25% for conversational approaches (T6, validated across domains).</p>
-<p>Observed Trade-offs:<br />
-Shorter prompts increase efficiency but risk omitting crucial semantic anchors (Liu et al., 2023). The optimal “just-enough” prompt length varies by task domain complexity, confirming the need for a task-specific approach to minimalism (Sahoo et al., 2024). These sufficiency findings are made feasible by the use of quantized models tuned for prompt efficiency. Without the memory overhead or retrieval latency of full-stack agents, these models offer bounded reasoning aligned with stateless, minimal execution.</p>
+        <p>Capability sufficiency denotes the minimum combination of model tier and prompt compactness needed to complete a task under a bounded‑token, stateless setup without external tools or memory, matching the quantized tier design and stateless agents used in these evaluations (Kahneman, 2011).</p>
+<p><strong>Measurement approach</strong></p>
+<p>Sufficiency is estimated via redundancy and plateau probes that compress or expand prompts while tracking semantic fidelity and efficiency, primarily through T6 capability‑plateau diagnostics and T1 prompt‑length ablations rather than T3, which targets ambiguous input recovery in this corpus.<br /> The procedure iteratively compresses prompts until fidelity degradation is observed, records the token threshold at the inflection point, and repeats across tasks to derive domain‑specific sufficiency bands instead of asserting a single universal token budget.</p>
+<p><strong>Example findings</strong></p>
+<ul>
+<li>Appointment Booking (D1): Per‑variant runs typically use trials, with tier‑ and prompt‑strategy‑dependent success in the approximate range and average tokens varying by variant and tier rather than clustering at a single value.</li>
+<li>Spatial Navigation (D2): Performance is context‑dependent, with explicit, constraint‑aware prompts showing more stable behavior than free‑form or conversational patterns across tiers.</li>
+<li>Failure Diagnostics (D3): Structured extraction prompts under constrained tiers achieve acceptable outcomes in small samples, illustrating that sufficiency depends on task structure and prompt explicitness.</li>
+</ul>
 <p>These sufficiency thresholds demonstrate statistical reliability (p&lt;0.001, n=75 per domain) validated through the systematic test battery (T1-T10), confirming the 90-token capability plateau across multiple task categories.</p>
+<p><strong>Constraint resilience</strong></p>
+<p>Constraint‑resilience is assessed by comparing retention across quantization tiers using tiering/fallback mechanics (T10) and safety‑bounded execution (T7), where retention from Q4 to Q1 is modest and often shows a performance gap, implying lower tiers require stricter prompt minimalism and clearer constraints to maintain fidelity.<br /> Constraint-Resilience Validation: 85% performance retention when quantization drops to Q1, compared to 40% retention for Few-Shot and 25% for conversational approaches (T6, validated across domains).</p>
+<p>Retention also varies by task type and prompt style, underscoring the need for per‑domain calibration.</p>
+<p><strong>Observed trade‑offs</strong></p>
+<p> Shorter prompts increase efficiency but risk omitting crucial semantic anchors (Liu et al., 2023). The optimal &ldquo;just-enough&rdquo; prompt length varies by task domain complexity, confirming the need for a task-specific approach to minimalism (Sahoo et al., 2024). These sufficiency findings are made feasible by the use of quantized models tuned for prompt efficiency. Without the memory overhead or retrieval latency of full-stack agents, these models offer bounded reasoning aligned with stateless, minimal execution.</p>
+
       </div>
     </div>
   </div>
@@ -761,10 +766,8 @@ Shorter prompts increase efficiency but risk omitting crucial semantic anchors (
       <div class="intro">
        <p>A core observation from both the simulations (T6) and the real-world walkthroughs (Case 3) is that unnecessary prompt complexity reduces clarity without improving correctness (Basili et al., 1994). To quantify this, the framework uses the Redundancy Index (RI).</p>
 <p>Metric — Redundancy Index (RI):</p>
-<div class="highlight"><pre><span></span><code>RI=Excess TokensMarginal Correctness Improvement
-RI = \frac{\text{Excess Tokens}}{\text{Marginal Correctness Improvement}}
-RI=Marginal Correctness ImprovementExcess Tokens
-</code></pre></div>
+<div class="highlight"><pre>Redundancy Index (RI) </br>
+RI = Excess Tokens ÷ Marginal Correctness Improvement</pre></div>
 
 <p>Where:<br />
 Excess Tokens = tokens beyond the minimal sufficiency length.<br />
