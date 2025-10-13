@@ -636,6 +636,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 <p>Quantization-Based Optimization: All evaluations utilize quantized models (Q1/Q4/Q8) as established in Chapter 5, maintaining consistency with constrained deployment scenarios while enabling fair comparison across approaches under identical resource limitations (Dettmers et al., 2022; Nagel et al., 2021).</p>
 
 <p>Implementation Sophistication Spectrum: The framework explicitly accounts for varying levels of prompt engineering expertise required, from simple single-strategy implementations to advanced multi-strategy coordination requiring sophisticated ML engineering capabilities.</p>
+<p><strong>Prompt Architecture Design Note</strong>: The MCD Structured implementations in this chapter follow the domain-specific adaptation patterns established in Section 5.2.1, which distinguished between dynamic slot-filling logic (W1: Healthcare Booking), deterministic spatial calculation (W2: Navigation), and dynamic heuristic classification (W3: Diagnostics). Each MCD prompt structure leverages symbolic routing tailored to task characteristics, as theoretically defined in Chapter 5's instantiation framework. This ensures that MCD's constraint-first design principles are applied consistently across domains while adapting to variable information density (W1), structured coordinate systems (W2), and complexity-driven classification (W3)[reference to Section 5.2.1].</p>
       </div>
     </div>
   </div>
@@ -707,9 +708,10 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
        <p>Detailed inputs & outputs in Appendix A & C for Chap 7</p>
 	   <p>Context: Medical appointment scheduling demonstrating performance under progressive constraint pressure across quantization tiers (Berg, 2001).</p>
 
-<h4 id="multi-strategy-comparative-implementation">Multi-Strategy Comparative Implementation</h4>
+<h4 id="multi-strategy-comparative-implementation">Multi-Strategy Comparative Implementation</h4><br />
 
-<p><strong>Approach A - MCD Structured Implementation:</strong>
+<p><strong>Approach A - MCD Structured Implementation:</strong><br />
+Design Rationale (from Section 5.2.1): This MCD implementation employs dynamic slot-filling logic that adapts based on user input completeness, requiring symbolic intent parsing to conditionally identify missing appointment slots ([doctor_type, date, time]) and request specific information. This adaptive routing is necessary because natural language appointment requests vary unpredictably in information density, as detailed in the Chapter 5 instantiation framework.<br /><br />
 Task: Extract appointment slots {doctor_type, date, time}<br />
 Rules: Complete slots → "Confirmed: [type], [date] [time]. ID: #[ID]"<br />
 Missing slots → "Missing: [slots] for [type] appointment"<br />
@@ -717,7 +719,8 @@ Constraints: No conversational elements, structured extraction focus<br />
 Performance: 4/5 task completion (80%), 31.0 avg tokens, 1724ms latency<br />
 Strengths: Predictable failure patterns, transparent limitation acknowledgment<br />
 Limitations: Higher latency overhead, one failure on ambiguous input ("Book something tomorrow")<br />
-Implementation: Simple (95% engineering accessibility)</p>
+Implementation: Simple (95% engineering accessibility)
+</p>
 
 <p><strong>Approach B - Conversational Natural Interaction:</strong>
 You are a friendly medical appointment assistant. Help patients schedule<br />
@@ -790,9 +793,10 @@ Implementation: Advanced (75% engineering accessibility)</p>
        <p>Detailed inputs & outputs in Appendix A & C for Chap 7</p>
 	   <p>Context: Indoor navigation with real-time obstacle avoidance demonstrating performance under progressive constraint pressure across quantization tiers (Q1/Q4 dynamic selection).</p>
 
-<h4 id="multi-strategy-comparative-implementation-2">Multi-Strategy Comparative Implementation</h4>
+<h4 id="multi-strategy-comparative-implementation-2">Multi-Strategy Comparative Implementation</h4><br />
 
 <p><strong>Approach A - MCD Structured Implementation:</strong><br />
+Design Rationale (from Section 5.2.1): This MCD implementation uses deterministic spatial transformation rules based on coordinate-based logic rather than natural language parsing. As established in Section 5.2.1, navigation operates on structured coordinate systems with fixed spatial relationships, enabling mathematical directional calculations (North/South/East/West) that follow predictable patterns. While implemented through MCD's stateless architecture for consistency, the underlying logic could theoretically be hardcoded as coordinate transformation functions.<br /><br />
 Navigate: Parse coordinates [start]→[target], identify obstacles<br />
 Output format: "Direction+Distance+Obstacles"<br />
 Constraints: Structured spatial logic, max 20 tokens, no explanations<br />
@@ -873,9 +877,10 @@ MCD's navigation strength lies in structured spatial reasoning reliability under
         <p>Detailed inputs & outputs in Appendix A & C for Chap 7</p>
 		<p>Context: System troubleshooting with complexity scaling demonstrating diagnostic accuracy under progressive constraint pressure across quantization tiers (Basili et al., 1994).</p>
 
-<h4 id="multi-strategy-comparative-implementation-3">Multi-Strategy Comparative Implementation</h4>
+<h4 id="multi-strategy-comparative-implementation-3">Multi-Strategy Comparative Implementation</h4><br />
 
 <p><strong>Approach A - MCD Structured Implementation:</strong><br />
+Design Rationale (from Section 5.2.1): This MCD implementation requires dynamic heuristic classification logic that routes based on issue complexity and available diagnostic information. As detailed in the Chapter 5 instantiation framework, diagnostics demand adaptive pattern matching across multiple categories ([category, priority, diagnostic_steps]) with varying step sequences depending on issue type, requiring symbolic routing that adapts to diagnostic information availability.<br /><br />
 Task: Classify system issues into {category, priority, diagnostic_steps}<br />
 Rules: P1/P2/P3 priority → "Category: [type], Priority: [level], Steps: [sequence]"<br />
 Missing info → "Insufficient data for [category] classification"<br />
@@ -1196,19 +1201,20 @@ This positioning reinforces MCD's role as the reliable diagnostic baseline for e
 <tr>
   <td>Appointment Booking</td>
   <td>Multi-strategy prompting, fallback design</td>
-  <td>T1, T4, T9</td>
+  <td><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>
+, <a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a></td>
   <td>Brown et al. (2020), Shuster et al. (2022), Nakajima et al. (2023)</td>
 </tr>
 <tr>
   <td>Spatial Navigation</td>
   <td>Symbolic compression, bounded rationality, multi-strategy coordination</td>
-  <td>T2, T5, T7</td>
+  <td><a href="c6.html#t2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T2</a>, <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>, <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a></td>
   <td>Alayrac et al. (2022), Zhou et al. (2022), Simon (1972)</td>
 </tr>
 <tr>
   <td>Failure Diagnostics</td>
   <td>Expert-pattern synthesis, heuristic evaluation, multi-layer analysis</td>
-  <td>T3, T5, T6</td>
+  <td><a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>, <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>, <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a></td>
   <td>Basili et al. (1994), Min et al. (2022), Zhou et al. (2022)</td>
 </tr>
 </tbody>

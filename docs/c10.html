@@ -653,9 +653,9 @@ The simulations confirmed that compact, capability-focused prompts can achieve n
 <p><strong>Statelessness is Viable:</strong><br />
 Stateless fallback and recovery loops were shown to successfully sustain task completion even under degraded or ambiguous inputs, demonstrating the robustness of the Stateless Regeneration approach (Anthropic, 2024).</p>
 <p><strong>Failure Modes are Predictable:</strong><br />
-The primary failure modes emerged in multi-turn semantic drift and over-compressed symbolic inputs, confirming that the most significant risks in MCD are related to context management, not a lack of capability (Amodei et al., 2016). Safe-failure behaviour (0% hallucinations vs 87% for verbose agents under overload) was verified in T7 stress tests. [Chapter 6]</p>
+The primary failure modes emerged in multi-turn semantic drift and over-compressed symbolic inputs, confirming that the most significant risks in MCD are related to context management, not a lack of capability (Amodei et al., 2016). Safe-failure behaviour (0% hallucinations vs 87% for verbose agents under overload) was verified in <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> stress tests. [Chapter 6]</p>
 <p><strong>Over-Engineering Reduces Performance:</strong><br />
-The walkthroughs confirmed the Capability Plateau observations from the simulations (T6), showing that over-engineered prompts often waste tokens without improving accuracy (Strubell et al., 2019).</p>
+The walkthroughs confirmed the Capability Plateau observations from the simulations (<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>), showing that over-engineered prompts often waste tokens without improving accuracy (Strubell et al., 2019).</p>
 <p><strong>Optimization Scope Confirmed in Practice:</strong><br />
 The simulations validated that quantized models (especially Q4 and Q8) could deliver predictable behavior under edge constraints without needing dynamic fine-tuning or toolchains, confirming the selection of quantization as the optimal first-tier MCD-compatible strategy. Future MCD implementations may also leverage domain-specific Small Language Models as base models, potentially achieving superior Q4 performance in specialized tasks while preserving architectural independence and stateless execution principles.</p>
 <p>Across the ten-test simulation battery (T1-T10) and Walkthrough tests, MCD demonstrated constraint-resilience advantages with a 2.1:1 reliability ratio under resource pressure conditions, maintaining 75-80% task completion when alternative approaches degraded to 40-60% success rates under identical Q1 constraint scenarios, with p &lt; 0.001 significance (Field, 2013).</p>
@@ -666,7 +666,7 @@ Constraint-native design approach. Unlike post-hoc optimization strategies that
 <p>Empirical validation demonstrates this approach yields measurable advantages:<br />
 - 2.1:1 constraint-resilience advantage compared to verbose frameworks under Q1/Q4 resource pressure (T1-T10 validation)<br />
 - 2.6:1 token efficiency while maintaining task success rates (Chapter 6)<br />
-- Zero dangerous failures versus 87% hallucination rate in over-engineered systems under resource pressure (T7 analysis)</p>
+- Zero dangerous failures versus 87% hallucination rate in over-engineered systems under resource pressure (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> analysis)</p>
 <p><strong>Deployment Context Differentiation</strong><br />
 MCD targets deployment environments that existing frameworks cannot address:<br />
 - Resource-constrained platforms: ESP32 microcontrollers (4MB RAM), embedded medical devices, air-gapped systems, and browser-based applications with WebAssembly constraints.<br />
@@ -801,52 +801,52 @@ This work demonstrates that architectural minimalism can outperform complexity�
 <tr>
 <td>Core Problem</td>
 <td>Over-engineering and resource abundance assumptions make most modern AI agents undeployable at the edge</td>
-<td>T7 stress testing: 87% failure rate</td>
+<td><a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> stress testing: 87% failure rate</td>
 </tr>
 <tr>
 <td>Proposed Solution</td>
 <td>The Minimal Capability Design (MCD) framework&mdash;a constraint-first methodology for designing stateless, prompt-driven, and robust agents</td>
-<td>T1-T10: 2.1:1 reliability advantage under constraints</td>
+<td><a href="c6.html" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-<a href="c6.html" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>: 2.1:1 reliability advantage under constraints</td>
 </tr>
 <tr>
 <td>Key Findings</td>
 <td>Minimalist agents are viable and robust for many edge tasks; over-engineering often reduces performance; stateless regeneration is practical</td>
-<td>T6 plateau, T4 regeneration (96%)</td>
+<td><a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> plateau, <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> regeneration (96%)</td>
 </tr>
 <tr>
 <td>Optimization Focus</td>
 <td>Quantization selected as first-tier method due to alignment with stateless execution and deployment constraints</td>
-<td>T10 tier validation: Q4 optimal</td>
+<td><a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a> tier validation: Q4 optimal</td>
 </tr>
 <tr>
 <td>Primary Contribution</td>
 <td>A formal, validated, and extensible design framework that enables interpretable and efficient AI agents for edge environments</td>
-<td>W1-W3 domain applications</td>
+<td><a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1-W3</a> domain applications</td>
 </tr>
 <tr>
 <td>Architecture Design</td>
 <td>Three-layer stateless agent template with fail-safe control loops and symbolic routing</td>
-<td>T5 symbolic navigation, W2 success</td>
+<td><a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a> symbolic navigation, <a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> success</td>
 </tr>
 <tr>
 <td>Safety Validation</td>
 <td>Safe failure modes with transparent limitation acknowledgment vs. confident incorrect responses</td>
-<td>T7: 0% vs 87% hallucination rates</td>
+<td><a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>: 0% vs 87% hallucination rates</td>
 </tr>
 <tr>
 <td>Efficiency Metrics</td>
 <td>Token-efficient operation with measurable capability boundaries and predictable degradation patterns</td>
-<td>T1-T3: 2.62:1 token efficiency</td>
+<td><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>: 2.62:1 token efficiency</td>
 </tr>
 <tr>
 <td>Deployment Context</td>
 <td>Browser-WebAssembly validation as proxy for ARM-based edge device constraints and performance</td>
-<td>T8: 430ms average latency baseline</td>
+<td><a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>: 430ms average latency baseline</td>
 </tr>
 <tr>
 <td>Future Extensions</td>
 <td>Hybrid architectures and hardware validation while preserving core minimalist principles</td>
-<td>T4 context limits inform W1-W3 gaps</td>
+<td><a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> context limits inform <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1-W3</a> gaps</td>
 </tr>
 <tr>
 <td>Model-Agnostic Design</td>

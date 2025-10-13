@@ -633,7 +633,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 - -  Q8 serves as a high-precision fallback in sustained load scenarios.</p>
 <p>Future testing may include partially quantized or mixed-precision architectures as hybrid agents are explored (Frantar et al., 2023).</p>
 <h4>9.1.2 Hardware-Coupled Metrics and Benchmarking</h4>
-<p>Future validation of the MCD framework will include hardware-coupled metrics using these environments. Diagnostics from the simulations (e.g., T8, T9) will be directly correlated with on-device measurements to test the predictive robustness of the framework&rsquo;s fallback and redundancy heuristics (Field, 2013).</p>
+<p>Future validation of the MCD framework will include hardware-coupled metrics using these environments. Diagnostics from the simulations (e.g., <a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>, <a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>) will be directly correlated with on-device measurements to test the predictive robustness of the framework&rsquo;s fallback and redundancy heuristics (Field, 2013).</p>
 <p>Table 9.1: Proposed Metrics for Hardware-Coupled Benchmarking</p>
 <table>
 <thead>
@@ -668,10 +668,11 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 </table>
 <p>Validation-Grounded Metrics:<br />
 Browser-based validation established baseline thresholds that can guide hardware benchmarking (Strubell et al., 2019):<br />
-- 90-token capability plateau (T6) → Hardware energy consumption measurement at semantic saturation<br />
+- 90-token capability plateau (<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>) → Hardware energy consumption measurement at semantic saturation<br />
 - 2.1 : 1 reliability advantage under constraint conditions (T1-T10) → Real-world efficiency validation under ARM constraints<br />
-- ≈ 80% Q4 completion (W1/W2/W3) → Quantization tier validation on Jetson Nano vs ESP32-S3<br />
-- 0% vs 87% failure modes (T7) → Safety validation under hardware thermal constraints</p>
+- ≈ 80% Q4 completion (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>/<a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>/<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>
+) → Quantization tier validation on Jetson Nano vs ESP32-S3<br />
+- 0% vs 87% failure modes (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>) → Safety validation under hardware thermal constraints</p>
 <p>These figures hold at p &lt; 0.001 across n = 5 runs per domain</p>
 <p>Validation Continuity Framework:<br />
 Browser-based WebAssembly simulation (430ms average latency) provides baseline for ARM device comparison:<br />
@@ -808,9 +809,10 @@ MCD architectural principles (stateless execution, fallback safety, degeneracy d
 </ul>
 <p>Empirically Calibrated Self-Optimization:<br />
 Validation provides specific thresholds for auto-minimal agent design:<br />
-- Redundancy Index &gt; 0.5 triggers automatic prompt compression (T6 validation)<br />
-- Token efficiency &lt; 2.6:1 activates degeneracy detection pruning (T1-T3 efficiency metrics) <br />
-- Semantic drift &gt; 10% initiates fallback tier selection (T5, T10 drift thresholds)<br />
+- Redundancy Index &gt; 0.5 triggers automatic prompt compression (<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> validation)<br />
+- Token efficiency &lt; 2.6:1 activates degeneracy detection pruning (<a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>
+ efficiency metrics) <br />
+- Semantic drift &gt; 10% initiates fallback tier selection (<a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>, <a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a> drift thresholds)<br />
 - 90-token plateau detection prevents unnecessary complexity expansion (universal pattern)</p>
 <h4>9.3.2 Anticipated Benefits</h4>
 <ul>

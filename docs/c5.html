@@ -625,7 +625,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>The prompt-only agent is guided by a minimal architecture pattern documented in Appendix D (Ribeiro et al., 2016). This template explicitly omits orchestration layers and persistent state, conforming to the MCD Layered Model from Chapter 4 (Singh et al., 2023). The core of this instantiation is a fail-safe control loop where prompt logic serves as the decision tree (Mitchell, 2019).</p>
+        <p>The prompt-only agent is guided by a minimal architecture pattern documented in Appendix D. This template explicitly omits orchestration layers and persistent state, conforming to the MCD Layered Model from Chapter 4 (Singh et al., 2023). The core of this instantiation is a fail-safe control loop where prompt logic serves as the decision tree (Mitchell, 2019).</p>
 
 <p>This fail-safe design means that each loop iteration either terminates with a symbolic &lsquo;exit&rsquo; state, re-prompts the user for clarification, or degrades into a predefined default behavior (Amodei et al., 2016). No persistent state is assumed between turns. This instantiation directly applies the Prompt Layer (4.3.1), and its reliance on statelessness is evaluated via the Memory Layer tests (4.6.2). Its structure is a concrete application of the Minimality by Default principle (4.2.3).</p>
 <p>System-Wide Principle Application:<br />
@@ -655,7 +655,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 - Intent Identification: The prompt itself is structured to parse the user&rsquo;s intent (Brown et al., 2020).<br />
 - Decision Delegation: The agent uses token patterns to route tasks. For example, it encodes decision branches as token-level cues (e.g., &lsquo;If intent contains booking, delegate to appointment_slot_logic&rsquo;) (Kojima et al., 2022).<br />
 - Task Routing: The agent uses a minimal symbolic input to trigger the correct execution path (Shinn et al., 2023).</p>
-<p>These symbolic decisions are evaluated in Chapter 6 under the Prompt Routing test (T3) to verify their capability under compressed prompt windows (Min et al., 2022).</p>
+<p>These symbolic decisions are evaluated in Chapter 6 under the Prompt Routing test (<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>) to verify their capability under compressed prompt windows (Min et al., 2022).</p>
 <p>A sample agent prompt implementing executable routing might look like:</p>
 <div class="highlight"><pre><span></span><code><span class="nl">System</span><span class="p">:</span><span class="w"> </span><span class="n">You</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">lightweight</span><span class="w"> </span><span class="n">stateless</span><span class="w"> </span><span class="n">assistant</span><span class="p">.</span>
 <span class="nl">User</span><span class="p">:</span><span class="w"> </span><span class="n">I</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">book</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">appointment</span><span class="p">.</span>
@@ -666,9 +666,108 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 </code></pre></div>
 
 <p>This structure uses symbolic token decisions to implement stateless routing logic (Sahoo et al., 2024).</p>
-<p>Validation Preview: This symbolic routing approach demonstrates constraint-resilience in healthcare appointment scenarios (W1), maintaining 80% success rate under standard conditions while achieving 75% performance retention under Q1 constraint pressure—compared to 40% retention for Few-Shot and 25% for conversational approaches under identical constraint conditions. T4 testing validates 96% context preservation in stateless reconstruction, confirming the effectiveness of token-level decision logic.</p>
+<p>Validation Preview: This symbolic routing approach demonstrates constraint-resilience in healthcare appointment scenarios (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>), maintaining 80% success rate under standard conditions while achieving 75% performance retention under Q1 constraint pressure—compared to 40% retention for Few-Shot and 25% for conversational approaches under identical constraint conditions. <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> testing validates 96% context preservation in stateless reconstruction, confirming the effectiveness of token-level decision logic.</p>
 <p>Beyond Prompt Engineering:<br />
 This approach represents Bounded Rationality applied to decision architecture—symbolic routing constrains computational pathways within minimal token boundaries, eliminating the need for complex orchestration layers that would violate resource constraints in edge deployment scenarios (Xu et al., 2023).</p>
+<hr>
+<h3><strong>5.2.1 Domain-Specific Prompt Adaptation Patterns</strong></h3>
+
+<p>The symbolic routing logic introduced above manifests differently across the three domain-specific walkthroughs in Chapter 7, revealing fundamental differences in how MCD prompts must adapt to task characteristics (Yin, 2017). Understanding these adaptation patterns clarifies when dynamic intent parsing versus deterministic rule execution is necessary under constraint-first design principles.</p>
+
+<h3>Dynamic Slot-Filling: Healthcare Appointment Booking (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>)</h3>
+
+<p>The healthcare booking agent implements dynamic slot-filling logic that adapts based on user input completeness:</p>
+
+<p><strong>MCD Structured Implementation:</strong></p>
+<pre>
+Task: Extract appointment slots [doctortype, date, time]
+Rules: Complete slots → "Confirmed [type, date, time]. ID [ID]"
+       Missing slots → "Missing [slots] for [type] appointment"
+</pre>
+
+<p><strong>Adaptive Behavior:</strong></p>
+<pre>
+Input: "I want to book an appointment" → Output: "Missing [time, date, type] for appointment"
+Input: "Cardiology tomorrow at 2pm" → Output: "Confirmed Cardiology, tomorrow, 2PM. ID [generated]"
+</pre>
+
+<p>This dynamic routing is necessary because natural language appointment requests vary unpredictably in information density. The prompt must conditionally identify missing slots and request specific information, requiring symbolic intent parsing at runtime (Brown et al., 2020).</p>
+
+<h3>Deterministic Spatial Logic: Indoor Navigation (<a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>)</h3>
+
+<p>In contrast, the navigation agent uses coordinate-based transformation rules that follow predictable spatial logic:</p>
+
+<p><strong>MCD Structured Implementation:</strong></p>
+<pre>
+Navigate: Parse coordinates [start→target], identify [obstacles]
+Output format: Direction→Distance→Obstacles
+Constraints: Structured spatial logic, max 20 tokens, no explanations
+</pre>
+
+<p><strong>Semi-Static Behavior:</strong></p>
+<pre>
+Input: "Navigate from A1 to B3" → Output: "North 2m, East 1m"
+Input: "A1 to B3, avoid C2" → Output: "North 2m (avoid C2), East 1m"
+</pre>
+
+<p>This deterministic approach is viable because navigation operates on structured coordinate systems with fixed spatial relationships. The directional calculations (North/South/East/West) from coordinate pairs follow mathematical rules rather than requiring natural language interpretation (Lynch, 1960). While implemented through MCD's stateless prompt architecture for consistency, the underlying logic could theoretically be hardcoded as coordinate transformation functions.</p>
+
+<h3>Dynamic Classification: System Diagnostics (<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>)</h3>
+
+<p>System diagnostics require heuristic classification logic that routes based on issue complexity:</p>
+
+<p><strong>MCD Structured Implementation:</strong></p>
+<pre>
+Task: Classify system issues into [category, priority, diagnosticsteps]
+Rules: P1→P2→P3 priority | Category [type], Priority [level], Steps [sequence]
+       Missing info → "Insufficient data for [category] classification"
+</pre>
+
+<p><strong>Adaptive Behavior:</strong></p>
+<pre>
+Input: "Server crash" → Output: "Category: Infrastructure, Priority: P1, Steps: [Check logs→services→hardware]"
+Input: "Something's slow" → Output: "Insufficient data for classification"
+</pre>
+
+<p>This dynamic classification adapts based on diagnostic information availability, requiring heuristic pattern matching across multiple categories and priority levels with varying step sequences depending on issue type (Basili et al., 1994).</p>
+
+<h3>Architectural Implications for MCD Design</h3>
+
+<p><strong>Table 5.2: Prompt Adaptation Pattern Classification</strong></p>
+
+<table border="1">
+<tr>
+    <th>Walkthrough</th>
+    <th>Prompt Type</th>
+    <th>Adaptation Mechanism</th>
+    <th>Design Rationale</th>
+</tr>
+<tr>
+    <td><a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1: Healthcare Booking</a></td>
+    <td>Dynamic</td>
+    <td>Conditional slot extraction with variable missing-data prompts</td>
+    <td>Natural language request variability requires runtime intent parsing</td>
+</tr>
+<tr>
+    <td><a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2: Spatial Navigation</a></td>
+    <td>Semi-Static</td>
+    <td>Deterministic coordinate calculations with fixed directional rules</td>
+    <td>Structured spatial relationships enable mathematical transformation logic</td>
+</tr>
+<tr>
+    <td><a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3: System Diagnostics</a>
+</td>
+    <td>Dynamic</td>
+    <td>Heuristic category routing with priority-based step sequencing</td>
+    <td>Issue complexity variation demands adaptive classification paths</td>
+</tr>
+</table>
+
+<p>This pattern distinction demonstrates a critical MCD principle: constraint-first design must match prompt logic complexity to task structure (Kahneman, 2011). Over-engineering navigation with dynamic NLP parsing wastes tokens; under-engineering diagnostics with hardcoded rules fails to handle variable issue patterns. <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> and <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> implement symbolic routing that adapts to user intent, while <a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> leverages deterministic logic where task structure permits (Kojima et al., 2022).</p>
+
+<p><strong>Cross-Reference to Validation:</strong> These adaptation patterns are empirically validated through comparative strategy testing in Chapter 7, where MCD's structured approaches achieve 75-80% performance retention under Q1 constraint pressure compared to 25-40% for conversational baselines (detailed in Sections 7.2-7.4).</p>
+
+
       </div>
     </div>
   </div>
@@ -688,9 +787,9 @@ This approach represents Bounded Rationality applied to decision architecture—
       <div class="intro">
         <p>To operate without persistent memory, context is anchored entirely within the prompt using several techniques (Lewis et al., 2020; Thoppilan et al., 2022):<br />
 - Declarative Token Packing: Semantically rich content is transformed into token-efficient representations (e.g., an appointment request becomes [intent: book], [time: today], [specialty: neuro]) (Radford et al., 2021).<br />
-- Token Window Budgeting: Each prompt is budgeted using a formula: total_window = core_logic_tokens + fallback_tokens + input_compression_tokens (Howard et al., 2017). This budget is typically constrained to 128–256 tokens for browser-based WebLLM deployments. For example, in the Drone Navigation walkthrough (Ch. 7), waypoint data is expressed as compressed spatial tokens like [N, 2], [E, 3] instead of verbose instructions, preserving space for fallback logic.<br />
+- Token Window Budgeting: Each prompt is budgeted using a formula: total_window = core_logic_tokens + fallback_tokens + input_compression_tokens (Howard et al., 2017). This budget is typically constrained to 128–256 tokens for browser-based WebLLM deployments. For example, in the Drone Navigation walkthrough <a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">-W2</a> (Ch. 7), waypoint data is expressed as compressed spatial tokens like [N, 2], [E, 3] instead of verbose instructions, preserving space for fallback logic.<br />
 - Symbol Compression for Inference: If total_window exceeds the pre-set budget, the Capability Plateau Detector (4.5) is invoked to flag potential prompt bloat (Perez et al., 2022).</p>
-<p>This token efficiency is validated in T1 and T5 in Chapter 6, ensuring the design remains within deployment constraints (Li et al., 2024).</p>
+<p>This token efficiency is validated in <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a> and <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a> in Chapter 6, ensuring the design remains within deployment constraints (Li et al., 2024).</p>
       </div>
     </div>
   </div>
@@ -712,7 +811,7 @@ This approach represents Bounded Rationality applied to decision architecture—
 - Re-prompting for clarification.<br />
 - Controlled failure and safe exits.<br />
 - Stateless retry logic.</p>
-<p>These fallback flows are mapped using failure diagrams (Appendix D) and validated using the loop complexity and semantic collapse diagnostics in Appendix E (Basili et al., 1994). For example, the appointment booking agent&rsquo;s Loop 2 recovery (see Table 5.1) maps to the Redundancy Index thresholds defined in simulation test T6. Citing a real example from Chapter 7, the agent maps the input &lsquo;I want to book something for tomorrow&rsquo; to a symbolic routing node: {intent: &lsquo;appointment_booking&rsquo;, time: &lsquo;tomorrow&rsquo;}, which is encoded directly in the prompt logic.</p>
+<p>These fallback flows are mapped using failure diagrams (Appendix D) and validated using the loop complexity and semantic collapse diagnostics in Appendix E (Basili et al., 1994). For example, the appointment booking agent&rsquo;s Loop 2 recovery (see Table 5.1) maps to the Redundancy Index thresholds defined in simulation test <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>. Citing a real example from Chapter 7, the agent maps the input &lsquo;I want to book something for tomorrow&rsquo; to a symbolic routing node: {intent: &lsquo;appointment_booking&rsquo;, time: &lsquo;tomorrow&rsquo;}, which is encoded directly in the prompt logic.</p>
 <p>Table 5.1: Example Fallback Recovery for Appointment Booking Agent (Ch. 7)</p>
 <table>
 <thead>
@@ -741,7 +840,7 @@ This approach represents Bounded Rationality applied to decision architecture—
 </tbody>
 </table>
 <p>Empirical Fallback Validation:<br />
-Structured fallback loops achieve 83% recovery from degraded inputs compared to 41% for free-form conversational approaches (T3) (Ouyang et al., 2022). The two-loop maximum prevents semantic drift while maintaining 420ms average resolution time, validating bounded recovery design (T9).</p>
+Structured fallback loops achieve 83% recovery from degraded inputs compared to 41% for free-form conversational approaches (<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>) (Ouyang et al., 2022). The two-loop maximum prevents semantic drift while maintaining 420ms average resolution time, validating bounded recovery design (<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>).</p>
       </div>
     </div>
   </div>
