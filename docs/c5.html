@@ -626,16 +626,14 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     <div class="gx-card-content">
       <div class="intro">
         <p>The prompt-only agent is guided by a minimal architecture pattern documented in Appendix D (Ribeiro et al., 2016). This template explicitly omits orchestration layers and persistent state, conforming to the MCD Layered Model from Chapter 4 (Singh et al., 2023). The core of this instantiation is a fail-safe control loop where prompt logic serves as the decision tree (Mitchell, 2019).</p>
-<p>Figure 5.2: MCD Agent Control Loop (Stateless Template)</p>
-<p>Flow: User Query → Intent Router → Decision Prompt → Execution Prompt → Fallback Handler (if needed)</p>
-<p>Label: &ldquo;Agent loop operating without persistent memory or external toolchains.&rdquo;</p>
+
 <p>This fail-safe design means that each loop iteration either terminates with a symbolic &lsquo;exit&rsquo; state, re-prompts the user for clarification, or degrades into a predefined default behavior (Amodei et al., 2016). No persistent state is assumed between turns. This instantiation directly applies the Prompt Layer (4.3.1), and its reliance on statelessness is evaluated via the Memory Layer tests (4.6.2). Its structure is a concrete application of the Minimality by Default principle (4.2.3).</p>
 <p>System-Wide Principle Application:<br />
 - The stateless template embodies all three MCD principles simultaneously (Strubell et al., 2019):<br />
 - Bounded Rationality: Each control loop iteration operates within fixed token budgets, preventing runaway reasoning chains<br />
 - Degeneracy Detection: The template systematically excludes orchestration layers, persistent databases, and external tool dependencies unless specific failure cases demand them<br />
 - Minimality by Default: The architecture begins with zero external dependencies, adding only essential components validated through constraint testing</p>
-<p>Figure 5.3: MCD Agent Lifecycle (A visual diagram illustrating the agent&rsquo;s path from receiving a query, through internal prompt routing and potential fallback loops, to final task completion or safe exit.)</p>
+
       </div>
     </div>
   </div>

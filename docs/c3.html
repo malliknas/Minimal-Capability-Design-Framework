@@ -766,20 +766,18 @@ This research analyzed 73 peer-reviewed papers and technical reports using a str
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>To demonstrate the application of MCD principles in plausible, edge-relevant contexts, two walkthrough scenarios are constructed in Chapter 7 (Yin, 2017). These walkthroughs illustrate how lightweight agents can perform useful tasks without orchestration, external memory, or rich toolchains. The scenarios were chosen because they stress different aspects of MCD (Stake, 1995):</p>
-<ul>
-<li>Healthcare Appointment Booking: Tests structured information handling, slot-filling under tight token constraints, and fallback sufficiency in a high-stakes, dialogue-based task (Berg, 2001).</li>
-<li>Symbolic Navigation: Tests low-bandwidth reasoning, spatial decision-making without persistent maps, and stateless continuity in a more abstract, logic-driven task (Lynch, 1960).</li>
-</ul>
-<p>Together, they provide complementary coverage of structured vs. symbolic task domains (Eisenhardt, 1989).</p>
-<p>Design Attributes:</p>
-<ul>
-<li>Domain Realism: Tasks simulate practical deployments in healthcare or low-bandwidth field robotics (Patton, 2014).</li>
-<li>Resource Constraints: All walkthroughs assume low memory (&lt;256MB RAM), strict token budgets (&lt;512 tokens), and no background APIs (Banbury et al., 2021).</li>
-<li>Evaluation Focus: Rather than solving the task optimally, the walkthroughs highlight failure modes, minimal success criteria, and design trade-offs under MCD principles (Miles et al., 2013).</li>
-</ul>
-<p>Each walkthrough is annotated using the MCD framework&rsquo;s layers (Prompt, Memory, Execution), demonstrating how minimal capability suffices for agent viability in a given context (Braun &amp; Clarke, 2006).</p>
-<p>Constraint-Resilience Emphasis: These criteria specifically measure how well agents maintain functionality under resource pressure, rather than optimizing for peak performance in ideal conditions (Singh et al., 2023). The evaluation framework prioritizes predictable degradation patterns and transparent failure modes over maximum task completion rates (Amodei et al., 2016).</p>
+        <p>Chapter 7 demonstrates MCD principles through <strong>three domain-specific walkthroughs</strong> using comparative multi-strategy evaluation (Yin, 2017). Each domain tests MCD against four alternative prompt engineering approaches (Conversational, Few-Shot Pattern, System Role Professional, Hybrid Multi-Strategy) under progressive resource pressure across quantization tiers (Q1/Q4/Q8).</p>
+<p><strong>Domain Selection</strong></p>
+<p><strong>Healthcare Appointment Booking:</strong> Tests structured slot-filling extraction, dialogue completion under tight token constraints, and predictable failure patterns in high-stakes medical contexts (Berg, 2001).</p>
+<p><strong>Symbolic Indoor Navigation:</strong> Tests stateless spatial reasoning, coordinate processing without persistent maps, and safety-critical decision-making where route hallucination poses liability risks (Lynch, 1960).</p>
+<p><strong>System Diagnostics:</strong> Tests heuristic classification under complexity scaling, bounded diagnostic scope, and transparent limitation acknowledgment when data is insufficient (Basili et al., 1994).</p>
+<p>Together, these domains cover structured extraction, symbolic reasoning, and heuristic classification tasktypes under resource constraints (Eisenhardt, 1989).</p>
+<p><strong>Methodological Framework</strong></p>
+<p><strong>Constraints:</strong> All walkthroughs simulate edge deployment with &lt;256MB RAM, &lt;512 token budgets, and no external APIs or persistent storage (Banbury et al., 2021).</p>
+<p><strong>Models:</strong> Quantized general-purpose LLMs (Q1: Qwen2-0.5B, Q4: TinyLlama-1.1B, Q8: Llama-3.2-1B) maintain consistency with Chapter 6 architecture (Dettmers et al., 2022).</p>
+<p><strong>Evaluation:</strong> Rather than optimal task performance, walkthroughs prioritize <strong>constraint-resilience evaluation</strong>: predictable degradation patterns under resource pressure (Q4&rarr;Q1 transitions), transparent failure modes that acknowledge capability boundaries rather than hallucinating, and production-reliability trade-offs between peak performance and constraint-tolerance (Amodei et al., 2016; Singh et al., 2023).</p>
+<p><strong>Scope Note</strong></p>
+<p>Walkthroughs employ generalized implementations demonstrating MCD architectural principles rather than domain-specific optimization. Domain enhancements (medical databases, SLAM algorithms, code parsers) would improve performance but fall outside the constraint-first architecture validation scope (Venable et al., 2016).</p>
       </div>
     </div>
   </div>
@@ -910,47 +908,116 @@ This research analyzed 73 peer-reviewed papers and technical reports using a str
 <table>
 <thead>
 <tr>
-<th>Optimization Tool</th>
-<th>MCD Compatibility</th>
-<th>Runtime Dependency</th>
-<th>Design Justification</th>
+<td>
+<p><strong>Optimization Tool</strong></p>
+</td>
+<td>
+<p><strong>MCD Compatibility</strong></p>
+</td>
+<td>
+<p><strong>Runtime Dependency</strong></p>
+</td>
+<td>
+<p><strong>Design Justification</strong></p>
+</td>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Quantization (Q1–Q8)</td>
-<td>✅ High</td>
-<td>❌ None</td>
-<td>Enables tiered fallback and edge runtime</td>
+<td>
+<p>Quantization (Q1&ndash;Q8)</p>
+</td>
+<td>
+<p>✅ High</p>
+</td>
+<td>
+<p>❌ None</p>
+</td>
+<td>
+<p>Enables tiered fallback and edge runtime</p>
+</td>
 </tr>
 <tr>
-<td>Distillation</td>
-<td>❌ Low</td>
-<td>✅ Training infra</td>
-<td>Requires teacher models and session state</td>
+<td>
+<p>Small Language Models (SLMs)</p>
+</td>
+<td>
+<p>✅ High</p>
+</td>
+<td>
+<p>❌ None</p>
+</td>
+<td>
+<p>Domain specialization with parameter efficiency at model level</p>
+</td>
 </tr>
 <tr>
-<td>PEFT (e.g., LoRA)</td>
-<td>❌ Low</td>
-<td>✅ Persistent modules</td>
-<td>Adds latency and memory fragility</td>
+<td>
+<p>Distillation</p>
+</td>
+<td>
+<p>❌ Low</p>
+</td>
+<td>
+<p>✅ Training infra</p>
+</td>
+<td>
+<p>Requires teacher models and session state</p>
+</td>
 </tr>
 <tr>
-<td>Pruning</td>
-<td>⚠️ Medium</td>
-<td>⚠️ Requires retraining</td>
-<td>Potential loss of logical structure</td>
+<td>
+<p>PEFT (e.g., LoRA)</p>
+</td>
+<td>
+<p>❌ Low</p>
+</td>
+<td>
+<p>✅ Persistent modules</p>
+</td>
+<td>
+<p>Adds latency and memory fragility</p>
+</td>
 </tr>
 <tr>
-<td>Adaptive Computation</td>
-<td>❌ Low</td>
-<td>✅ Dynamic graphing</td>
-<td>Incompatible with stateless inference</td>
+<td>
+<p>Pruning</p>
+</td>
+<td>
+<p>⚠️ Medium</p>
+</td>
+<td>
+<p>⚠️ Requires retraining</p>
+</td>
+<td>
+<p>Potential loss of logical structure</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Adaptive Computation</p>
+</td>
+<td>
+<p>❌ Low</p>
+</td>
+<td>
+<p>✅ Dynamic graphing</p>
+</td>
+<td>
+<p>Incompatible with stateless inference</p>
+</td>
 </tr>
 </tbody>
 </table>
-<p>Of these, only quantization maintains minimal architectural complexity while enabling runtime adaptability, making it the default MCD-aligned optimization (Jacob et al., 2018).</p>
-<p>Empirical deployment will also help contrast quantized agents with their PEFT and distilled counterparts in future extensions of MCD (Hu et al., 2021; Hinton et al., 2015).</p>
+<p>Of these,&nbsp;<strong>quantization and Small Language Models</strong>&nbsp;maintain minimal architectural complexity while enabling runtime adaptability. Quantization achieves efficiency through post-training compression across tiers (Q1/Q4/Q8), while SLMs achieve similar goals through domain-focused pre-training and parameter reduction (Belcak et al., 2025). Both approaches align naturally with MCD's stateless, constraint-first design principles without requiring persistent modules or dynamic runtime infrastructure, making them the primary MCD-aligned optimization strategies (Jacob et al., 2018; Microsoft Research, 2024).</p>
+<p><strong>SLM-Specific Characteristics:</strong></p>
+<ul>
+<li>Domain specialization eliminates unused general capabilities at model architecture level</li>
+<li>Parameter efficiency (30M-3.8B parameters) supports edge deployment constraints</li>
+<li>Pre-trained models require no runtime adaptation infrastructure</li>
+<li>Compatible with MCD statelessness and fallback safety principles</li>
+</ul>
+<p>However,&nbsp;<strong>empirical validation of purpose-built SLMs</strong>&nbsp;(e.g., Phi-3-mini, SmolLM) was not conducted in this research. The simulations and walkthroughs utilized quantized general-purpose LLMs (Chapters 6-7), making SLM-MCD integration validation an important direction for future research (Hu et al., 2021; Hinton et al., 2015).</p>
       </div>
     </div>
   </div>
