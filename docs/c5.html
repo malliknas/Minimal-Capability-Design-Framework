@@ -900,20 +900,15 @@ Structured fallback loops achieve 83% recovery from degraded inputs compared to 
 <h4><strong>Q1 Ultra-Minimal Simulation Protocol</strong></h4>
 <p>Since true 1-bit quantized LLMs remain technically infeasible as of 2024 (though emerging research suggests future viability), Q1 conditions are simulated through architectural constraints that functionally replicate extreme quantization effects rather than actual bit-precision reduction (Haas et al., 2017). This simulation protocol creates a conservative constraint boundary that tests framework resilience beyond currently available quantization implementations (Jacob et al., 2018; Nagel et al., 2021).</p>
 <p>The Q1 tier enforces the following constraints:</p>
-<ul>
-<li>
-<p><strong>Token budget constraint:</strong>&nbsp;&le;16 tokens maximum per interaction</p>
-</li>
-<li>
-<p><strong>Deterministic decoding:</strong>&nbsp;Top-1 greedy selection (temperature = 0)</p>
-</li>
-<li>
-<p><strong>Stateless enforcement:</strong>&nbsp;Zero context retention between interactions</p>
-</li>
-<li>
-<p><strong>Latency simulation:</strong>&nbsp;Introduces realistic edge processing delays</p>
-</li>
-</ul>
+
+<p>Token budget constraint:&nbsp;&le;16 tokens maximum per interaction</p>
+
+<p>Deterministic decoding:&nbsp;Top-1 greedy selection (temperature = 0)</p>
+
+<p>Stateless enforcement:&nbsp;Zero context retention between interactions</p>
+
+<p>Latency simulation:&nbsp;Introduces realistic edge processing delays</p>
+
 <p>By simulating 1-bit conditions through deterministic decoding and extreme token budgets, this approach ensures MCD principles remain valid even as hardware capabilities advance toward true 1-bit inference (Dettmers et al., 2022; Frantar et al., 2023). The simulation approximates the resource scarcity and performance characteristics expected from ultra-low-precision quantization without requiring actual 1-bit hardware implementations, enabling systematic validation of constraint-resilience under conditions that exceed current deployment limitations (Zafrir et al., 2019).</p>
       </div>
     </div>
