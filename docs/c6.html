@@ -762,6 +762,7 @@ System Layer (T7-T10): Architecture &amp; Performance
 
 <h4>Quantization-Aware Testing:</h4>
 <p>Rather than testing on single models, the framework systematically evaluates across three quantization tiers representing different constraint levels:</p>
+<p>Table 6.2: Empirical tier specification</p>
 <table>
   <thead>
     <tr>
@@ -793,7 +794,7 @@ System Layer (T7-T10): Architecture &amp; Performance
   </tbody>
 </table>
 <p>This tiered evaluation enables dynamic capability matching - selecting the minimum viable tier for each task type, a core MCD principle (Jacob et al., 2018).</p>
-
+<p>The architectural tier framework (Table 5.2) defines theoretical capability boundaries across deployment contexts, while the empirical testing specification (Table 6.2) identifies specific model implementations used for systematic validation in Chapter 6.</p>
 <h4>Evaluation Framing</h4>
 <p>The evaluation presented compares Minimal Capability Design (MCD) agents with non-MCD variants across a series of controlled, constraint-aware tests (T1–T9) (Venable et al., 2016).</p>
 <p>The objective is not to claim universal superiority of MCD, but to assess how its principles perform under stateless, resource-bounded, and edge-deployment conditions (Bommasani et al., 2021).</p>
