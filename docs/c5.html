@@ -733,7 +733,7 @@ Input: "Something's slow" → Output: "Insufficient data for classification"
 
 <h3>Architectural Implications for MCD Design</h3>
 
-<p><strong>Table 5.2: Prompt Adaptation Pattern Classification</strong></p>
+<caption><strong>Table 5.1: Prompt Adaptation Pattern Classification</strong></caption>
 
 <table border="1">
 <tr>
@@ -812,7 +812,7 @@ Input: "Something's slow" → Output: "Insufficient data for classification"
 - Controlled failure and safe exits.<br />
 - Stateless retry logic.</p>
 <p>These fallback flows are mapped using failure diagrams (Appendix D) and validated using the loop complexity and semantic collapse diagnostics in Appendix E (Basili et al., 1994). For example, the appointment booking agent&rsquo;s Loop 2 recovery (see Table 5.1) maps to the Redundancy Index thresholds defined in simulation test <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>. Citing a real example from Chapter 7, the agent maps the input &lsquo;I want to book something for tomorrow&rsquo; to a symbolic routing node: {intent: &lsquo;appointment_booking&rsquo;, time: &lsquo;tomorrow&rsquo;}, which is encoded directly in the prompt logic.</p>
-<p>Table 5.1: Example Fallback Recovery for Appointment Booking Agent (Ch. 7)</p>
+<caption>Table 5.2: Example Fallback Recovery for Appointment Booking Agent (Ch. 7)</caption>
 <table>
 <thead>
 <tr>
@@ -859,7 +859,7 @@ Structured fallback loops achieve 83% recovery from degraded inputs compared to 
     <div class="gx-card-content">
       <div class="intro">
         <p>To rigorously explore minimal capability agents, we formalize a three-tier capability structure based on quantization levels that reflects real-world deployment constraints (Jacob et al., 2018; Nagel et al., 2021) ––</p>
-<p>Table 5.2: Architectural tier framework</p>		
+<caption>Table 5.3: Architectural tier framework</caption>		
 <table>
 <thead>
 <tr>
@@ -890,21 +890,31 @@ Structured fallback loops achieve 83% recovery from degraded inputs compared to 
 </tr>
 </tbody>
 </table>
-<p>Constraint-Progressive Validation: This tiered structure enables systematic testing of constraint-resilience—measuring how agents maintain functionality as resources decrease from Q8 (optimal conditions) through Q4 (realistic constraints) to Q1 (extreme limitations) (Dettmers et al., 2022). Unlike traditional benchmarking that measures peak performance, this approach validates reliability under progressive resource degradation.</p>
+<p>Constraint-Progressive Validation: This tiered structure enables systematic testing of constraint-resilience—measuring how agents maintain functionality across progressive capability tiers. Unlike traditional benchmarking that optimizes for peak performance (Q8), MCD validates minimal sufficiency by testing whether lower tiers (Q1/Q4) achieve equivalent task completion with superior resource efficiency. (Dettmers et al., 2022).</p>
 <p>Architectural Minimality Across Tiers:<br />
 - Each tier implements Minimality by Default through progressive capability restriction (Frantar et al., 2023):<br />
 - Q1: Ultra-minimal baseline with zero external dependencies<br />
 - Q4: Optimal balance maintaining MCD principles while enabling practical deployment<br />
 - Q8: Strategic fallback preserving minimalist architecture while providing recovery capability</p>
 <p>Degeneracy Detection operates across all tiers, systematically removing unused computational pathways regardless of available resources (Zafrir et al., 2019).</p>
-<h4>Q1 Ultra-Minimal Simulation Protocol</h4>
-<p>Since true 1-bit quantized LLMs remain technically infeasible, Q1 conditions are simulated through architectural constraints that approximate extreme quantization effects (Haas et al., 2017):<br />
-- Token budget constraint: ≤16 tokens maximum per interaction<br />
-- Deterministic decoding: Top-1 greedy selection (temperature = 0)<br />
-- Stateless enforcement: Zero context retention between interactions<br />
-- Latency simulation: Introduces realistic edge processing delays</p>
-<p>This simulation protocol creates a controlled minimal boundary that tests framework resilience under extreme resource scarcity without requiring actual 1-bit hardware implementations.</p>
-<p>These simulate extreme quantization latency and loss, even though no actual 1-bit LLM exists yet.</p>
+<h4><strong>Q1 Ultra-Minimal Simulation Protocol</strong></h4>
+<p>Since true 1-bit quantized LLMs remain technically infeasible as of 2024 (though emerging research suggests future viability), Q1 conditions are simulated through architectural constraints that functionally replicate extreme quantization effects rather than actual bit-precision reduction (Haas et al., 2017). This simulation protocol creates a conservative constraint boundary that tests framework resilience beyond currently available quantization implementations (Jacob et al., 2018; Nagel et al., 2021).</p>
+<p>The Q1 tier enforces the following constraints:</p>
+<ul>
+<li>
+<p><strong>Token budget constraint:</strong>&nbsp;&le;16 tokens maximum per interaction</p>
+</li>
+<li>
+<p><strong>Deterministic decoding:</strong>&nbsp;Top-1 greedy selection (temperature = 0)</p>
+</li>
+<li>
+<p><strong>Stateless enforcement:</strong>&nbsp;Zero context retention between interactions</p>
+</li>
+<li>
+<p><strong>Latency simulation:</strong>&nbsp;Introduces realistic edge processing delays</p>
+</li>
+</ul>
+<p>By simulating 1-bit conditions through deterministic decoding and extreme token budgets, this approach ensures MCD principles remain valid even as hardware capabilities advance toward true 1-bit inference (Dettmers et al., 2022; Frantar et al., 2023). The simulation approximates the resource scarcity and performance characteristics expected from ultra-low-precision quantization without requiring actual 1-bit hardware implementations, enabling systematic validation of constraint-resilience under conditions that exceed current deployment limitations (Zafrir et al., 2019).</p>
       </div>
     </div>
   </div>
