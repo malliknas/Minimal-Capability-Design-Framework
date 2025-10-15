@@ -854,8 +854,8 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
 <tr>
 <th>Heuristic</th>
 <th>Calibration Source</th>
-<th style="text-align: right;">Sample Size</th>
-<th>Statistical Confidence</th>
+<th>Sample Size</th>
+<th>Statistical Validation</th>
 <th>Practical Validation</th>
 </tr>
 </thead>
@@ -863,29 +863,29 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
 <tr>
 <td>90-token plateau</td>
 <td>T1 prompting analysis, T6 over-engineering detection</td>
-<td style="text-align: right;">85 trials across 10 tests</td>
-<td>p &lt; 0.001, 95% CI</td>
+<td>~85 trials across variant comparisons (n=5 per variant, 10 tests)</td>
+<td>Categorical consistency across tests; 95% CI provided</td>
 <td>Consistent across medical, spatial, diagnostic domains</td>
 </tr>
 <tr>
 <td>40% fragility threshold</td>
 <td>T4 stateless integrity testing</td>
-<td style="text-align: right;">Multiple model instances, browser sessions</td>
-<td>Inter-fold correlation r = 0.92</td>
+<td>Multiple model instances, browser sessions (n=5 per variant)</td>
+<td>Cross-tier validation (Q1/Q4/Q8); effect size: large</td>
 <td>Healthcare appointment scenarios (W1)</td>
 </tr>
 <tr>
 <td>10% redundancy cutoff</td>
 <td>T7 bounded adaptation, T9 fallback complexity</td>
-<td style="text-align: right;">Systematic component tracking</td>
-<td>Degeneracy detection validation</td>
+<td>Systematic component tracking across tests</td>
+<td>Degeneracy detection validated through repeated measurements</td>
 <td>Navigation robotics (W2), Edge monitoring (W3)</td>
 </tr>
 <tr>
 <td>10% semantic drift</td>
 <td>T10 quantization tier matching</td>
-<td style="text-align: right;">Q1/Q4/Q8 comparison analysis</td>
-<td>Dynamic tier selection validation</td>
+<td>Q1/Q4/Q8 comparison analysis (n=5 per tier)</td>
+<td>Dynamic tier selection validated through categorical differences</td>
 <td>Real-time capability matching without session memory</td>
 </tr>
 </tbody>

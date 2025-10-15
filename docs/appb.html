@@ -734,16 +734,20 @@ Batch Processing: Disabled to ensure isolation</p>
       <div class="intro">
         <h4>B.3.1 Cross-Validation Settings</h4>
 <p>Statistical Configuration:<br />
-K-Fold Validation: k=5 for all comparative tests<br />
-Significance Level: p&lt;0.001 for statistical validity<br />
-Confidence Intervals: 95% CI calculated for completion rates<br />
-Trial Count: 5 repetitions per variant per test<br />
-Random Seed: Fixed for reproducibility</p>
+Repeated Trials Design: n=5 independent measurements per variant<br />
+Statistical Analysis: Categorical performance differences with Fisher's Exact Test for binary outcomes; descriptive statistics for continuous metrics<br />
+Confidence Intervals: 95% CI (Wilson score method) calculated for completion rates<br />
+Sample Acknowledgment: Limited statistical power (n=5 per variant); validation relies on extreme effect sizes and cross-tier replication (Q1/Q4/Q8)<br />
+Random Seed: Fixed for reproducibility across test iterations
+</p>
 <p>Measurement Tools:<br />
-Primary: performance.now() for high-resolution timing<br />
-Secondary: Browser DevTools integration<br />
-Validation: Cross-platform compatibility testing<br />
-Error Handling: Comprehensive failure classification</p>
+Primary: performance.now() API for high-resolution timing measurements<br />
+
+Secondary: Browser DevTools integration for resource monitoring<br />
+
+Validation: Cross-platform compatibility testing (Chrome, Firefox, Edge)<br />
+
+Error Handling: Comprehensive failure classification and logging</p>
 <h4>B.3.2 Domain-Specific Parameters</h4>
 <p>W1: Medical Appointment Domain<br />
 Slot Requirements: Doctor, Date, Time, Patient Name, Reason<br />
