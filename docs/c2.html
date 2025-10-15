@@ -772,7 +772,7 @@ These vulnerabilities manifest particularly in stateless environments where conv
 Empirical validation demonstrates that under Q1 quantization pressure, structured prompts maintain 75% effectiveness while conversational approaches degrade to 40% reliability, confirming the constraint-resilience advantage of minimal prompting strategies (Sahoo et al., 2024).</p>
 <p>Pivot:<br />
 This motivates MCD&rsquo;s Minimal Capability Prompting (detailed in Ch. 4), where reasoning remains compact and recoverable under degraded context (Zhou et al., 2022). This approach is validated in <a href="c6.html#t1" target="_blank"  style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a> prompt comparison and <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> stateless integrity tests (Ch. 6) to measure prompt compactness and stateless integrity. These regeneration heuristics are further tested under prompt degradation scenarios in Chapter 6 (<a href="c6.html#t4" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>, <a href="c6.html#t8" target="_blank"  style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>) and applied in realistic failure contexts in Chapter 7 (Wang et al., 2024).</p>
-<p>Table 2.2: Synthesis of Literature on Prompt-Based Reasoning</p>
+<p>Table 2.3: Synthesis of Literature on Prompt-Based Reasoning</p>
 <table>
 <thead>
 <tr>
@@ -832,7 +832,7 @@ This motivates MCD&rsquo;s Minimal Capability Prompting (detailed in Ch. 4), whe
 Memory-based designs inherently fail in offline, stateless contexts, where session history must be carried entirely within the prompt or discarded (Thoppilan et al., 2022).</p>
 <p>Pivot:<br />
 This gap motivates MCD&rsquo;s Stateless Regeneration approach (detailed in Ch. 4), where agents emulate continuity by statelessly reconstructing essential context at each turn (Ouyang et al., 2022). This strategy is validated in <a href="c6.html#t4" target="_blank"  style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> stateless regeneration and <a href="c6.html#t8" target="_blank"  style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a> token constraint tests (Ch. 6), and applied in diagnostic contexts in Walkthrough <a href="c7.html#7.4" target="_blank"  style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> (Ch. 7).</p>
-<p>Table 2.3: Synthesis of Literature on Memory and Context</p>
+<p>Table 2.4: Synthesis of Literature on Memory and Context</p>
 <table>
 <thead>
 <tr>
@@ -893,7 +893,7 @@ Validation confirms this safety advantage: structured minimal approaches demonst
 These architectures add fragility, increase latency, and hide design complexity behind abstractions that do not improve task success rates in constrained use cases (Qin et al., 2023).</p>
 <p>Pivot:<br />
 This motivates MCD&rsquo;s Degeneracy Detection principle (detailed in Ch. 4), where unused or redundant architectural pathways are systematically identified and removed during the design phase (Bommasani et al., 2021).</p>
-<p>Table 2.4: Synthesis of Literature on Agent Frameworks and Complexity</p>
+<p>Table 2.5: Synthesis of Literature on Agent Frameworks and Complexity</p>
 <table>
 <thead>
 <tr>
@@ -953,7 +953,7 @@ Contemporary SLM implementations demonstrate that models under 10 billion parame
 While SLMs offer domain-specific efficiency, they require careful task-scope definition and may lack generalization capability across diverse domains (Touvron et al., 2023). Their effectiveness depends heavily on training data quality and domain alignment.</p>
 <p>Alignment with MCD:<br />
 SLMs complement MCD&rsquo;s constraint-first philosophy by providing model-level specialization that aligns with architectural minimalism (Li et al., 2024). Where MCD enforces minimality through stateless design and prompt efficiency, SLMs achieve similar goals through parameter reduction and domain focus. This synergy suggests future MCD implementations could benefit from SLM base models without compromising framework principles.</p>
-<p>Table 2.5: SLM Alignment with MCD Principles</p>
+<p>Table 2.6: SLM Alignment with MCD Principles</p>
 <table>
 <thead>
 <tr>
@@ -1005,6 +1005,7 @@ SLMs complement MCD&rsquo;s constraint-first philosophy by providing model-level
         <p>This review reveals a consistent pattern: the literature on lightweight AI is dominated by model-centric, post-hoc optimizations, while the literature on agentic frameworks assumes resource abundance. MCD is formulated to address this gap by treating minimality not as an afterthought, but as a foundational architectural constraint. It focuses on interaction sufficiency, fallback robustness, and symbolic reasoning—not just computational lightness. Unlike runtime-oriented frameworks such as LangChain, MCD does not prescribe implementation libraries. Instead, it defines a design logic that assumes constraints and failure by default, making it compatible with a wide range of runtime choices. Critically, MCD does not compete with traditional frameworks in resource-abundant scenarios—instead, it provides reliable baseline performance precisely when resource constraints cause alternative approaches to degrade unpredictably or fail entirely. The MCD framework is task-agnostic and may be applied to any agent modality, as demonstrated in the <a href="c7.html" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">Chapter 7</a> walkthroughs.<br />
 The emergence of Small Language Models provides additional validation for constraint-first design principles. Where traditional approaches optimize large models post-deployment, both MCD and SLMs demonstrate that design-time constraints - whether architectural or parametric - yield more efficient, deployable solutions (Belcak et al., 2025). This convergence suggests that future lightweight agents will benefit from combining MCD&rsquo;s architectural minimalism with SLM&rsquo;s domain-specific efficiency, creating a dual-layer optimization strategy aligned with edge deployment requirements.<br />
 Additionally, while various model-level optimizations such as distillation and parameter-efficient fine-tuning offer theoretical benefits, their integration often demands persistent session state, retraining access, or complex runtime adaptations. For agents operating in cold-start or browser-based settings, these strategies introduce fragility — thereby strengthening the case for quantization as the most practical and robust deployment-aligned optimization in MCD</p>
+<caption>Table 2.7: MCD Responses to Edge Deployment Limitations</caption>
 <table>
 <thead>
 <tr>

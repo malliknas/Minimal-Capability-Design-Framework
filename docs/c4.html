@@ -652,7 +652,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 <h4>4.2.3 Minimality by Default</h4>
 <p>In conventional AI deployment, minimality is usually achieved through an optimization pass after a working architecture is built (Dettmers et al., 2022; Han et al., 2016). MCD reverses this workflow by establishing minimality as the starting point: all capability, memory, and tool modules are excluded by default and are only added if failure cases from the walkthroughs or simulations prove their necessity (Banbury et al., 2021). This approach is consistent with the goals of post-training compression research but shifts the temporal order—design for minimality first, add capability later. This ensures that excess capability is never deployed in the first place, a philosophy that aligns with the resource-conscious principles of TinyML (Warden &amp; Situnayake, 2019).</p>
 <p>Empirical validation shows minimality-first design achieves identical task success (94%) with 67% fewer computational resources in T5 capability measurement and T6 component removal tests (Chapter 6) demonstrating the trade-off between peak performance optimization and constraint-resilience reliability (Sahoo et al., 2024).</p>
-<p>Table 4.1</p>
+<p>Table 4.1: MCD Principles Implementation Overview</p>
 <table>
 <thead>
 <tr>
@@ -832,7 +832,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 <li>Memory Fragility Score - Validated Benchmark:&gt;40% dependence indicates deployment risk, confirmed through <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> stateless validation. Agents exceeding this threshold show 67% failure rates when deployed without persistent state.</li>
 <li>Toolchain Redundancy Estimator - Empirical Cutoff: &lt;10% utilization triggers removal, validated through degeneracy detection tests (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>, <a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>). Components below this threshold contribute &lt;2% to overall task success while adding 15-30ms latency overhead.</li>
 </ul>
-<p>Tool/Metric</p>
+<p>Table 4.3: Over-Engineering Diagnostic Tools</p>
 <table>
 <thead>
 <tr>
@@ -926,7 +926,7 @@ Validation demonstrates MCD approaches fail transparently with clear limitation 
       <div class="intro">
        <p>Recent research demonstrates that Small Language Models (SLMs) provide a complementary approach to MCD&rsquo;s architectural minimalism (Belcak et al., 2025). While MCD achieves efficiency through design-time constraints (statelessness, degeneracy detection, bounded rationality), SLMs achieve similar goals through domain specialization and parameter reduction (Microsoft Research, 2024).</p>
 <p>SLMs align naturally with MCD principles by eliminating unused capabilities at the model level rather than the architectural level (Gunasekar et al., 2024). Microsoft&rsquo;s Phi-3-mini (3.8B parameters) demonstrates that domain-focused models can achieve comparable task performance to 30B+ models while maintaining the resource constraints essential for edge deployment (Abdin et al., 2024). This synergy suggests that MCD frameworks can leverage SLMs as optimized base models without compromising core design principles.</p>
-<p>Table 4.3: SLM Compatibility with MCD Architecture</p>
+<p>Table 4.4: SLM Compatibility with MCD Architecture</p>
 <table>
 <thead>
 <tr>
@@ -983,7 +983,7 @@ Validation demonstrates MCD approaches fail transparently with clear limitation 
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Table 4.2: MCD Architectural Positioning</p>
+        <p>Table 4.5: MCD Architectural Positioning</p>
 <table>
 <thead>
 <tr>

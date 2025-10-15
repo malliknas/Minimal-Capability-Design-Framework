@@ -627,6 +627,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 <p>Constructive Design: The MCD framework is inductively derived from an extensive literature analysis, grounded in architectural failures and over-engineering patterns observed in existing AI agents (Järvinen, 2007; Kasanen et al., 1993). This process emphasizes abstraction, simplification, and design synthesis over direct empirical comparison.</p>
 <p>Evaluative Demonstration: Rather than proving universal superiority through performance benchmarks, this work validates MCD principles through constraint-resilience testing via progressive resource degradation scenarios (Chapter 6) and domain-specific walkthroughs (Chapter 7) (Venable et al., 2016). This approach specifically measures how agents maintain functionality as computational resources decrease, testing MCD&rsquo;s core hypothesis that predictable constraint-handling outweighs peak performance optimization in edge deployment scenarios (Singh et al., 2023).</p>
 <p>This dual strategy reflects the epistemic stance of design science research: creating an artifact (the MCD framework) and validating its internal coherence and utility through demonstration (Hevner et al., 2004; March &amp; Smith, 1995).</p>
+<caption>Table 3.1 - Methodological Framework Components </caption>
 <table>
 <thead>
 <tr>
@@ -708,7 +709,7 @@ This research analyzed 73 peer-reviewed papers and technical reports using a str
 <li>A fallback-only execution scenario without any prior context.</li>
 </ul>
 <p>For each MCD principle under test, 3–5 runs are conducted per variation, logging token usage, recovery success rate, and failure type to assess robustness (Cohen, 1988).</p>
-<p>Metrics Tracked:</p>
+<p>Table 3.2 - Metrics Tracked:</p>
 <table>
 <thead>
 <tr>
@@ -795,6 +796,7 @@ This research analyzed 73 peer-reviewed papers and technical reports using a str
     <div class="gx-card-content">
       <div class="intro">
         <p>The evaluation of MCD agents relies on qualitative and behavior-driven criteria, emphasizing design principles over raw performance scores (Patton, 2014; Lincoln &amp; Guba, 1985):</p>
+		<caption>Table 3.3: MCD Agent Evaluation Criteria </caption>
 <table>
 <thead>
 <tr>
@@ -873,6 +875,7 @@ This research analyzed 73 peer-reviewed papers and technical reports using a str
       <div class="intro">
         <p>In line with design science methodology, the MCD validation includes diagnostic checklists and agent failure detection matrices (see Appendix E), used both during walkthrough design and retrospective evaluation (Hevner et al., 2004). These artifacts serve to formalize tacit design trade-offs into reusable tooling.</p>
 <p>While not implemented in this thesis, future iterations of MCD agent evaluation are envisioned for hardware environments like the Raspberry Pi 4 and NVIDIA Jetson Nano (NVIDIA, 2020). These tests would track real-time latency, energy consumption, and memory profiles under live execution constraints, grounding the framework&rsquo;s deployment assumptions in empirical data (Banbury et al., 2021).</p>
+<caption>Table 3.4: Target Hardware Deployment Environments</caption>>
 <table>
 <thead>
 <tr>
@@ -904,7 +907,8 @@ This research analyzed 73 peer-reviewed papers and technical reports using a str
 </tbody>
 </table>
 <p>Validation Continuity Framework: Browser-based WebAssembly simulation (430ms average latency) provides baseline measurements for ARM device comparison, ensuring that constraint-resilience findings translate to real hardware deployment scenarios (Haas et al., 2017). This methodology bridges controlled validation with practical deployment requirements.</p>
-<p>Tooling Differentiator Table</p>
+
+<caption>Table 3.5: Tooling Differentiator Table </caption>
 <table>
 <thead>
 <tr>
