@@ -685,7 +685,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 <li>Prompt diagnostics could utilize code-specific parsers, semantic analysis tools, and specialized debugging SLMs such as Microsoft's CodeBERT family for enhanced code understanding (Microsoft Research, 2024)</li>
 </ul>
 
-<p>SLM-MCD Framework Compatibility: Recent research demonstrates that domain-specific SLMs align naturally with MCD principles through parameter efficiency and specialized training (Belcak et al., 2025). While this thesis focuses on architectural minimalism through quantization, MCD principles (statelessness, fallback safety, degeneracy detection) apply regardless of base model - whether general LLMs, quantized models, or domain-specific SLMs.</p>
+<p>While Section 4.9.1 establishes theoretical SLM-MCD compatibility, this walkthrough utilizes quantized general-purpose LLMs (Qwen2-0.5B, TinyLlama-1.1B, Llama-3.2-1B) rather than domain-specialized SLMs. </br>This thesis focuses on architectural minimalism through quantization, MCD principles (statelessness, fallback safety, degeneracy detection) apply regardless of base model - whether general LLMs, quantized models, or domain-specific SLMs.</p>
 
 <p>However, these generalized implementations serve the thesis objective of validating MCD principles across diverse domains. The comparative results between MCD and alternative approaches remain methodologically sound and demonstrate genuine architectural trade-offs, as the same level of generalization is applied consistently across all tested variants.</p>
       </div>

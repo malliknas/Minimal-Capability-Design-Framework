@@ -625,14 +625,9 @@ These simulations complement the domain-specific walkthroughs in Chapter 7, whic
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>This chapter evaluates the Minimal Capability Design (MCD) framework through controlled simulations that stress agent performance under constrained environments (Mollick, 2024). All test agents in this chapter are implemented using quantized models (Q1, Q4, Q8), as defined in Chapter 5 (Dettmers et al., 2022; Frantar et al., 2023).<br />
-While multiple optimization strategies were reviewed (e.g., pruning, distillation, PEFT), quantization was selected as the primary axis of evaluation due to its unique alignment with MCD goals (Nagel et al., 2021):<br />
-- No training or fine-tuning required<br />
-- Supports stateless inference<br />
-- Enables fallback via precision-tier routing<br />
-- Deployable on local hardware (e.g., browser, Jetson Nano)<br />
-As such, the following simulations evaluate not only the MCD principles (fallback safety, stateless control, degeneracy resistance), but also their robustness under quantized execution (Li et al., 2024). In particular, Test <a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a> systematically validates quantization tier selection (Q1/Q4/Q8) by assessing the trade-offs in latency, accuracy, and token efficiency across real workloads.<br />
-Distillation- or memory-adaptive architectures are excluded as they conflict with MCD assumptions of statelessness and local execution (Hinton et al., 2015; Hu et al., 2021).</p>
+        <p>This chapter validates MCD principles through controlled browser-based simulations following the methodology established in Section 3.3. All tests utilize the three-tier quantization structure (Q1/Q4/Q8, Table 5.3) to systematically assess constraint-resilience under progressive resource limitations.</br>
+
+Quantization as Primary Optimization Strategy: As justified in Section 3.3, quantization was selected over alternative optimization techniques (distillation, PEFT, pruning) due to its unique alignment with MCD requirements: stateless execution compatibility, no training infrastructure dependency, and dynamic tier-based fallback capability. Test T10 specifically validates quantization tier selection across realistic workloads.</p>
 
       </div>
     </div>
@@ -1849,68 +1844,7 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>The T1-T10 test battery employed practical validation methods to demonstrate MCD&rsquo;s resource efficiency advantages under constrained conditions. Rather than pursuing comprehensive statistical rigor, the methodology focused on demonstrable, reproducible evidence of MCD&rsquo;s effectiveness in browser-based simulation environments (Venable et al., 2016).</p>
-<h4>Fundamental Validation Philosophy</h4>
-<p>This chapter&rsquo;s validation serves a specific purpose: demonstrating that MCD principles work reliably under resource constraints (Hevner et al., 2004). The approach prioritizes practical evidence over statistical sophistication, recognizing that browser-based simulations provide controlled demonstrations rather than exhaustive empirical proof (Patton, 2014).</p>
-<h4>Core Validation Questions:</h4>
-<ul>
-<li>Does MCD consistently achieve equivalent task completion with superior resource efficiency?</li>
-<li>Do MCD principles maintain reliability across different quantization tiers?</li>
-<li>Can MCD&rsquo;s resource optimization patterns be reproduced consistently?</li>
-</ul>
-<h4>Practical Validation Methodology</h4>
-<p>Test Execution Protocol: Each test ran multiple trials (3-5) across quantization tiers (Q1, Q4, Q8), with direct comparison between MCD and non-MCD approaches under identical conditions. The goal was establishing consistent resource efficiency patterns rather than statistical generalizations.</p>
-<h4>Environmental Consistency:</h4>
-<ul>
-<li>Browser Isolation: Chrome 118.0 with consistent hardware (Intel i7-9750H, 16GB RAM)</li>
-<li>Model Standardization: Identical quantized models across all test runs (Dettmers et al., 2022)</li>
-<li>Measurement Precision: Performance.now() timing for latency tracking</li>
-<li>Prompt Standardization: Matched pairs tested under identical token budgets</li>
-</ul>
-<h4>Reliability Indicators:</h4>
-<ul>
-<li>Completion Consistency: MCD approaches showed stable success rates (typically 100%) across test variations (Field, 2013)</li>
-<li>Resource Predictability: Token utilization remained within expected efficiency ranges (60-90 tokens for MCD vs 120-140 for non-MCD)</li>
-<li>Latency Stability: Performance remained consistent within ±20% across model instances</li>
-<li>Failure Safety: When limits exceeded, MCD showed graceful degradation vs resource waste in alternatives (Amodei et al., 2016)</li>
-</ul>
-<h4>Evidence Quality Assessment</h4>
-<p>Validation Strengths:<br />
-- Reproducible Environment: Browser-based testing eliminates hardware variance (Li et al., 2024)<br />
-- Direct Comparison: A/B testing between approaches under identical constraints (Sullivan &amp; Feinn, 2012)<br />
-- Practical Relevance: Tests mirror real edge deployment scenarios (Banbury et al., 2021)<br />
-- Pattern Consistency: Resource efficiency advantages emerged across independent test domains (Miles et al., 2013)</p>
-<p>Acknowledged Limitations:<br />
-- Scope Specificity: Results apply to browser-based WebAssembly environments with quantized transformer models<br />
-- Task Boundary: Tests emphasized reasoning and decision-making rather than creative or knowledge-synthesis tasks<br />
-- Environmental Isolation: Controlled conditions exclude real-world variables (network latency, thermal throttling, concurrent processes) (Strubell et al., 2019)</p>
-<hr />
-<h3>6.5.1 Literature Integration Validation</h3>
-<p>The cross-validation results support key theoretical foundations while avoiding overclaiming (Braun &amp; Clarke, 2006):</p>
-<p>Few-Shot Learning Principles (Brown et al., 2020):</p>
-<p>MCD&rsquo;s compact prompting showed consistent effectiveness across model variations (inter-fold correlation r = 0.92), supporting the hypothesis that minimal prompts can maintain performance while reducing resource consumption.</p>
-<p>Bounded Rationality Framework (Simon, 1972):</p>
-<p>The controlled degradation observed in T7 validated Simon&rsquo;s &ldquo;good enough&rdquo; decision-making principles in AI contexts, with MCD agents failing safely rather than attempting resource-intensive exhaustive planning (Kahneman, 2011).</p>
-<p>Quantization Performance Scaling (Dettmers et al., 2022):</p>
-<p>T10 results confirmed predictable performance patterns across quantization tiers, with Q4 emerging as optimal balance point for constraint-bounded reasoning tasks.</p>
-<p>Prompt Engineering Robustness (Wei et al., 2022):</p>
-<p>Token scaling analysis in T1 and T6 supported existing findings on diminishing returns beyond certain prompt lengths, specifically identifying ~90 token plateau effects.</p>
-<hr />
-<h3>6.5.2 Reproducibility Framework</h3>
-<p>Data Availability:</p>
-<p>Complete Trace Logs: All test executions recorded with timestamps, model states, and performance metrics (Appendix A)</p>
-<p>Statistical Output: Full cross-validation matrices, significance tests, and confidence intervals (Appendix C)</p>
-<p>Environmental Documentation: Hardware specs, software versions, and execution contexts for replication</p>
-<p>Methodology Export: Detailed protocols exportable for independent validation</p>
-<p>Replication Support:</p>
-<p>The browser-based testing environment enables straightforward replication by other researchers (Mercity AI, 2021). All models, prompts, and measurement protocols use standard tools and publicly available quantized LLMs.</p>
-<p>Scope Acknowledgments:</p>
-<p>Results specifically apply to:</p>
-<p>Browser-based WebAssembly execution environments</p>
-<p>Transformer-based language models with quantization</p>
-<p>Stateless, resource-constrained deployment scenarios</p>
-<p>Task domains emphasizing reasoning and decision-making</p>
-<p>The methodology makes no claims about unconstrained environments, alternative architectures, or domains requiring extensive knowledge synthesis (Gibreel, 2025).</p>
+       <p>The validation methodology employed across all simulation tests (T1-T10) follows the structured approach detailed in Section 3.3, utilizing browser-based WebAssembly environments with standardized quantization tiers (Q1/Q4/Q8) to ensure reproducible constraint-resilience assessment. Statistical validation uses repeated trials (n=5 per variant) with 95% confidence intervals calculated via Wilson score method, as formalized in the comprehensive methodology framework (Chapter 3).</p>
       </div>
     </div>
   </div>

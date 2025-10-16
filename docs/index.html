@@ -312,7 +312,110 @@ h1, h2, h3, h4, h5, h6{ color:var(--text) !important; }
 }
 
  </style>
+<style> /* Wrapper behaves like a single inline control */
+.download-expand {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
 
+/* Hide default marker */
+.dl-trigger::-webkit-details-marker { display: none; }
+
+/* Trigger styled like your primary button */
+.dl-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  padding-right: 16px; /* space for caret */
+  transition: transform 80ms ease;
+}
+.dl-trigger:active { transform: translateY(1px); }
+
+/* Caret indicator */
+.dl-caret {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid currentColor;
+  opacity: 0.9;
+  transition: transform 160ms ease;
+  transform-origin: 50% 40%;
+}
+.download-expand[open] .dl-caret { transform: rotate(180deg); }
+
+/* Options replace the button (no overlay, same spot) */
+.dl-options {
+  display: flex;
+  gap: 10px;
+  /* Ensure smooth “take its place” animation */
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height 220ms ease,
+    opacity 180ms ease,
+    transform 180ms ease,
+    padding 140ms ease;
+
+  /* Visual harmony with primary button theme */
+  padding: 0; /* animates to 8px when open */
+}
+
+/* When expanded: hide the button, show options inline */
+.download-expand[open] .dl-trigger { display: none; }
+.download-expand[open] .dl-options {
+  padding: 8px 0;
+  max-height: 64px; /* enough for one row of chips */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Chip styling (compact, tactile, accessible) */
+.dl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 10px 14px;
+
+  /* Inherit primary colors if using CSS vars; otherwise fallback */
+  background: var(--btn-primary-bg, #0d6efd);
+  color: var(--btn-primary-fg, #fff);
+  border: 1px solid var(--btn-primary-border, #0b5ed7);
+
+  transition: background 140ms ease, box-shadow 140ms ease, transform 80ms ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  outline: none;
+}
+.dl-chip:hover {
+  background: color-mix(in srgb, var(--btn-primary-bg, #0d6efd) 88%, #ffffff);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.16);
+}
+.dl-chip:focus-visible {
+  box-shadow: 0 0 0 3px rgba(13,110,253,0.35), 0 3px 10px rgba(0,0,0,0.16);
+}
+.dl-chip:active { transform: translateY(1px); }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dl-caret, .dl-options, .dl-trigger, .dl-chip { transition: none; }
+}
+
+/* Small screens: full-width chips if desired */
+@media (max-width: 480px) {
+  .dl-options { gap: 8px; }
+  .dl-chip { flex: 1 1 auto; justify-content: center; }
+}
+
+
+ </style>
 </head>
 
 <body>
@@ -643,15 +746,31 @@ h1, h2, h3, h4, h5, h6{ color:var(--text) !important; }
 
 
       <!-- Download Options -->
-      <section id="download" class="download-cta">
-        <h4>Downloads</h4>
-        <div class="cta-row">
-          <a href="assets/thesis.pdf" target="_blank" class="btn btn-primary">📄 PDF Version</a>
-          <a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="btn btn-success">💻 Validation Software</a>
-		  <a href="assets/mcd-unified-comprehensive-analysis-2025-10-01.json" target="_blank" class="btn btn-success">📝 .JSON Chap 6 Output</a>
-		  <a href="assets/MCD_Walkthrough_Results_2025-09-18.json" target="_blank" class="btn btn-success">📝 .JSON Chap 7 Output</a>
-        </div>
-      </section>
+     <section id="download" class="download-cta">
+  <h4>Downloads</h4>
+  <div class="cta-row">
+       <details class="download-expand" data-behavior="inline-expand">
+  <summary class="btn btn-primary dl-trigger" role="button" aria-expanded="false">
+    📥 Download
+    <span class="dl-caret" aria-hidden="true"></span>
+  </summary>
+
+  <!-- When expanded, the summary disappears and these take its place -->
+  <div class="dl-options" role="group" aria-label="Download options">
+    <a href="assets/thesis.pdf" class="dl-chip" role="button" download>📄 PDF</a>
+    <a href="assets/thesis.epub" class="dl-chip" role="button" download>📚 EPUB</a>
+  </div>
+</details>
+
+    <!-- Keep your other buttons as-is (no new windows) -->
+    <a href="assets/mcd-unified-comprehensive-analysis-2025-10-01.json" class="btn btn-success">📝 .JSON Chap 6 Output</a>
+    <a href="assets/MCD_Walkthrough_Results_2025-09-18.json" class="btn btn-success">📝 .JSON Chap 7 Output</a>
+  </div>
+  <p style="text-align: center; margin-top: 15px; color: #6b7280; font-size: 0.9rem;">
+    <em>PDF, EPUB, .JSON</em>
+  </p>
+</section>
+
 
 <section id="external-links" class="card" style="margin: 30px 0; padding: 20px;">
   <h3 style="margin-bottom: 20px; color: #1a1a1a;">🔗 Sharable Online Repo links </h3>
@@ -744,7 +863,56 @@ h1, h2, h3, h4, h5, h6{ color:var(--text) !important; }
 	<script src="assets/js/vendor/prism.js"></script>
 	<!-- Main Custom -->
 	<script src="assets/js/main.js"></script>
-	
+<script>
+  const expander = document.querySelector('.download-expand');
+  if (expander) {
+    const trigger = expander.querySelector('.dl-trigger');
+    const firstOption = expander.querySelector('.dl-options .dl-chip');
+
+    // Handle open/close state changes
+    expander.addEventListener('toggle', () => {
+      const open = expander.open;
+      if (trigger) trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open && firstOption) {
+        // Focus first option when expanded
+        requestAnimationFrame(() => firstOption.focus());
+      }
+    });
+
+    // Close when clicking outside the control
+    document.addEventListener('click', (e) => {
+      if (expander.open && !expander.contains(e.target)) {
+        expander.open = false;
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && expander.open) {
+        expander.open = false;
+        // Return focus to the trigger button when it reappears
+        requestAnimationFrame(() => {
+          if (trigger) trigger.focus();
+        });
+      }
+    });
+
+    // Optional: Close after successful download
+    expander.addEventListener('click', (e) => {
+      if (e.target.matches('.dl-chip')) {
+        // Small delay to allow download to start, then close
+        setTimeout(() => {
+          expander.open = false;
+        }, 200);
+      }
+    });
+  }
+</script>
+
+
+
+
+
 </body>
 
 </html>
