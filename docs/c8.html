@@ -530,7 +530,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix D</a></li>
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix E</a></li>			
+											class="ri-record-circle-line"></i>Appendix E</a></li>
+                                <li class="list"><a href="appf.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix F</a></li>			
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -790,11 +792,18 @@ Minimal effective form: ~140 tokens.<br />
 Removing 20 tokens improved clarity with no accuracy loss (0% improvement).<br />
 RI → 20 / 0 → infinite, indicating clear over-engineering.</p>
 <p>These insights were extracted using the Redundancy Index and Capability Plateau heuristics, as tabulated in Appendix E. For example, in Walkthrough 3, prompt pruning by 20 tokens yielded equivalent task completion with reduced semantic confusion—a reduction confirmed by loop-stage logs (Appendix A).</p>
-<p>Comparative Redundancy Analysis:<br />
+<p><strong>Empirical Calibration of Capability Plateau Thresholds -&nbsp;</strong>The 90-token capability plateau threshold emerged from convergent evidence across multiple independent tests (T1, T6) rather than theoretical derivation. Systematic resource expansion analysis revealed task effectiveness improvements plateauing in the 90-130 token range despite computational cost doubling:</p>
+<p>Empirical Observations:</p>
+<p>T1 Prompt Variants:&nbsp;MCD Structured (131 tokens), Hybrid (94 tokens), Few-Shot (114 tokens) all achieved equivalent task success, with diminishing returns beyond 90 tokens</p>
+<p>T6 Resource Analysis:&nbsp;Additional prompt complexity beyond 90 tokens yielded &lt;5% improvement at 2.6&times; resource cost</p>
+<p>Domain Validation: &nbsp;W1 Healthcare (63-80 tokens optimal), W2 Navigation (53-80 tokens), W3 Diagnostics (80-110 tokens)</p>
+<p>Threshold Interpretation:&nbsp; The 90-token threshold represents a&nbsp;conservative lower bound&nbsp;where most constrained reasoning tasks achieve semantic sufficiency. This is&nbsp;task-dependent&mdash;simple operations may saturate at 60 tokens, complex multi-step reasoning may require 110-130 tokens&mdash;but 90 tokens provides a robust design-time optimization target for constraint-aware agent architecture.</p>
+<p>This calibration aligns with bounded rationality principles (Simon, 1972), demonstrating that "good enough" solutions consistently emerge within predictable resource boundaries when constraints are respected from design inception.</p>
+<p><strong>Comparative Redundancy Analysis:</strong><br />
 - AutoGPT: RI = ∞ (high token overhead, minimal accuracy gain)<br />
 - LangChain: RI = 4.2±1.8 (moderate redundancy in tool orchestration)<br />
 - MCD: RI = 0.3±0.1 (optimal token-to-value ratio)</p>
-<p>Framework Redundancy Analysis:<br />
+<p><strong>Framework Redundancy Analysis:</strong><br />
 Based on <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> over-engineering detection and comparative token analysis (Sullivan &amp; Feinn, 2012):<br />
 - MCD Structured: Demonstrates stable token usage (30±2 tokens) with predictable performance patterns under constraint conditions.<br />
 - Verbose approaches: Show significant token overhead with diminishing returns beyond 90-token plateau, confirming over-engineering detection principles.<br />
@@ -1079,7 +1088,7 @@ Sophisticated multi-strategy coordination failed under constraint pressure despi
 <p><strong>Cross-Validation Confidence</strong></p>
 <p>The convergence of simulation and walkthrough findings provides&nbsp;<strong>multi-metric validation</strong>&nbsp;for threshold calibration (Field, 2013; Sullivan &amp; Feinn, 2012):</p>
 <p><strong>90-token plateau:</strong>&nbsp;Confirmed across <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>, and <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> diagnostic scenarios through&nbsp;<strong>consistent categorical patterns</strong>&nbsp;(n=25 per domain, 95% CI provided). Effect size analysis reveals large practical significance (&eta;&sup2;&gt;0.14), with cross-tier replication (Q1/Q4/Q8) strengthening reliability claims (Chapter 6).</p>
-<p><strong>Q4 optimal tier:</strong>&nbsp;Validated in <a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a> quantization analysis and W1-W3 operational scenarios with inter-fold correlation r = 0.92 (Chapter 6) (Kohavi, 1995). This strong correlation validates tier selection consistency across diverse task domains.</p>
+<p><strong>Q4 optimal tier:</strong>&nbsp;Validated in <a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a> quantization analysis and W1-W3 operational scenarios. This validates tier selection consistency across diverse task domains.</p>
 <p><strong>2-loop fallback maximum:</strong>&nbsp;Convergent evidence from <a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>, <a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>, and <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> healthcare recovery scenarios demonstrates&nbsp;<strong>systematic performance degradation</strong>&nbsp;beyond 2 recovery cycles, with effect sizes (d &gt; 0.8) indicating large practical significance.</p>
 <p><strong>Domain-Specific Calibration Adjustments</strong></p>
 <p>Walkthrough evidence informed domain-specific threshold modifications:</p>
@@ -1439,7 +1448,7 @@ Remove components with &lt;10% utilization<br />
 Verify latency improvement from redundancy elimination</p>
 <p>Deployment Readiness Checklist<br />
 text<br />
-✓ Token budget within empirically validated range (60-90 tokens)<br />
+✓ Token budget within empirically validated range (≥60 tokens minimum, ≤90 tokens optimal plateau)<br />
 ✓ Memory fragility score &lt;40%<br />
 ✓ Component utilization &gt;10% for all included modules<br />
 ✓ Fallback sequences terminate within 2 loops<br />

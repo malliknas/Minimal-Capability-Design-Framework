@@ -530,7 +530,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix D</a></li>
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix E</a></li>			
+											class="ri-record-circle-line"></i>Appendix E</a></li>
+                                <li class="list"><a href="appf.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix F</a></li>			
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -1798,7 +1800,7 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
 </div>
 
 <div class="gx-block">
-  <div class="gx-card gx-page-block" id="problem-statement">
+  <div class="gx-card gx-page-block" id="6.4">
     <div class="gx-card-header header-575">
       <h4 class="gx-card-title">6.4 Cross-Test Pattern Analysis</h4>
       <div class="header-tools">
@@ -1814,6 +1816,12 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
 <p>Independent convergence across multiple tests identified a consistent resource optimization threshold beyond which additional computational investment yields diminishing effectiveness returns (Strubell et al., 2019; Schwartz et al., 2020). This phenomenon emerged clearly in two distinct test contexts:<br />
 - T1 Prompting Analysis: Non-MCD prompt variants demonstrated marginal task improvement beyond ~90 tokens while incurring substantial computational penalties (Liu et al., 2023). The optimal performance-to-resource ratio consistently occurred within the 60-80 token range, supporting MCD&rsquo;s &ldquo;optimal resource utilization&rdquo; heuristic (Section 4.6.1) (Wei et al., 2022).<br />
 - T6 Resource Optimization Detection: Systematic resource expansion analysis revealed a capability plateau at ~130 tokens, with task effectiveness improvements plateauing despite doubling computational costs (Cohen, 1988). This finding suggests a universal cognitive efficiency threshold in quantized language models operating under stateless conditions (Nagel et al., 2021; Dettmers et al., 2022).</p>
+<p><strong>Capability Plateau Threshold Derivation:</strong></p>
+<p>Capability plateau analysis (T1, T6) revealed diminishing returns beyond approximately 90-130 tokens, with task effectiveness improvements plateauing despite doubling computational costs. The&nbsp;<strong>90-token threshold</strong>&nbsp;represents a&nbsp;<strong>conservative lower bound</strong>&nbsp;derived from systematic ablation testing across multiple prompt variants:</p>
+<p><strong>T1 Prompting Analysis:</strong>&nbsp;MCD Structured approaches demonstrated optimal performance-to-resource ratio within the 60-80 token range, with marginal improvements (&lt;5%) beyond 90 tokens.</p>
+<p><strong>T6 Over-Engineering Detection:</strong>&nbsp;Structured Minimal (131 tokens) and Hybrid (94 tokens) variants exhibited capability saturation, with additional complexity yielding &lt;5% improvement at 2.6&times; computational cost.</p>
+<p><strong>Cross-Test Convergence:</strong>&nbsp;Independent emergence of resource optimization effects between 90-130 tokens across T1, T3, and T6 validates this as an empirically-derived efficiency boundary rather than an arbitrary constraint.</p>
+<p>The 90-token threshold serves as a&nbsp;<strong>practical design guideline</strong>&nbsp;representing the point where most constrained reasoning tasks achieve semantic sufficiency without excessive resource overhead. This threshold is task-dependent&mdash;simple slot-filling (W1) may saturate at 60-80 tokens, while complex diagnostics (W3) approach 110-130 tokens&mdash;but 90 tokens provides a robust starting point for constraint-aware prompt design.</p>
 <p>Theoretical Implications: The consistent emergence of resource optimization effects across independent test scenarios validates MCD&rsquo;s resource efficiency framework (Bommasani et al., 2021). The ~90-130 token threshold represents an empirically-derived efficiency boundary for constrained agent reasoning, beyond which additional complexity introduces computational waste without proportionate capability gains (Singh et al., 2023).</p>
 <h4>6.4.2 Pattern 2: MCD Context Management Superiority</h4>
 <p>Three independent tests examining different aspects of context management converged on identical findings: structured, explicit approaches consistently achieved equivalent task success with superior resource efficiency compared to resource-intensive, implicit strategies under stateless execution conditions (Lewis et al., 2020; Thoppilan et al., 2022).<br />
@@ -1872,6 +1880,7 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
 <p>The systematic documentation of resource optimization patterns—particularly computational waste in verbose approaches versus controlled resource utilization in minimal designs—provides concrete criteria for efficiency-aware agent architecture (Barocas et al., 2017).</p>
 <h4>6.6.2 Honest Assessment of Limitations</h4>
 <p><strong>Environmental Constraints:</strong>&nbsp;Browser-isolated testing eliminates real-world variables (network latency, thermal throttling, concurrent user interactions), that could affect actual deployment performance. Results apply specifically to controlled, resource-bounded scenarios.</p>
+<p><strong>Sample Size Constraints:</strong>&nbsp;Small sample sizes (n=5 per variant) limit statistical power and generalizability. While extreme effect sizes (100% vs 0% completion) and categorical differences provide robust qualitative evidence, traditional parametric assumptions cannot be reliably assessed. Confidence intervals are wide (e.g., 95% CI: [0.44, 0.98] for 80% completion rate), reflecting estimation uncertainty.</p>
 <p><strong>Model Dependencies:</strong> Testing focused on&nbsp;<strong>transformer-based language models with quantization optimization</strong>&nbsp;as the primary constraint-resilience mechanism. While quantization was selected for its alignment with MCD principles (no training required, stateless inference, local deployment compatibility), alternative optimization strategies merit consideration:</p>
 <p>Small Language Models (SLMs):&nbsp;Purpose-built compact architectures (e.g., Phi-3, Gemma, TinyLlama) designed with fewer parameters from inception demonstrate strong alignment with MCD principles through inherent resource efficiency and edge-device compatibility. However, SLMs were excluded from this validation to maintain&nbsp;framework generalizability. By demonstrating constraint-resilience through quantization of standard transformer architectures, MCD remains applicable across diverse model families and deployment contexts without dependency on specialized compact architectures. This design choice prioritizes&nbsp;framework universality&mdash;enabling MCD adoption whether practitioners deploy quantized LLMs or native SLMs&mdash;over optimization for specific model classes.</p>
 <p>Alternative architectures (mixture-of-experts, retrieval-augmented systems, distillation-based models) may exhibit different performance characteristics under MCD principles and require separate validation studies.</p>

@@ -6,8 +6,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Appendix E">
-	<title>Appendix E</title>
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Appendix F">
+	<title>Appendix F</title>
 
 	<!-- App favicon -->
 	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
@@ -532,7 +532,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>				
+											class="ri-record-circle-line"></i>Appendix F</a></li>	 											
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -558,10 +558,10 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 				<!-- Page title & breadcrumb -->
 				<div class="gx-page-title gx-page-title-2">
 					<div class="gx-breadcrumb">
-						<h5>Appendix E</h5>
+						<h5>Appendix F</h5>
 						<ul>
 							<li><a href="index.html">Thesis Main Page</a></li>
-							<li>Appendix E</li>
+							<li>Appendix F</li>
 						</ul>
 					</div>
 				</div>
@@ -579,7 +579,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 <div class="gx-block">
   <div class="gx-card gx-page-block" id="ch1-intro">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">Appendix E: MCD Heuristics and Diagnostic Table</h4>
+      <h4 class="gx-card-title">Appendix F: Statistical Calculations And Effect Size Analysis</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -588,10 +588,8 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <h4>Contents Overview</h4>
-<p>This appendix serves as a consolidated reference table of the MCD diagnostic heuristics introduced in Chapter 4, including methods for Capability Plateau detection, Redundancy Index calculation, Semantic Drift detection, and Prompt Collapse diagnostics.</p>
-<h4>Purpose Statement</h4>
-<p>To provide practitioners with a ready-to-apply toolkit for validating minimal agent designs and detecting over-engineering before deployment.</p>
+ 
+<p>This appendix provides detailed calculations supporting effect size claims throughout the thesis, addressing small sample size limitations (n=5 per variant) through emphasis on practical significance rather than inferential statistics.</p>
                      
       </div>
     </div>
@@ -599,9 +597,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 </div>
 
 <div class="gx-block">
-  <div class="gx-card gx-page-block" id="e1">
+  <div class="gx-card gx-page-block" id="f1">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">E.1 Comprehensive MCD Diagnostic Reference</h4>
+      <h4 class="gx-card-title">F.1 Cohen's d for Completion Rate Comparisons</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -610,103 +608,50 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Table E.1: Complete MCD Heuristics and Diagnostic Tools</p>
+        <p><strong>Formula:</strong> <div class="math display"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>d</mi><mo>=</mo><mfrac><mrow><msub><mi>M</mi><mn>1</mn></msub><mo>−</mo><msub><mi>M</mi><mn>2</mn></msub></mrow><mrow><msub><mi>σ</mi><mrow><mtext>pooled</mtext></mrow></msub></mrow></mfrac></mrow></math></div> where <div class="math display"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>σ</mi><mrow><mtext>pooled</mtext></mrow></msub><mo>=</mo><msqrt><mrow><msub><mi>p</mi><mrow><mtext>pool</mtext></mrow></msub><mi>×</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mrow><mtext>pool</mtext></mrow></msub><mo stretchy="false">)</mo></mrow></msqrt></mrow></math></div></p>
+<p><strong>Example: W3 MCD Structured (80%) vs Few-Shot (40%)</strong></p>
+<ul>
+<li>Mean difference: 0.40</li>
+<li>Pooled SD: 0.490</li>
+<li><strong>Cohen's d = 0.82</strong> (Large effect, d &gt; 0.8)</li>
+</ul>
+<p><strong>Additional Comparisons:</strong></p>
 <table>
 <thead>
 <tr>
-<th>Diagnostic Tool</th>
-<th>Purpose</th>
-<th>Calibrated Threshold</th>
-<th>Measurement Method</th>
-<th>Failure Indicator</th>
-<th>Chapter Reference</th>
-<th>Validation Tests</th>
+<th>Comparison</th>
+<th>Cohen's d</th>
+<th>Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Capability Plateau Detector</td>
-<td>Detects diminishing returns in prompt/tool additions</td>
-<td>90-token saturation point</td>
-<td>Token efficiency analysis: semantic value per token</td>
-<td>Additional complexity yields &lt;5% improvement while consuming 2.6x resources</td>
-<td>Chapter 4, Section 4.6</td>
-<td>T1, T3, T6</td>
+<td>T1: MCD vs Ultra-Minimal (100% vs 0%)</td>
+<td>2.00</td>
+<td>Extreme effect</td>
 </tr>
 <tr>
-<td>Memory Fragility Score</td>
-<td>Measures agent dependence on state persistence</td>
-<td>40% dependence threshold</td>
-<td>Stateless reconstruction accuracy testing</td>
-<td>&gt;40% dependence indicates 67% failure rate without persistent state</td>
-<td>Chapter 4, Section 4.6.2</td>
-<td>T4, T5</td>
+<td>W1: Hybrid vs System Role (100% vs 60%)</td>
+<td>1.00</td>
+<td>Large effect</td>
 </tr>
 <tr>
-<td>Toolchain Redundancy Estimator</td>
-<td>Identifies unused or rarely-used modules</td>
-<td>&lt;10% utilization triggers removal</td>
-<td>Component usage tracking during execution</td>
-<td>Components below 10% utilization add 15-30ms latency overhead with 2% task success contribution</td>
-<td>Chapter 4, Section 4.6</td>
-<td>T7, T9</td>
-</tr>
-<tr>
-<td>Semantic Drift Monitor</td>
-<td>Tracks reasoning quality degradation</td>
-<td>&gt;10% semantic drift threshold</td>
-<td>Semantic consistency comparison across quantization tiers</td>
-<td>Drift &gt;10% triggers automatic tier escalation (Q1→Q4→Q8)</td>
-<td>Chapter 5, Section 5.5</td>
-<td>T2, T10</td>
-</tr>
-<tr>
-<td>Prompt Collapse Diagnostic</td>
-<td>Identifies critical prompt compression limits</td>
-<td>60-token minimum threshold</td>
-<td>Task success rate under progressive token reduction</td>
-<td>MCD maintains 94% success at 60 tokens; verbose approaches fail at 85 tokens</td>
-<td>Chapter 4, Section 4.5</td>
-<td>T1, T2, T3</td>
-</tr>
-<tr>
-<td>Context Reconstruction Validator</td>
-<td>Tests stateless context recovery capability</td>
-<td>&gt;90% accuracy requirement</td>
-<td>Multi-turn interaction without persistent memory</td>
-<td>&lt;90% accuracy indicates architectural dependency on session state</td>
-<td>Chapter 5, Section 5.3</td>
-<td>T4</td>
-</tr>
-<tr>
-<td>Fallback Loop Complexity Meter</td>
-<td>Prevents runaway recovery sequences</td>
-<td>2-loop maximum threshold</td>
-<td>Recovery sequence depth and token consumption</td>
-<td>&gt;2 loops leads to semantic drift and &gt;125 token consumption</td>
-<td>Chapter 5, Section 5.4</td>
-<td>T9</td>
-</tr>
-<tr>
-<td>Quantization Tier Optimizer</td>
-<td>Selects minimum viable capability tier</td>
-<td>Q4 optimal balance point</td>
-<td>Performance vs resource consumption analysis</td>
-<td>Q1: 60% success, Q4: 96% success, Q8: equivalent with 67% overhead</td>
-<td>Chapter 5, Section 5.5</td>
-<td>T10</td>
+<td>W2: MCD vs Few-Shot (60% vs 40%)</td>
+<td>0.40</td>
+<td>Medium effect</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Interpretation:</strong> Large effects (d &gt; 0.8) dominate key MCD comparisons, providing practical significance despite small sample sizes.</p>
       </div>
     </div>
   </div>
 </div>
 
 <div class="gx-block">
-  <div class="gx-card gx-page-block" id="e2">
+  <div class="gx-card gx-page-block" id="f2">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">E.2 Detailed Heuristic Implementation Guidelines</h4>
+      <h4 class="gx-card-title">F.2 Eta-Squared (η²) for Token Efficiency Variance</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -715,69 +660,14 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <h3>E.2.1 Capability Plateau Detector</h3>
-<p>Implementation Protocol:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">detect_capability_plateau</span><span class="p">(</span><span class="n">prompt_tokens</span><span class="p">,</span> <span class="n">semantic_score</span><span class="p">,</span> <span class="n">resource_cost</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">prompt_tokens</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
-        <span class="n">efficiency_ratio</span> <span class="o">=</span> <span class="n">semantic_score</span> <span class="o">/</span> <span class="n">resource_cost</span>
-        <span class="k">if</span> <span class="n">efficiency_ratio</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>  <span class="c1"># &lt;5% improvement</span>
-            <span class="k">return</span> <span class="s2">&quot;PLATEAU_DETECTED&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;WITHIN_BOUNDS&quot;</span>
-</code></pre></div>
-
-<p>Practical Application:<br />
-Monitor during design: Track token additions vs task completion improvements<br />
-Deployment threshold: Stop adding complexity beyond 90-token boundary<br />
-Resource calculation: Measure latency/memory cost per token added<br />
-Validation evidence: T1-T3 demonstrate plateau effects across multiple domains</p>
-<h3>E.2.2 Memory Fragility Score</h3>
-<p>Calculation Method:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_memory_fragility</span><span class="p">(</span><span class="n">stateless_accuracy</span><span class="p">,</span> <span class="n">stateful_accuracy</span><span class="p">):</span>
-    <span class="n">dependence_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">stateful_accuracy</span> <span class="o">-</span> <span class="n">stateless_accuracy</span><span class="p">)</span> <span class="o">/</span> <span class="n">stateful_accuracy</span>
-    <span class="k">if</span> <span class="n">dependence_ratio</span> <span class="o">&gt;</span> <span class="mf">0.40</span><span class="p">:</span>  <span class="c1"># 40% dependence threshold</span>
-        <span class="k">return</span> <span class="s2">&quot;HIGH_FRAGILITY_RISK&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;STATELESS_READY&quot;</span>
-</code></pre></div>
-
-<p>Practical Application:<br />
-Test protocol: Run identical tasks with and without persistent state<br />
-Risk assessment: &gt;40% dependence indicates deployment vulnerability<br />
-Validation method: T4 confirms 96% stateless reconstruction accuracy for MCD<br />
-Design implication: High fragility scores require architecture revision</p>
-<h3>E.2.3 Toolchain Redundancy Estimator</h3>
-<p>Usage Tracking Implementation:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">analyze_toolchain_redundancy</span><span class="p">(</span><span class="n">component_usage_log</span><span class="p">,</span> <span class="n">execution_time</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">component_usage_log</span><span class="p">:</span>
-        <span class="n">utilization_rate</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">usage_count</span> <span class="o">/</span> <span class="n">total_executions</span>
-        <span class="k">if</span> <span class="n">utilization_rate</span> <span class="o">&lt;</span> <span class="mf">0.10</span><span class="p">:</span>  <span class="c1"># &lt;10% utilization</span>
-            <span class="n">latency_overhead</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">avg_latency</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;REMOVE_</span><span class="si">{</span><span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_SAVES_</span><span class="si">{</span><span class="n">latency_overhead</span><span class="si">}</span><span class="s2">ms&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;TOOLCHAIN_OPTIMIZED&quot;</span>
-</code></pre></div>
-
-<p>Practical Application:<br />
-Monitoring period: Track component usage over representative task cycles<br />
-Removal threshold: Components with &lt;10% utilization should be removed<br />
-Performance impact: T7/T9 show 15-30ms latency savings from redundancy removal<br />
-Implementation: Systematic audit during development and pre-deployment</p>
-<h3>E.2.4 Semantic Drift Monitor</h3>
-<p>Real-time Detection:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">monitor_semantic_drift</span><span class="p">(</span><span class="n">q1_output</span><span class="p">,</span> <span class="n">q4_output</span><span class="p">,</span> <span class="n">similarity_threshold</span><span class="o">=</span><span class="mf">0.90</span><span class="p">):</span>
-    <span class="n">semantic_similarity</span> <span class="o">=</span> <span class="n">calculate_cosine_similarity</span><span class="p">(</span><span class="n">q1_output</span><span class="p">,</span> <span class="n">q4_output</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">semantic_similarity</span> <span class="o">&lt;</span> <span class="n">similarity_threshold</span><span class="p">:</span>  <span class="c1"># &gt;10% drift</span>
-        <span class="k">return</span> <span class="s2">&quot;ESCALATE_TO_Q4&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;MAINTAIN_Q1&quot;</span>
-</code></pre></div>
-
-<p>Practical Application:<br />
-Continuous monitoring: Compare outputs across quantization tiers<br />
-Automatic escalation: &gt;10% drift triggers Q1→Q4→Q8 progression<br />
-Performance validation: T10 demonstrates effective tier selection<br />
-Edge deployment: Critical for maintaining quality under resource constraints</p>
+<p><strong>Formula:</strong> <div class="math display"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mi>η</mi><mn>2</mn></msup><mo>=</mo><mfrac><mrow><mi>S</mi><msub><mi>S</mi><mrow><mtext>between</mtext></mrow></msub></mrow><mrow><mi>S</mi><msub><mi>S</mi><mrow><mtext>total</mtext></mrow></msub></mrow></mfrac></mrow></math></div></p>
+<p><strong>T1 Token Efficiency Analysis:</strong></p>
+<ul>
+<li>Approaches: MCD (0.297), Verbose (0.114), Baseline (0.125), CoT (0.159), Few-Shot (0.297)</li>
+<li>Grand mean: 0.198</li>
+<li><strong>η² = 0.14-0.16</strong> (Large effect by conventional standards, η² &gt; 0.14)</li>
+</ul>
+<p><strong>Interpretation:</strong> Token efficiency variance across approaches represents large practical effects, validating architectural differentiation.</p>
       </div>
     </div>
   </div>
@@ -786,9 +676,9 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
 
 <!-- Thesis Roadmap -->
 <div class="gx-block">
-  <div class="gx-card gx-page-block" id="e3">
+  <div class="gx-card gx-page-block" id="f3">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">E.3 Diagnostic Application Workflow</h4>
+      <h4 class="gx-card-title">F.3 Fisher's Exact Test for Categorical Differences</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -797,40 +687,202 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Table E.2: MCD Validation Workflow Sequence</p>
+        <p><strong>Extreme Case: MCD (5/5) vs Ultra-Minimal (0/5)</strong></p>
 <table>
 <thead>
 <tr>
-<th>Phase</th>
-<th>Diagnostic Tools Applied</th>
-<th>Success Criteria</th>
-<th>Failure Actions</th>
+<th>Approach</th>
+<th>Success</th>
+<th>Failure</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Design Phase</td>
-<td>Capability Plateau Detector, Prompt Collapse Diagnostic</td>
-<td>&lt;90 tokens, &gt;94% task success at 60-token minimum</td>
-<td>Redesign prompt structure, remove unnecessary complexity</td>
+<td>MCD Structured</td>
+<td>5</td>
+<td>0</td>
 </tr>
 <tr>
-<td>Implementation Phase</td>
-<td>Memory Fragility Score, Context Reconstruction Validator</td>
-<td>&lt;40% state dependence, &gt;90% stateless accuracy</td>
-<td>Implement explicit context regeneration protocols</td>
+<td>Ultra-Minimal</td>
+<td>0</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Odds ratio: Infinite (complete separation)</li>
+<li><strong>p-value = 0.0079</strong> (p &lt; 0.05, statistically significant)</li>
+</ul>
+<p><strong>Moderate Case: MCD (4/5) vs Few-Shot (2/5)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Success</th>
+<th>Failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCD Structured</td>
+<td>4</td>
+<td>1</td>
 </tr>
 <tr>
-<td>Pre-deployment Phase</td>
-<td>Toolchain Redundancy Estimator, Fallback Loop Complexity</td>
-<td>&lt;10% unused components, ≤2 fallback loops</td>
-<td>Remove redundant modules, simplify recovery sequences</td>
+<td>Few-Shot</td>
+<td>2</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Odds ratio: 6.00</li>
+<li><strong>p-value = 0.524</strong> (not statistically significant, n=5 insufficient)</li>
+</ul>
+<p><strong>Interpretation:</strong> Extreme binary outcomes (5/5 vs 0/5) achieve statistical significance despite small n. Moderate differences (4/5 vs 2/5) lack power but show large effect sizes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="f4">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">F.4 Confidence Intervals (Wilson Score Method)</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p><strong>95% Confidence Intervals for Completion Rates (n=5):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Point Estimate</th>
+<th>95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCD Structured (5/5)</td>
+<td>1.00</td>
+<td>[0.57, 1.00]</td>
 </tr>
 <tr>
-<td>Runtime Phase</td>
-<td>Semantic Drift Monitor, Quantization Tier Optimizer</td>
-<td>&lt;10% drift, Q4 optimal balance</td>
-<td>Dynamic tier escalation, performance rebalancing</td>
+<td>MCD Structured (4/5)</td>
+<td>0.80</td>
+<td>[0.38, 0.96]</td>
+</tr>
+<tr>
+<td>Few-Shot (3/5)</td>
+<td>0.60</td>
+<td>[0.23, 0.88]</td>
+</tr>
+<tr>
+<td>Few-Shot (2/5)</td>
+<td>0.40</td>
+<td>[0.12, 0.77]</td>
+</tr>
+<tr>
+<td>Ultra-Minimal (0/5)</td>
+<td>0.00</td>
+<td>[0.00, 0.43]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretation:</strong> Wide confidence intervals reflect estimation uncertainty with n=5, emphasizing need for effect size analysis and cross-tier replication over point estimates.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="f5">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">F.5 Cross-Tier Reliability Ratio</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+<p><strong>MCD Cross-Tier Performance:</strong></p>
+<ul>
+<li>Q1: 0.80, Q4: 0.80, Q8: 0.80</li>
+<li>Mean: 0.80, <strong>SD = 0.00</strong> (perfect consistency)</li>
+</ul>
+<p><strong>Few-Shot Cross-Tier Performance:</strong></p>
+<ul>
+<li>Q1: 0.40, Q4: 0.30, Q8: 0.20</li>
+<li>Mean: 0.30, <strong>SD = 0.10</strong> (high variance)</li>
+</ul>
+<p><strong>Reliability Ratio:</strong> MCD demonstrates <strong>zero variance</strong> across tiers while Few-Shot shows <strong>50% degradation</strong> (Q1 → Q8), validating constraint-resilience claim.</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="f6">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">F.6 Effect Size Summary</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+       <table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Interpretation</th>
+<th>Sample</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCD vs Ultra-Minimal (T1)</td>
+<td>Cohen's d</td>
+<td>∞ (5/5 vs 0/5)</td>
+<td>Extreme effect</td>
+<td>n=5/group</td>
+</tr>
+<tr>
+<td>MCD vs Few-Shot (W3)</td>
+<td>Cohen's d</td>
+<td>0.82</td>
+<td>Large effect</td>
+<td>n=5/group</td>
+</tr>
+<tr>
+<td>Hybrid vs System Role (W1)</td>
+<td>Cohen's d</td>
+<td>1.00</td>
+<td>Large effect</td>
+<td>n=5/group</td>
+</tr>
+<tr>
+<td>Token Efficiency (T1)</td>
+<td>η²</td>
+<td>0.14-0.16</td>
+<td>Large practical effect</td>
+<td>n=5 groups</td>
+</tr>
+<tr>
+<td>Cross-Tier Consistency</td>
+<td>σ ratio</td>
+<td>MCD: 0.00 vs FS: 0.10</td>
+<td>Perfect vs variable</td>
+<td>n=3 tiers</td>
 </tr>
 </tbody>
 </table>
@@ -838,174 +890,11 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
     </div>
   </div>
 </div>
-<div class="gx-block">
-  <div class="gx-card gx-page-block" id="e4">
-    <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">E.4 Empirical Calibration Evidence</h4>
-      <div class="header-tools">
-        <a href="#" class="m-r-10 gx-full-card">
-          <i class="ri-fullscreen-line" title="Full Screen"></i>
-        </a>
-      </div>
-    </div>
-    <div class="gx-card-content">
-      <div class="intro">
-        <p>Table E.3: Validation Evidence for Diagnostic Thresholds</p>
-<table>
-<thead>
-<tr>
-<th>Heuristic</th>
-<th>Calibration Source</th>
-<th>Sample Size</th>
-<th>Statistical Validation</th>
-<th>Practical Validation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>90-token plateau</td>
-<td>T1 prompting analysis, T6 over-engineering detection</td>
-<td>~85 trials across variant comparisons (n=5 per variant, 10 tests)</td>
-<td>Categorical consistency across tests; 95% CI provided</td>
-<td>Consistent across medical, spatial, diagnostic domains</td>
-</tr>
-<tr>
-<td>40% fragility threshold</td>
-<td>T4 stateless integrity testing</td>
-<td>Multiple model instances, browser sessions (n=5 per variant)</td>
-<td>Cross-tier validation (Q1/Q4/Q8); effect size: large</td>
-<td>Healthcare appointment scenarios (W1)</td>
-</tr>
-<tr>
-<td>10% redundancy cutoff</td>
-<td>T7 bounded adaptation, T9 fallback complexity</td>
-<td>Systematic component tracking across tests</td>
-<td>Degeneracy detection validated through repeated measurements</td>
-<td>Navigation robotics (W2), Edge monitoring (W3)</td>
-</tr>
-<tr>
-<td>10% semantic drift</td>
-<td>T10 quantization tier matching</td>
-<td>Q1/Q4/Q8 comparison analysis (n=5 per tier)</td>
-<td>Dynamic tier selection validated through categorical differences</td>
-<td>Real-time capability matching without session memory</td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="gx-block">
-  <div class="gx-card gx-page-block" id="e5">
-    <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">E.5 Practitioner Implementation Checklist</h4>
-      <div class="header-tools">
-        <a href="#" class="m-r-10 gx-full-card">
-          <i class="ri-fullscreen-line" title="Full Screen"></i>
-        </a>
-      </div>
-    </div>
-    <div class="gx-card-content">
-      <div class="intro">
-        <p>Pre-deployment Diagnostic Checklist:<br />
-Capability Plateau: Prompt complexity stays within 90-token efficiency boundary<br />
-Memory Independence: Agent achieves &gt;90% accuracy without persistent state<br />
-Component Utilization: All tools/modules show &gt;10% usage or are removed<br />
-Semantic Stability: &lt;10% drift between quantization tiers under normal operation<br />
-Prompt Resilience: Maintains &gt;94% success rate down to 60-token compression<br />
-Fallback Bounds: Recovery sequences terminate within 2 loops maximum<br />
-Context Regeneration: Stateless reconstruction maintains &gt;90% accuracy<br />
-Tier Optimization: Q4 selected as default with automatic escalation protocols</p>
-
-      </div>
-    </div>
-  </div>
-</div>
-<div class="gx-block">
-  <div class="gx-card gx-page-block" id="e6">
-    <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">E.6 Integration with Simulation and Walkthrough Testing</h4>
-      <div class="header-tools">
-        <a href="#" class="m-r-10 gx-full-card">
-          <i class="ri-fullscreen-line" title="Full Screen"></i>
-        </a>
-      </div>
-    </div>
-    <div class="gx-card-content">
-      <div class="intro">
-        <hr />
-
-<p>Cross-Reference Map:<br />
-Chapter 4, Section 4.6: Theoretical foundations for diagnostic development<br />
-Chapter 5, Section 5.1-5.7: Implementation integration across architectural layers<br />
-Chapter 6, Tests T1-T10: Empirical validation of all diagnostic thresholds<br />
-Chapter 7, Walkthroughs W1-W3: Real-world application in healthcare, navigation, and diagnostic scenarios<br />
-Chapter 8: Comparative analysis against full-stack frameworks using these heuristics</p>
-<p>Validation Cross-Reference Table:</p>
-<table>
-<thead>
-<tr>
-<th>Test/Walkthrough</th>
-<th>Primary Heuristics Validated</th>
-<th>Secondary Heuristics</th>
-<th>Domain Application</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>T1-T3</td>
-<td>Capability Plateau Detector, Prompt Collapse Diagnostic</td>
-<td>Semantic Drift Monitor</td>
-<td>Token efficiency analysis</td>
-</tr>
-<tr>
-<td>T4-T5</td>
-<td>Memory Fragility Score, Context Reconstruction Validator</td>
-<td>Fallback Loop Complexity</td>
-<td>Stateless operation validation</td>
-</tr>
-<tr>
-<td>T6-T9</td>
-<td>Toolchain Redundancy Estimator, Fallback Loop Complexity</td>
-<td>Capability Plateau Detector</td>
-<td>Component optimization</td>
-</tr>
-<tr>
-<td>T10</td>
-<td>Quantization Tier Optimizer, Semantic Drift Monitor</td>
-<td>All heuristics</td>
-<td>Dynamic capability matching</td>
-</tr>
-<tr>
-<td>W1 Healthcare</td>
-<td>Memory Fragility Score, Context Reconstruction</td>
-<td>Semantic Drift Monitor</td>
-<td>Appointment booking systems</td>
-</tr>
-<tr>
-<td>W2 Navigation</td>
-<td>Semantic Drift Monitor, Quantization Tier Optimizer</td>
-<td>Toolchain Redundancy</td>
-<td>Robotic pathfinding</td>
-</tr>
-<tr>
-<td>W3 Diagnostics</td>
-<td>Capability Plateau Detector, Toolchain Redundancy</td>
-<td>All heuristics</td>
-<td>Edge monitoring systems</td>
-</tr>
-</tbody>
-</table>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="gx-block">
-  <div class="gx-card gx-page-block" id="ref">
+  <div class="gx-card gx-page-block" id="f7">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">References</h4>
+      <h4 class="gx-card-title">F.7 Statistical Interpretation Guidelines</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -1015,12 +904,31 @@ Chapter 8: Comparative analysis against full-stack frameworks using these heuris
     <div class="gx-card-content">
       <div class="intro">
 
- <p>Chapter 4, Section 4.6: MCD Subsystem Definitions<br />
-Chapter 5: Instantiated Agent Design Patterns<br />
-Chapter 6, Tests T1-T10: Empirical validation of layer interactions<br />
-Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p>
-<hr />
-<p>This configuration framework ensures reproducible, statistically valid results while maintaining the ecological validity of real-world deployment constraints. All parameters were optimized for browser-based execution environments typical of edge AI deployment scenarios.</p>
+<p><strong>Sample Size Limitations:</strong>
+Small sample sizes (n=5 per variant) limit statistical power and generalizability. Traditional parametric assumptions (normality, homogeneity of variance) cannot be reliably assessed.</p>
+<p><strong>Effect Size Emphasis:</strong>
+Analysis prioritizes <strong>practical significance</strong> (effect sizes) over statistical significance (p-values):</p>
+<ul>
+<li>Cohen's d &gt; 0.8 = large effect (practically meaningful)</li>
+<li>η² &gt; 0.14 = large effect (substantial variance explained)</li>
+<li>Wide CIs reflect uncertainty but extreme point estimates (1.00 vs 0.00) provide categorical evidence</li>
+</ul>
+<p><strong>Validation Strategy:</strong>
+Strength of claims derives from:</p>
+<ol>
+<li><strong>Extreme effect sizes</strong> (d = 2.0, η² = 0.14-0.16)</li>
+<li><strong>Cross-tier replication</strong> (Q1/Q4/Q8 consistent patterns)</li>
+<li><strong>Cross-domain validation</strong> (W1/W2/W3 convergent evidence)</li>
+<li><strong>Categorical outcomes</strong> (100% vs 0% completion where applicable)</li>
+</ol>
+<p><strong>Appropriate Use Cases:</strong></p>
+<ul>
+<li>✅ Fisher's Exact Test for extreme binary outcomes (5/5 vs 0/5)</li>
+<li>✅ Effect size calculations for practical significance</li>
+<li>✅ Wide CIs to reflect estimation uncertainty</li>
+<li>❌ Parametric tests (t-tests, ANOVA) underpowered with n=5</li>
+<li>❌ Point estimates without confidence intervals</li>
+</ul>
       </div>
     </div>
   </div>
@@ -1053,13 +961,13 @@ Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p
 								<nav>
 									<ul class="topic-list">
 <li><a class="topic" href="#ch1-intro">Contents Overview</a></li>
-<li><a class="topic" href="#e1">E.1 Comprehensive MCD Diagnostic Reference</a></li>
-<li><a class="topic" href="#e2">E.2 Detailed Heuristic Implementation Guidelines</a></li>
-<li><a class="topic" href="#e3">E.3 Diagnostic Application Workflow</a></li>
-<li><a class="topic" href="#e4">E.4 Empirical Calibration Evidence</a></li>
-<li><a class="topic" href="#e5">E.5 Practitioner Implementation Checklist</a></li>
-<li><a class="topic" href="#e6">E.6 Integration with Simulation and Walkthrough Testing</a></li>
-<li><a class="topic" href="#ref">References</a></li>
+<li><a class="topic" href="#f1">F.1 Cohen's d for Completion Rate Comparisons</a></li>
+<li><a class="topic" href="#f2">F.2 Eta-Squared (η²) for Token Efficiency Variance</a></li>
+<li><a class="topic" href="#f3">F.3 Fisher's Exact Test for Categorical Differences</a></li>
+<li><a class="topic" href="#f4">F.4 Confidence Intervals (Wilson Score Method)</a></li>
+<li><a class="topic" href="#f5">F.5 Cross-Tier Reliability Ratio</a></li>
+<li><a class="topic" href="#f6">F.6 Effect Size Summary</a></li>
+<li><a class="topic" href="#f7">F.7 Statistical Interpretation Guidelines</a></li>
 									</ul>
 								</nav>
 							</div>
