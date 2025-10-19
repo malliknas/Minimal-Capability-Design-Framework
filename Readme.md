@@ -82,7 +82,24 @@ npm run build:serve
 - **Restart browser** after enabling
 
 ***
+### **⚠️ Important Testing Workflow**
 
+**Critical Runtime Limitation**: After completing a full test suite (T1-T10 or W1-W3), you **must exit the browser and restart the development server** before running additional validation tests.
+
+**Recommended Workflow**:
+1. Run T1-T10 tests → Export results → Close browser & terminal
+2. Restart: `npm run dev` → Open fresh browser session
+3. Run W1-W3 walkthroughs → Export results → Close browser & terminal
+
+**Why**: WebLLM model state persists in browser memory, causing initialization failures on subsequent runs. This is a known limitation of browser-based WebGPU model loading.
+
+**Quick Recovery**: If tests hang or fail to start:
+- Close browser tab completely
+- Stop terminal (Ctrl+C)
+- Restart: `npm run dev`
+- Open fresh browser session
+
+***
 ## 🏗️ **Project Architecture: Pure Browser Implementation**
 
 ### **Why Browser-Only Design**
