@@ -677,51 +677,11 @@ Quantization as Primary Optimization Strategy: As justified in Section 3.3, quan
   <li>Strictly stateless execution (Mitchell, 2019).</li>
 </ul>
 <p>This setup isolates the core MCD behaviors for analysis: prompt compression, fallback logic, and stateless regeneration.</p>
-<p>Model Compatibility Issues: During test implementation, several promising models (e.g., Phi-3.5-mini-instruct) failed to execute in WASM or WebGPU environments due to incompatibilities with the MLC stack (Zhao et al., 2024). Where necessary, substitute models such as TinyLlama or SmolLM were used to maintain coverage across the Q4 tier (Ionio, 2024). This highlights the need for a standardized deployment layer for quantized LLMs.</p>
 
-<h4>6.1.4 Quantitative Success Metrics</h4>
-<p>Table 6.0.1: Key Test Validation Criteria</p>
-<table>
-  <thead>
-    <tr>
-      <th>Test ID</th>
-      <th>Metric</th>
-      <th>Success Threshold</th>
-      <th>Measurement Method</th>
-      <th>Failure Indicator</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a></td>
-      <td>Symbolic Reasoning</td>
-      <td>&gt;80% task completion</td>
-      <td>Counting correct logical steps deduced</td>
-      <td>Hallucination rate &gt;20%</td>
-    </tr>
-    <tr>
-      <td><a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a></td>
-      <td>Stateless Memory</td>
-      <td>&gt;90% context reconstruction</td>
-      <td>Accuracy of state recovery from prompt</td>
-      <td>Context drift &gt;10%</td>
-    </tr>
-    <tr>
-      <td><a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a></td>
-      <td>Offline Execution</td>
-      <td>&lt;500ms response time</td>
-      <td>Browser performance.now() API</td>
-      <td>Timeout or browser crash</td>
-    </tr>
-    <tr>
-      <td><a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a></td>
-      <td>Quantization Tier Fit</td>
-      <td>Optimal tier ≤ Q4 in 3/4 tasks</td>
-      <td>Accuracy × Latency tradeoff curves</td>
-      <td>Q8 required in &gt;2/4 cases</td>
-    </tr>
-  </tbody>
-</table>
+<p>Following the simulation methodology established in Section 3.3 and the quantization tier structure 
+defined in Table 5.3, this chapter presents validation test results across the Q1/Q4/Q8 tiers. The browser
+based WebAssembly environment provides controlled resource limitations without hardware-dependent 
+variability. </p>
       </div>
     </div>
   </div>
@@ -1792,10 +1752,10 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
         <p>The systematic execution of the T1-T10 test battery yielded statistically significant empirical evidence supporting MCD effectiveness under resource-constrained conditions (Field, 2013). This section synthesizes the quantitative findings across all simulation tests, establishing the measurable performance advantages of minimal capability design principles when deployed under stateless, token-limited execution environments.</p>
 <h4>6.3.1 Cross-Test Performance Metrics</h4>
 <p>Analysis of 85 total trials across the ten-test framework reveals substantial performance differentials between MCD-aligned and non-MCD approaches (detailed trace logs in Appendix A) (Howell, 2016). The aggregate metrics demonstrate consistent patterns favoring minimal design under constraint:<br />
-- Task Completion Efficacy: MCD-aligned prompts demonstrated constraint-resilience advantages in systematic testing, maintaining equivalent task completion rates (100%) under resource pressure where alternative approaches showed equivalent success but with higher computational costs (Sullivan &amp; Feinn, 2012). This represents resource efficiency advantages under constraint conditions (large effect sizes observed; 95% CI provided) specifically when resource pressure intensifies, validating MCD&rsquo;s design-time constraint optimization approach.<br />
-- Token Utilization Efficiency: Resource consumption analysis reveals MCD approaches maintained an average of 73 tokens per completed task versus 129 tokens for non-MCD variants, representing a 1.8:1 efficiency advantage (Cohen, 1988). This efficiency gain stems from MCD&rsquo;s structured optimization principles (Section 4.6.1) and resource-aware prompting strategies, which eliminate computational overhead while preserving task effectiveness.<br />
-- Latency Performance: Temporal analysis across all quantization tiers showed MCD agents responding with a mean latency of 1929ms compared to 4071ms for non-MCD approaches, yielding a 2.1:1 speed improvement (Kohavi, 1995). This advantage compounds under browser-based WebAssembly execution (T8), where resource constraints amplify the performance differential between efficient and resource-intensive prompt strategies.<br />
-- Resource Optimization via Tier Selection: The implementation of dynamic quantization tier selection (validated in T10) enabled optimal resource utilization while maintaining task completion rates (Zafrir et al., 2019). This optimization aligns with MCD&rsquo;s principle of optimal resource matching, demonstrating that appropriate constraint-aware design can achieve computational efficiency without sacrificing functional performance.</p>
+<strong>- Task Completion Efficacy:</strong> MCD-aligned prompts demonstrated constraint-resilience advantages in systematic testing, maintaining equivalent task completion rates (100%) under resource pressure where alternative approaches showed equivalent success but with higher computational costs (Sullivan &amp; Feinn, 2012). This represents resource efficiency advantages under constraint conditions (large effect sizes observed; 95% CI provided) specifically when resource pressure intensifies, validating MCD&rsquo;s design-time constraint optimization approach.<br />
+<strong>- Token Utilization Efficiency:</strong> Resource consumption analysis reveals MCD approaches maintained an average of 73 tokens per completed task versus 129 tokens for non-MCD variants, representing a 1.8:1 efficiency advantage (Cohen, 1988). This efficiency gain stems from MCD&rsquo;s structured optimization principles (Section 4.6.1) and resource-aware prompting strategies, which eliminate computational overhead while preserving task effectiveness.<br />
+<strong>- Latency Performance:</strong> Temporal analysis across all quantization tiers showed MCD agents responding with a mean latency of 1929ms compared to 4071ms for non-MCD approaches, yielding a 2.1:1 speed improvement (Kohavi, 1995). This advantage compounds under browser-based WebAssembly execution (T8), where resource constraints amplify the performance differential between efficient and resource-intensive prompt strategies.<br />
+<strong>- Resource Optimization via Tier Selection:</strong> The implementation of dynamic quantization tier selection (validated in T10) enabled optimal resource utilization while maintaining task completion rates (Zafrir et al., 2019). This optimization aligns with MCD&rsquo;s principle of optimal resource matching, demonstrating that appropriate constraint-aware design can achieve computational efficiency without sacrificing functional performance.</p>
 <h4>6.3.2 Statistical Significance and Methodological Rigor</h4>
 <p>All quantitative findings were evaluated using controlled experimental design featuring matched prompt pairs, standardized resource budgets, and consistent measurement protocols (performance.now() microsecond precision timing). With n=5 trials per variant, categorical performance differences were validated through extreme effect sizes (e.g., 100% vs 0% completion) and cross-tier consistency (Q1/Q4/Q8 replication), providing robust qualitative evidence despite limited per-variant sample sizes. 95% confidence intervals are provided for completion rates where applicable. The methodological approach eliminates environmental variance through browser-isolated execution while preserving ecological validity for edge deployment scenarios.</p>
       </div>
@@ -1818,25 +1778,25 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
         <p>The systematic evaluation of MCD principles across diverse task domains revealed three fundamental behavioral patterns that transcend individual test boundaries (Miles et al., 2013; Braun &amp; Clarke, 2006). These emergent patterns provide theoretical validation for core MCD design principles while offering practical guidance for constraint-aware agent architecture (Patton, 2014).</p>
 <h4>6.4.1 Pattern 1: Universal Resource Optimization Effect</h4>
 <p>Independent convergence across multiple tests identified a consistent resource optimization threshold beyond which additional computational investment yields diminishing effectiveness returns (Strubell et al., 2019; Schwartz et al., 2020). This phenomenon emerged clearly in two distinct test contexts:<br />
-- T1 Prompting Analysis: Non-MCD prompt variants demonstrated marginal task improvement beyond ~90 tokens while incurring substantial computational penalties (Liu et al., 2023). The optimal performance-to-resource ratio consistently occurred within the 60-80 token range, supporting MCD&rsquo;s &ldquo;optimal resource utilization&rdquo; heuristic (Section 4.6.1) (Wei et al., 2022).<br />
-- T6 Resource Optimization Detection: Systematic resource expansion analysis revealed a capability plateau at ~130 tokens, with task effectiveness improvements plateauing despite doubling computational costs (Cohen, 1988). This finding suggests a universal cognitive efficiency threshold in quantized language models operating under stateless conditions (Nagel et al., 2021; Dettmers et al., 2022).</p>
+<strong>- T1 Prompting Analysis:</strong> Non-MCD prompt variants demonstrated marginal task improvement beyond ~90 tokens while incurring substantial computational penalties (Liu et al., 2023). The optimal performance-to-resource ratio consistently occurred within the 60-80 token range, supporting MCD&rsquo;s &ldquo;optimal resource utilization&rdquo; heuristic (Section 4.6.1) (Wei et al., 2022).<br />
+<strong>- T6 Resource Optimization Detection:</strong> Systematic resource expansion analysis revealed a capability plateau at ~130 tokens, with task effectiveness improvements plateauing despite doubling computational costs (Cohen, 1988). This finding suggests a universal cognitive efficiency threshold in quantized language models operating under stateless conditions (Nagel et al., 2021; Dettmers et al., 2022).</p>
 <p><strong>Capability Plateau Threshold Derivation:</strong></p>
 <p>Capability plateau analysis (T1, T6) revealed diminishing returns beyond approximately 90-130 tokens, with task effectiveness improvements plateauing despite doubling computational costs. The&nbsp;<strong>90-token threshold</strong>&nbsp;represents a&nbsp;<strong>conservative lower bound</strong>&nbsp;derived from systematic ablation testing across multiple prompt variants:</p>
 <p><strong>T1 Prompting Analysis:</strong>&nbsp;MCD Structured approaches demonstrated optimal performance-to-resource ratio within the 60-80 token range, with marginal improvements (&lt;5%) beyond 90 tokens.</p>
 <p><strong>T6 Over-Engineering Detection:</strong>&nbsp;Structured Minimal (131 tokens) and Hybrid (94 tokens) variants exhibited capability saturation, with additional complexity yielding &lt;5% improvement at 2.6&times; computational cost.</p>
 <p><strong>Cross-Test Convergence:</strong>&nbsp;Independent emergence of resource optimization effects between 90-130 tokens across T1, T3, and T6 validates this as an empirically-derived efficiency boundary rather than an arbitrary constraint.</p>
-<p>The 90-token threshold serves as a&nbsp;<strong>practical design guideline</strong>&nbsp;representing the point where most constrained reasoning tasks achieve semantic sufficiency without excessive resource overhead. This threshold is task-dependent&mdash;simple slot-filling (W1) may saturate at 60-80 tokens, while complex diagnostics (W3) approach 110-130 tokens&mdash;but 90 tokens provides a robust starting point for constraint-aware prompt design.</p>
-<p>Theoretical Implications: The consistent emergence of resource optimization effects across independent test scenarios validates MCD&rsquo;s resource efficiency framework (Bommasani et al., 2021). The ~90-130 token threshold represents an empirically-derived efficiency boundary for constrained agent reasoning, beyond which additional complexity introduces computational waste without proportionate capability gains (Singh et al., 2023).</p>
+<p>The <strong>90-token threshold</strong> serves as a&nbsp;<strong>practical design guideline</strong>&nbsp;representing the point where most constrained reasoning tasks achieve semantic sufficiency without excessive resource overhead. This threshold is task-dependent&mdash;simple slot-filling (W1) may saturate at 60-80 tokens, while complex diagnostics (W3) approach 110-130 tokens&mdash;but 90 tokens provides a robust starting point for constraint-aware prompt design.</p>
+<p><strong>Theoretical Implications:</strong> The consistent emergence of resource optimization effects across independent test scenarios validates MCD&rsquo;s resource efficiency framework (Bommasani et al., 2021). The ~90-130 token threshold represents an empirically-derived efficiency boundary for constrained agent reasoning, beyond which additional complexity introduces computational waste without proportionate capability gains (Singh et al., 2023).</p>
 <h4>6.4.2 Pattern 2: MCD Context Management Superiority</h4>
 <p>Three independent tests examining different aspects of context management converged on identical findings: structured, explicit approaches consistently achieved equivalent task success with superior resource efficiency compared to resource-intensive, implicit strategies under stateless execution conditions (Lewis et al., 2020; Thoppilan et al., 2022).<br />
-- T3 Recovery Optimization: Structured fallback prompts achieved 5/5 successful recovery from ambiguous inputs with optimal resource utilization compared to non-MCD conversational approaches with equivalent success but higher computational cost (Min et al., 2022). The performance differential stems from MCD&rsquo;s resource-efficient clarification strategy, which prevents computational waste through targeted information gathering (Kadavath et al., 2022).<br />
-- T4 Context Reconstruction: Explicit context reinjection maintained perfect task preservation (5/5 trials) across multi-turn interactions with superior resource efficiency, while non-MCD chaining achieved equivalent success but consumed additional computational resources (Ouyang et al., 2022). This validates MCD&rsquo;s stateless regeneration principle (Section 4.6.2), which treats each prompt turn as resource-optimized rather than assuming computational abundance (Anthropic, 2024).<br />
-- T9 Fallback Loop Design: Resource-optimized, two-step fallback sequences recovered user intent in 5/5 trials within ~73 token budgets, while non-MCD clarification chains succeeded in 5/5 cases while consuming ~129 tokens and exhibiting computational overhead (Amodei et al., 2016).</p>
-<p>Design Principle Validation: The consistent pattern across T3, T4, and T9 empirically validates MCD&rsquo;s core assertion that stateless systems require explicit, resource-efficient context management rather than resource-intensive conversational assumptions (Ribeiro et al., 2016). This finding has direct implications for edge deployment scenarios where resource optimization is essential (Xu et al., 2023).</p>
+<strong>- T3 Recovery Optimization:</strong> Structured fallback prompts achieved 5/5 successful recovery from ambiguous inputs with optimal resource utilization compared to non-MCD conversational approaches with equivalent success but higher computational cost (Min et al., 2022). The performance differential stems from MCD&rsquo;s resource-efficient clarification strategy, which prevents computational waste through targeted information gathering (Kadavath et al., 2022).<br />
+<strong>- T4 Context Reconstruction:</strong> Explicit context reinjection maintained perfect task preservation (5/5 trials) across multi-turn interactions with superior resource efficiency, while non-MCD chaining achieved equivalent success but consumed additional computational resources (Ouyang et al., 2022). This validates MCD&rsquo;s stateless regeneration principle (Section 4.6.2), which treats each prompt turn as resource-optimized rather than assuming computational abundance (Anthropic, 2024).<br />
+<strong>- T9 Fallback Loop Design:</strong> Resource-optimized, two-step fallback sequences recovered user intent in 5/5 trials within ~73 token budgets, while non-MCD clarification chains succeeded in 5/5 cases while consuming ~129 tokens and exhibiting computational overhead (Amodei et al., 2016).</p>
+<p><strong>Design Principle Validation:</strong> The consistent pattern across T3, T4, and T9 empirically validates MCD&rsquo;s core assertion that stateless systems require explicit, resource-efficient context management rather than resource-intensive conversational assumptions (Ribeiro et al., 2016). This finding has direct implications for edge deployment scenarios where resource optimization is essential (Xu et al., 2023).</p>
 <h4>6.4.3 Pattern 3: MCD-Aware Performance Optimization</h4>
 <p>The systematic evaluation across Q1, Q4, and Q8 quantization tiers revealed predictable performance optimization patterns that enable dynamic resource matching based on task complexity and computational constraints (Jacob et al., 2018; Frantar et al., 2023).<br />
-- Tier-Specific Performance Profiles: All quantization tiers demonstrated equivalent task success rates (100%) but with dramatically different resource efficiency profiles (Zafrir et al., 2019). Q1 models provided maximum resource optimization for simple tasks, Q4 models achieved optimal balance across 80% of test scenarios, while Q8 models provided equivalent accuracy with unnecessary computational costs (Li et al., 2024).<br />
-- Automatic Resource Optimization: The Q1 → Q4 optimization mechanism triggered appropriately when resource efficiency could be enhanced without task compromise, demonstrating that dynamic tier selection can operate effectively without persistent memory or session state (Haas et al., 2017).</p>
+<strong>- Tier-Specific Performance Profiles:</strong> All quantization tiers demonstrated equivalent task success rates (100%) but with dramatically different resource efficiency profiles (Zafrir et al., 2019). Q1 models provided maximum resource optimization for simple tasks, Q4 models achieved optimal balance across 80% of test scenarios, while Q8 models provided equivalent accuracy with unnecessary computational costs (Li et al., 2024).<br />
+<strong>- Automatic Resource Optimization:</strong> The Q1 → Q4 optimization mechanism triggered appropriately when resource efficiency could be enhanced without task compromise, demonstrating that dynamic tier selection can operate effectively without persistent memory or session state (Haas et al., 2017).</p>
       </div>
     </div>
   </div>
@@ -1876,11 +1836,11 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
       <div class="intro">
         <p>The T1-T10 test battery demonstrated consistent advantages for MCD approaches under resource constraints. Rather than claiming universal superiority, these results show where and why minimal design principles work better than verbose alternatives in constrained environments.</p>
 <h4>6.6.1 What This Actually Means</h4>
-<p>Novel Contribution:</p>
+<p><strong>Novel Contribution:</strong></p>
 <p>This research provides the first systematic validation of constraint-aware AI agent design using quantized models in browser environments (Bommasani et al., 2021). The tiered testing (Q1/Q4/Q8) with automatic optimization offers a replicable framework for evaluating design appropriateness under specific constraints.</p>
-<p>Practical Validation:</p>
+<p><strong>Practical Validation:</strong></p>
 <p>The results confirm that Simon&rsquo;s (1972) bounded rationality principles apply effectively to modern AI agents under resource constraints. &ldquo;Good enough&rdquo; solutions consistently achieved equivalent task effectiveness with superior resource efficiency when computational resources were limited.</p>
-<p>Safety Evidence:</p>
+<p><strong>Safety Evidence:</strong></p>
 <p>The systematic documentation of resource optimization patterns—particularly computational waste in verbose approaches versus controlled resource utilization in minimal designs—provides concrete criteria for efficiency-aware agent architecture (Barocas et al., 2017).</p>
 <h4>6.6.2 Honest Assessment of Limitations</h4>
 <p><strong>Environmental Constraints:</strong>&nbsp;Browser-isolated testing eliminates real-world variables (network latency, thermal throttling, concurrent user interactions), that could affect actual deployment performance. Results apply specifically to controlled, resource-bounded scenarios.</p>
@@ -1922,14 +1882,14 @@ MCD Subsystem: Fallback Layer – Bounded Recovery Optimization</p>
     <div class="gx-card-content">
       <div class="intro">
 <p>The simulation validation established MCD&rsquo;s effectiveness under controlled constraints with statistical confidence (Yin, 2017). Chapter 7 moves from controlled testing to operational scenarios, showing how these quantitative advantages translate to practical deployment contexts.</p>
-<p>From Lab to Field:</p>
+<p><strong>From Lab to Field:</strong></p>
 <p>The domain-specific walkthroughs (W1-W3) apply the four validated design principles—optimal resource utilization, efficient degradation, resource-aware context management, and dynamic capability optimization—in realistic scenarios where constraint-aware design becomes operationally necessary rather than academically interesting.</p>
-<p>Continuity Framework:</p>
+<p><strong>Continuity Framework:</strong></p>
 <p>The quantitative benchmarks from this chapter provide measurable criteria for evaluating real-world application effectiveness:</p>
 <p>1.8:1 resource efficiency advantage provides baseline expectations for MCD vs resource-intensive approaches</p>
 <p>2.1:1 latency improvement offers performance targets for time-critical applications</p>
 <p>Validated resource optimization characteristics establish efficiency requirements for autonomous deployment</p>
-<p>Application Preview:</p>
+<p><strong>Application Preview:</strong></p>
 <p>W1 Healthcare: Appointment scheduling systems where resource efficiency affects system reliability</p>
 <p>W2 Navigation: Robotic pathfinding under computational and environmental constraints</p>
 <p>W3 Diagnostics: Edge-deployed monitoring systems balancing accuracy against resource consumption</p>

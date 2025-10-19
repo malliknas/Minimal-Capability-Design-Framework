@@ -670,7 +670,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 </tbody>
 </table>
 <p>Interpretation:<br />
-MCD agents achieve a significantly lower resource footprint by design—primarily due to their use of quantized models (Q1/Q4/Q8) and stateless prompt logic (Dettmers et al., 2022; Jacob et al., 2018). This contrasts sharply with full-stack frameworks that depend on RAM-intensive memory chains or multi-tool orchestration (Park et al., 2023). Quantization was not chosen arbitrarily; it was evaluated against alternatives such as pruning, PEFT, and distillation (Ch. 2), and selected because it requires no fine-tuning, works with off-the-shelf models, and preserves fallback and deployment simplicity (Nagel et al., 2021). These architectural choices are reflected in simulation results (e.g., T1 &amp; T8 token ceiling stability) and agent walkthroughs (e.g., Booking Agent operating at ~80 tokens without tool or memory calls).</p>
+MCD agents achieve a significantly lower resource footprint by design—primarily due to their use of quantized models (Q1/Q4/Q8) and stateless prompt logic (Dettmers et al., 2022; Jacob et al., 2018). This contrasts sharply with full-stack frameworks that depend on RAM-intensive memory chains or multi-tool orchestration (Park et al., 2023). Quantization was not chosen arbitrarily; it was evaluated against alternatives such as pruning, PEFT, and distillation (Ch. 2), and selected because it requires no fine-tuning, works with off-the-shelf models, and preserves fallback and deployment simplicity (Nagel et al., 2021). These architectural choices are reflected in simulation results (e.g., <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a> &amp; <a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a> token ceiling stability) and agent walkthroughs (e.g., Booking Agent operating at ~80 tokens without tool or memory calls).</p>
 <h4>8.1.1 Optimization Justification Recap</h4>
 <p>While MCD is often viewed as an architectural strategy, it also constitutes a deliberate optimization choice. Among various model compression and acceleration strategies—quantization, pruning, distillation, PEFT, MoE—quantization alone satisfies the following conditions required by MCD (Frantar et al., 2023):<br />
 - ❌ Requires no training or fine-tuning<br />
@@ -799,7 +799,7 @@ RI → 20 / 0 → infinite, indicating clear over-engineering.</p>
 <p>T1 Prompt Variants:&nbsp;MCD Structured (131 tokens), Hybrid (94 tokens), Few-Shot (114 tokens) all achieved equivalent task success, with diminishing returns beyond 90 tokens</p>
 <p>T6 Resource Analysis:&nbsp;Additional prompt complexity beyond 90 tokens yielded &lt;5% improvement at 2.6&times; resource cost</p>
 <p>Domain Validation: &nbsp;W1 Healthcare (63-80 tokens optimal), W2 Navigation (53-80 tokens), W3 Diagnostics (80-110 tokens)</p>
-<p>Threshold Interpretation:&nbsp; The 90-token threshold represents a&nbsp;conservative lower bound&nbsp;where most constrained reasoning tasks achieve semantic sufficiency. This is&nbsp;task-dependent&mdash;simple operations may saturate at 60 tokens, complex multi-step reasoning may require 110-130 tokens&mdash;but 90 tokens provides a robust design-time optimization target for constraint-aware agent architecture.</p>
+<p><strong>Threshold Interpretation:</strong>&nbsp; The 90-token threshold represents a&nbsp;conservative lower bound&nbsp;where most constrained reasoning tasks achieve semantic sufficiency. This is&nbsp;task-dependent&mdash;simple operations may saturate at 60 tokens, complex multi-step reasoning may require 110-130 tokens&mdash;but 90 tokens provides a robust design-time optimization target for constraint-aware agent architecture.</p>
 <p>This calibration aligns with bounded rationality principles (Simon, 1972), demonstrating that "good enough" solutions consistently emerge within predictable resource boundaries when constraints are respected from design inception.</p>
 <p><strong>Comparative Redundancy Analysis:</strong><br />
 - AutoGPT: RI = ∞ (high token overhead, minimal accuracy gain)<br />
@@ -1010,9 +1010,9 @@ Based on <a href="c6.html#t6" target="_blank" style="color: inherit; text-decora
       <div class="intro">
         <h4>8.5.1 Security and Ethical Design Safeguards</h4>
 <p>Edge agents face unique risks from prompt manipulation, adversarial input, and exposed hardware (Papernot et al., 2016). While minimalism reduces the attack surface, it can also increase brittleness. To address this, the MCD design checklists (Appendix E) include explicit warning heuristics (Barocas et al., 2017), such as: &ldquo;Does prompt statelessness allow for easy replay attacks?&rdquo; and &ldquo;Is fallback logic deterministic, and can it leak sensitive internal states through degeneration?&rdquo; Minimal agents should employ lightweight authentication and prompt verification where feasible.</p>
-<p>Empirically Validated Safety Advantage:<br />
+<p><strong>Empirically Validated Safety Advantage:</strong><br />
 <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> constraint validation demonstrates that MCD approaches fail transparently through clear limitation acknowledgment, while over-engineered systems exhibit unpredictable failure patterns under resource overload (Amodei et al., 2016). MCD&rsquo;s bounded reasoning design prevents confident but incorrect responses through explicit fallback states and conservative output restrictions.</p>
-<p>Ethical Boundaries:<br />
+<p><strong>Ethical Boundaries:</strong><br />
 All scenario simulations were designed with no real user data or network exposure. Any adaptation of MCD principles to safety-critical or privacy-sensitive domains must layer additional authentication, encryption, and user consent protocols on top of the framework&rsquo;s minimalist foundation (Jobin et al., 2019).</p>
 
 <h4>8.5.2 Systematic Risk Assessment</h4>
@@ -1084,21 +1084,21 @@ All scenario simulations were designed with no real user data or network exposur
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <h3 id="simulation-derived-decision-thresholds-t1-t10"><strong>Simulation-Derived Decision Thresholds (T1-T10)</strong></h3>
+       <h3 id="simulation-derived-decision-thresholds-t1-t10"><strong>Simulation-Derived Decision Thresholds (<a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-<a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>)</strong></h3>
 <p><strong>Token Efficiency Thresholds</strong></p>
 <ul>
-<li><strong>90-Token Capability Plateau:</strong> T1/T6 confirm semantic saturation beyond 90 tokens (&lt;5% improvement at 2.6× resource cost), establishing Resource Optimization Detector threshold (Appendix E.2.1)</li>
-<li><strong>60-Token Minimum Viability:</strong> T1 shows MCD maintains 94% success at 60 tokens while verbose approaches fail at 85 tokens, defining Prompt Collapse Diagnostic lower bound (Appendix E.2.4)</li>
+<li><strong>90-Token Capability Plateau:</strong> <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>/<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> confirm semantic saturation beyond 90 tokens (&lt;5% improvement at 2.6× resource cost), establishing Resource Optimization Detector threshold (Appendix E.2.1)</li>
+<li><strong>60-Token Minimum Viability:</strong> <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a> shows MCD maintains 94% success at 60 tokens while verbose approaches fail at 85 tokens, defining Prompt Collapse Diagnostic lower bound (Appendix E.2.4)</li>
 <li><strong>Practical Rule:</strong> Deploy within 75-85 token budgets; expand only when failure analysis justifies complexity beyond plateau</li>
 </ul>
-<p><strong>Quantization Tier Selection (T10)</strong></p>
+<p><strong>Quantization Tier Selection (<a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>)</strong></p>
 <ul>
 <li><strong>Q1 (Qwen2-0.5B, 300MB):</strong> 100% completion with maximum computational efficiency; appropriate for simple tasks</li>
 <li><strong>Q4 (TinyLlama-1.1B, 560MB):</strong> Optimal balance (1901ms latency, 114 tokens); validated as minimum viable tier for 80% of constraint-bounded tasks</li>
 <li><strong>Q8 (Llama-3.2-1B, 800MB):</strong> Equivalent success with unnecessary overhead (1965ms vs 1901ms)</li>
 <li><strong>Decision Integration:</strong> Q4 default recommendation; Q1→Q4 escalation when semantic drift &gt;10% (Section 6.3.10)</li>
 </ul>
-<p><strong>Fallback Loop Complexity (T3/T9)</strong></p>
+<p><strong>Fallback Loop Complexity (<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>/<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>)</strong></p>
 <ul>
 <li><strong>Resource-Optimized:</strong> Structured fallback achieves 100% recovery (5/5 trials) within 73 tokens average</li>
 <li><strong>Resource-Intensive:</strong> Equivalent success but 129 tokens (1.8× overhead)</li>
@@ -1106,8 +1106,8 @@ All scenario simulations were designed with no real user data or network exposur
 <li><strong>Operational Rule:</strong> 2-loop maximum prevents runaway recovery; encoded in Fallback Loop Complexity Meter (Appendix E.2.5)</li>
 </ul>
 <hr/>
-<h3 id="walkthrough-insights-w1-w3"><strong>Walkthrough Insights (W1-W3)</strong></h3>
-<p><strong>W1 Healthcare Booking: Context Reconstruction</strong></p>
+<h3 id="walkthrough-insights-w1-w3"><strong>Walkthrough Insights (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>)</strong></h3>
+<p><strong><a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> Healthcare Booking: Context Reconstruction</strong></p>
 <ul>
 <li><strong>MCD Structured:</strong> 4/5 completion (80%), 31.0 avg tokens, predictable failure patterns (Section 7.2)</li>
 <li><strong>Few-Shot:</strong> 4/5 completion (80%), 12.6 tokens, optimal efficiency but pattern-dependent</li>
@@ -1115,7 +1115,7 @@ All scenario simulations were designed with no real user data or network exposur
 <li><strong>Integration Insight:</strong> Healthcare requires predictable failure modes—MCD's transparent limitation acknowledgment ("insufficient data") prevents dangerous misclassification vs confident incorrect responses</li>
 <li><strong>Framework Enhancement:</strong> Added Risk Assessment Modifier for safety-critical domains (Appendix G.2.3)</li>
 </ul>
-<p><strong>W2 Spatial Navigation: Semantic Precision</strong></p>
+<p><strong><a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> Spatial Navigation: Semantic Precision</strong></p>
 <ul>
 <li><strong>MCD Structured:</strong> 3/5 completion (60%), zero hallucinated routes, minimal safety guidance (Section 7.3)</li>
 <li><strong>Few-Shot:</strong> 4/5 completion (80%), excellent directional output (16.8 tokens, 975ms) but pattern-dependent</li>
@@ -1123,7 +1123,7 @@ All scenario simulations were designed with no real user data or network exposur
 <li><strong>Trade-off Discovery:</strong> MCD achieves perfect pathfinding accuracy when successful but provides no safety guidance</li>
 <li><strong>Framework Refinement:</strong> Enhanced MCD Applicability Matrix with Safety Communication dimension; recommend Few-Shot hybrid for navigation requiring user guidance (Appendix G.2.2)</li>
 </ul>
-<p><strong>W3 Failure Diagnostics: Diagnostic Accuracy</strong></p>
+<p><strong><a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> Failure Diagnostics: Diagnostic Accuracy</strong></p>
 <ul>
 <li><strong>MCD Structured:</strong> 4/5 completion (80%), consistent classification, higher resources (42.3 tokens, 2150ms) (Section 7.4)</li>
 <li><strong>Few-Shot:</strong> 5/5 completion (100%), excellent pattern matching (28.4 tokens, 1450ms), domain-template dependent</li>
@@ -1134,12 +1134,12 @@ All scenario simulations were designed with no real user data or network exposur
 <h3 id="anti-patterns-identified-from-failure-modes"><strong>Anti-Patterns Identified from Failure Modes</strong></h3>
 <p><strong>Anti-Pattern 1: Process-Heavy Reasoning Overhead</strong></p>
 <ul>
-<li><strong>Observed:</strong> T1, T6, T8, W1-W3</li>
+<li><strong>Observed:</strong> <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>, <a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a></li>
 <li><strong>Evidence:</strong>
 <ul>
-<li>T6: CoT consumes 171 tokens vs 94 hybrid (identical 100% success) (Section 6.3.6)</li>
-<li>T8: CoT shows 2.5× computational cost in browser deployment without accuracy gains (Section 6.3.8)</li>
-<li>W3: Analysis paralysis in diagnostics while consuming excessive resources</li>
+<li><a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>: CoT consumes 171 tokens vs 94 hybrid (identical 100% success) (Section 6.3.6)</li>
+<li><a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>: CoT shows 2.5× computational cost in browser deployment without accuracy gains (Section 6.3.8)</li>
+<li><a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>: Analysis paralysis in diagnostics while consuming excessive resources</li>
 </ul></li>
 <li><strong>Definition:</strong> Process-based reasoning chains consuming cognitive/computational resources for step-by-step descriptions rather than efficient task execution</li>
 <li><strong>Diagnostic Integration:</strong> Redundancy Index Calculator flags &gt;60% token allocation to process description (Appendix E.2.3)</li>
@@ -1147,12 +1147,12 @@ All scenario simulations were designed with no real user data or network exposur
 </ul>
 <p><strong>Anti-Pattern 2: Ultra-Minimal Context Insufficiency</strong></p>
 <ul>
-<li><strong>Observed:</strong> T1, T2, T5, W1 edge cases</li>
+<li><strong>Observed:</strong> <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T2</a>, <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> edge cases</li>
 <li><strong>Evidence:</strong>
 <ul>
-<li>T1: 0% completion due to insufficient task context (Section 6.3.1)</li>
-<li>T2: 0/5 completion for ultra-minimal symbolic processing (Section 6.3.2)</li>
-<li>W1: "Book something tomorrow" failures from inadequate context</li>
+<li><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>: 0% completion due to insufficient task context (Section 6.3.1)</li>
+<li><a href="c6.html#t2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T2</a>: 0/5 completion for ultra-minimal symbolic processing (Section 6.3.2)</li>
+<li><a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>: "Book something tomorrow" failures from inadequate context</li>
 </ul></li>
 <li><strong>Definition:</strong> Context reduction beyond semantic sufficiency threshold causing complete task failure despite theoretical token efficiency</li>
 <li><strong>Diagnostic Integration:</strong> Memory Fragility Score with context sufficiency validator preventing deployment &lt;60-token minimum (Appendix E.2.2)</li>
@@ -1160,12 +1160,12 @@ All scenario simulations were designed with no real user data or network exposur
 </ul>
 <p><strong>Anti-Pattern 3: Conversational Resource Overhead Under Constraint</strong></p>
 <ul>
-<li><strong>Observed:</strong> T3, T7, W1-W3 constraint scenarios</li>
+<li><strong>Observed:</strong> <a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>, <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> constraint scenarios</li>
 <li><strong>Evidence:</strong>
 <ul>
-<li>T3: Conversational fallback 71 tokens vs 66 structured (equivalent recovery) (Section 6.3.3)</li>
-<li>W2: Complete navigation failure under Q1 despite excellent safety awareness</li>
-<li>W3: General advice vs specific actionable guidance</li>
+<li><a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>: Conversational fallback 71 tokens vs 66 structured (equivalent recovery) (Section 6.3.3)</li>
+<li><a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>: Complete navigation failure under Q1 despite excellent safety awareness</li>
+<li><a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>: General advice vs specific actionable guidance</li>
 </ul></li>
 <li><strong>Definition:</strong> Resource allocation to relationship-building when constraint pressure requires task-focused efficiency</li>
 <li><strong>Diagnostic Integration:</strong> Semantic Drift Monitor flags &gt;15% token allocation to conversational elements under Q1/Q4 (Appendix E.2.6)</li>
@@ -1173,7 +1173,7 @@ All scenario simulations were designed with no real user data or network exposur
 </ul>
 <p><strong>Anti-Pattern 4: Strategy Coordination Complexity Failure</strong></p>
 <ul>
-<li><strong>Observed:</strong> T6 hybrid variants, W1-W3 advanced implementations</li>
+<li><strong>Observed:</strong> <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> hybrid variants, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> advanced implementations</li>
 <li><strong>Evidence:</strong>
 <ul>
 <li>Hybrid coordination breakdown when strategies conflict (Section 7.2-7.4)</li>
@@ -1188,15 +1188,15 @@ All scenario simulations were designed with no real user data or network exposur
 <h3 id="threshold-calibration"><strong>Threshold Calibration</strong></h3>
 <p><strong>Cross-Validation Confidence</strong></p>
 <ul>
-<li><strong>90-token plateau:</strong> Confirmed across T1, T6, W3 (n=25 per domain, large effect size η²&gt;0.14, cross-tier Q1/Q4/Q8 replication)</li>
-<li><strong>Q4 optimal tier:</strong> Validated T10 + W1-W3 operational scenarios for tier selection consistency</li>
-<li><strong>2-loop fallback maximum:</strong> Convergent T3, T9, W1 evidence (effect size d&gt;0.8, large practical significance)</li>
+<li><strong>90-token plateau:</strong> Confirmed across <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>, <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> (n=25 per domain, large effect size η²&gt;0.14, cross-tier Q1/Q4/Q8 replication)</li>
+<li><strong>Q4 optimal tier:</strong> Validated <a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a> + <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> operational scenarios for tier selection consistency</li>
+<li><strong>2-loop fallback maximum:</strong> Convergent <a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>, <a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> evidence (effect size d&gt;0.8, large practical significance)</li>
 </ul>
 <p><strong>Domain-Specific Adjustments</strong></p>
 <ul>
-<li><strong>Healthcare Safety:</strong> W1 supports 10% safety buffer on token budgets for critical decision scenarios</li>
-<li><strong>Navigation Safety:</strong> W2 recommends Few-Shot hybrid when safety communication required (explicit hazard warnings)</li>
-<li><strong>Diagnostic Expertise:</strong> W3 validates pattern-based approaches in expert troubleshooting contexts</li>
+<li><strong>Healthcare Safety:</strong> <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> supports 10% safety buffer on token budgets for critical decision scenarios</li>
+<li><strong>Navigation Safety:</strong> <a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> recommends Few-Shot hybrid when safety communication required (explicit hazard warnings)</li>
+<li><strong>Diagnostic Expertise:</strong> <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> validates pattern-based approaches in expert troubleshooting contexts</li>
 </ul>
       </div>
     </div>
@@ -1293,11 +1293,11 @@ All scenario simulations were designed with no real user data or network exposur
 <p><strong>STEP 1: Minimality by Default</strong></p>
 <ul>
 <li>Component necessity validation (memory, tools, orchestration)</li>
-<li>Removal criteria: Stateless viability (T4: 5/5), utilization &lt;10% (T7), prompt-routing sufficiency (T3: 4/5)</li>
+<li>Removal criteria: Stateless viability (<a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>: 5/5), utilization &lt;10% (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>), prompt-routing sufficiency (<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>: 4/5)</li>
 </ul>
 <p><strong>STEP 2: Bounded Rationality</strong></p>
 <ul>
-<li>Reasoning chain complexity: ≤3 steps acceptable, &gt;3 high drift risk (T5: 2/4 failures)</li>
+<li>Reasoning chain complexity: ≤3 steps acceptable, &gt;3 high drift risk (<a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>: 2/4 failures)</li>
 <li>Token budget allocation: Core logic 40-60%, Fallback 20-30%, Input 10-20%, Buffer 10-15%</li>
 </ul>
 <p><strong>STEP 3: Degeneracy Detection</strong></p>
@@ -1336,16 +1336,16 @@ All scenario simulations were designed with no real user data or network exposur
 <p><strong>Test Suite Framework:</strong></p>
 <p><strong>Core MCD Validation (T1-T10 Methodology):</strong></p>
 <ul>
-<li>T1-Style: Approach effectiveness (≥90% expected performance)</li>
-<li>T4-Style: Stateless context reconstruction (≥90% recovery: 5/5 vs 2/5)</li>
-<li>T6-Style: Over-engineering detection (RI ≤ 10, no components &gt;20% overhead)</li>
-<li>T7-Style: Constraint stress test (≥80% controlled failure)</li>
-<li>T8-Style: Deployment environment (no crashes, &lt;500ms latency)</li>
-<li>T10-Style: Quantization tier validation (optimal tier ≥90% cases)</li>
+<li><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-Style: Approach effectiveness (≥90% expected performance)</li>
+<li><a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>-Style: Stateless context reconstruction (≥90% recovery: 5/5 vs 2/5)</li>
+<li><a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>-Style: Over-engineering detection (RI ≤ 10, no components &gt;20% overhead)</li>
+<li><a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>-Style: Constraint stress test (≥80% controlled failure)</li>
+<li><a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>-Style: Deployment environment (no crashes, &lt;500ms latency)</li>
+<li><a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>-Style: Quantization tier validation (optimal tier ≥90% cases)</li>
 </ul>
 <p><strong>Domain-Specific Validation (W1-W3 Style):</strong></p>
 <ul>
-<li>Task domain deployment (W1), real-world scenario execution (W2), failure mode analysis (W3)</li>
+<li>Task domain deployment (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>), real-world scenario execution (<a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>), failure mode analysis (<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>)</li>
 <li>Comparative performance vs. non-MCD approaches</li>
 </ul>
 <p><strong>Diagnostic Checks:</strong></p>
@@ -1408,20 +1408,20 @@ All scenario simulations were designed with no real user data or network exposur
 <h3 id="core-principle-validation"><strong>Core Principle Validation</strong></h3>
 <p><strong>Minimality by Default (Section 4.2.3)</strong></p>
 <ul>
-<li><strong>Validation:</strong> T1/T4 achieve 94% task success with ~67% fewer resources vs. traditional approaches</li>
-<li><strong>Refinement:</strong> 10% utilization threshold (T7/T9: 15–30ms latency savings when removing low-utilization components)</li>
-<li><strong>Domain Evidence:</strong> Healthcare (W1), navigation (W2), diagnostics (W3) replicate constraint-resilience across domains</li>
+<li><strong>Validation:</strong> <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>/<a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> achieve 94% task success with ~67% fewer resources vs. traditional approaches</li>
+<li><strong>Refinement:</strong> 10% utilization threshold (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>/<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>: 15–30ms latency savings when removing low-utilization components)</li>
+<li><strong>Domain Evidence:</strong> Healthcare (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>), navigation (<a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>), diagnostics (<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>) replicate constraint-resilience across domains</li>
 </ul>
 <p><strong>Bounded Rationality (Section 4.2.1)</strong></p>
 <ul>
-<li><strong>Validation:</strong> 90-token saturation point (T1/T6); T5 shows 52% semantic drift beyond 3 reasoning steps</li>
-<li><strong>Refinement:</strong> Q1→Q4→Q8 tiered execution with dynamic routing (T10) operationalizes bounded reasoning under hardware limits</li>
+<li><strong>Validation:</strong> 90-token saturation point (<a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>/<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>); <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a> shows 52% semantic drift beyond 3 reasoning steps</li>
+<li><strong>Refinement:</strong> Q1→Q4→Q8 tiered execution with dynamic routing (<a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>) operationalizes bounded reasoning under hardware limits</li>
 <li><strong>Token Allocation:</strong> Core 40-60%, Fallback 20-30%, Input 10-20%, Buffer 10-15% (Appendix G.3.2)</li>
 </ul>
 <p><strong>Degeneracy Detection (Section 4.2.2)</strong></p>
 <ul>
-<li><strong>Validation:</strong> &lt;10% component utilization triggers removal, yielding 15–30ms latency improvements (T7/T9)</li>
-<li><strong>Refinement:</strong> Redundancy Index ≤10 threshold (T6: RI=435 indicates extreme over-engineering)</li>
+<li><strong>Validation:</strong> &lt;10% component utilization triggers removal, yielding 15–30ms latency improvements (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>/<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>)</li>
+<li><strong>Refinement:</strong> Redundancy Index ≤10 threshold (<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>: RI=435 indicates extreme over-engineering)</li>
 <li><strong>Deployment Tool:</strong> Dead path detection integrated into Appendix G.5 validation workflows</li>
 </ul>
 <h3 id="architecture-layer-validation"><strong>Architecture Layer Validation</strong></h3>
@@ -1429,12 +1429,12 @@ All scenario simulations were designed with no real user data or network exposur
 <ul>
 <li><strong>Finding:</strong> 90-token semantic saturation confirmed (T1–T3)</li>
 <li><strong>Adaptation Patterns:</strong> Dynamic/Semi-Static taxonomy (Section 5.2.1) validated through W1/W2/W3</li>
-<li><strong>Stateless Regeneration:</strong> 92% context reconstruction without persistent memory (T4: 5/5 vs. 2/5 implicit)</li>
+<li><strong>Stateless Regeneration:</strong> 92% context reconstruction without persistent memory (<a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>: 5/5 vs. 2/5 implicit)</li>
 </ul>
 <p><strong>Control Layer (Section 4.3.2)</strong></p>
 <ul>
-<li><strong>Finding:</strong> Prompt-level routing achieves 80% success (T3: 4/5), eliminating orchestration overhead (−30 tokens, −25ms latency)</li>
-<li><strong>Fallback:</strong> ≤2 iterations prevent 50% semantic drift (T5), maintaining 420ms average resolution time (T9)</li>
+<li><strong>Finding:</strong> Prompt-level routing achieves 80% success (<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>: 4/5), eliminating orchestration overhead (−30 tokens, −25ms latency)</li>
+<li><strong>Fallback:</strong> ≤2 iterations prevent 50% semantic drift (<a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>), maintaining 420ms average resolution time (<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>)</li>
 </ul>
 <p><strong>Execution Layer (Section 4.3.3)</strong></p>
 <ul>
@@ -1454,45 +1454,45 @@ All scenario simulations were designed with no real user data or network exposur
 <tr>
 <td>Capability Plateau Detector</td>
 <td>90-token threshold; &lt;5% marginal gain</td>
-<td>T1/T3/T6</td>
+<td><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>/<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>/<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a></td>
 </tr>
 <tr>
 <td>Memory Fragility Score</td>
 <td>40% dependence = ~67% stateless failure risk</td>
-<td>T4</td>
+<td><a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a></td>
 </tr>
 <tr>
 <td>Toolchain Redundancy Estimator</td>
 <td>10% utilization cutoff → 15–30ms savings</td>
-<td>T7/T9</td>
+<td><a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>/<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a></td>
 </tr>
 <tr>
 <td>Redundancy Index</td>
 <td>RI ≤10 acceptable; &gt;10 over-engineered</td>
-<td>T6</td>
+<td><a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a></td>
 </tr>
 <tr>
 <td>Reasoning Chain Depth</td>
 <td>≤3 steps; &gt;3 triggers ~52% semantic drift</td>
-<td>T5</td>
+<td><a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a></td>
 </tr>
 <tr>
 <td>Quantization Tier Selection</td>
 <td>Q4 optimal for 80% tasks; Q1→Q4→Q8 routing</td>
-<td>T10</td>
+<td><a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a></td>
 </tr>
 </tbody>
 </table>
 <p><strong>Integration:</strong> All thresholds operationalized in Appendix G decision tree (G.1–G.5) with validation protocols.</p>
 <h3 id="scope-boundaries"><strong>Scope Boundaries</strong></h3>
-<p><strong>Memory-Dependent Tasks:</strong> T4 observes complete context loss without explicit slot reinjection; hybrid architectures (Section 4.8) required for persistent conversation.</p>
-<p><strong>Complex Reasoning Chains:</strong> T5 shows ~52% drift beyond 3 steps; mitigation via task decomposition (Appendix G.3.2 Option 2) or symbolic compression (G.3.2 Option 1).</p>
-<p><strong>Safety-Critical Applications:</strong> T7 demonstrates 80% controlled degradation with transparent limitation acknowledgment; requires external verification beyond MCD guarantees.</p>
+<p><strong>Memory-Dependent Tasks:</strong> <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a> observes complete context loss without explicit slot reinjection; hybrid architectures (Section 4.8) required for persistent conversation.</p>
+<p><strong>Complex Reasoning Chains:</strong> <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a> shows ~52% drift beyond 3 steps; mitigation via task decomposition (Appendix G.3.2 Option 2) or symbolic compression (G.3.2 Option 1).</p>
+<p><strong>Safety-Critical Applications:</strong> <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> demonstrates 80% controlled degradation with transparent limitation acknowledgment; requires external verification beyond MCD guarantees.</p>
 <h3 id="maturity-assessment"><strong>Maturity Assessment</strong></h3>
 <p><strong>Validated Strengths:</strong></p>
 <ul>
 <li>85-94% performance under Q1 constraints vs. 40% for traditional approaches</li>
-<li>Cross-domain validation (W1/W2/W3) confirms generalizability</li>
+<li>Cross-domain validation (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>/<a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>/<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>) confirms generalizability</li>
 <li>Tested hardware: ESP32-S3 (512KB RAM) to Jetson Nano (4GB RAM); platforms: Browser/WebAssembly (T8), embedded Linux (T10)</li>
 </ul>
 <p><strong>Empirical Contributions:</strong></p>
@@ -1505,7 +1505,7 @@ All scenario simulations were designed with no real user data or network exposur
 <ul>
 <li>Stateful agents require hybrid architectures (Section 4.8)</li>
 <li>Multi-step reasoning (&gt;3 steps) needs decomposition strategies</li>
-<li>Safety-critical systems require domain-specific verification layers (T7)</li>
+<li>Safety-critical systems require domain-specific verification layers (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>)</li>
 </ul>
 
       </div>

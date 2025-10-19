@@ -704,11 +704,11 @@ Browser-based WebAssembly simulation (430ms average latency) provides baseline f
        <p>A key limitation of the current MCD agents, identified in Section 8.4, is their strict statelessness and tool-free design. While advantageous for simplicity, this can be relaxed in a controlled, minimal-impact manner to extend the agent&rsquo;s task scope without undermining MCD’s core principles.</p>
 <h4>9.2.1 Potential Hybrid Enhancements</h4>
 <ul>
-<li>Adaptive Memory Agents: Employ ephemeral memory that exists only within the current task session and is reset upon completion to prevent persistent state bloat (Anthropic, 2024).</li>
-<li>Selective Memory Primitives: Store only critical symbolic anchors (e.g., the last two spatial coordinates in the navigation walkthrough) rather than the full conversation history (Thrun et al., 2005).</li>
-<li>On-Demand Tool Selection: Integrate external tools (e.g., a lightweight retrieval API) that are invoked only when the agent’s internal diagnostic heuristics detect a high risk of capability collapse (Qin et al., 2023).</li>
+<li><strong>Adaptive Memory Agents:</strong> Employ ephemeral memory that exists only within the current task session and is reset upon completion to prevent persistent state bloat (Anthropic, 2024).</li>
+<li><strong>Selective Memory Primitives:</strong> Store only critical symbolic anchors (e.g., the last two spatial coordinates in the navigation walkthrough) rather than the full conversation history (Thrun et al., 2005).</li>
+<li><strong>On-Demand Tool Selection:</strong> Integrate external tools (e.g., a lightweight retrieval API) that are invoked only when the agent’s internal diagnostic heuristics detect a high risk of capability collapse (Qin et al., 2023).</li>
 </ul>
-<p>🛠️ Reintroducing Optimization Trade-Offs:<br />
+<p><strong>🛠️ Reintroducing Optimization Trade-Offs:</strong><br />
 While this thesis prioritized quantization due to its zero-training and stateless compatibility, future hybrid MCD agents may also explore (Hinton et al., 2015):<br />
 - -  Distilled TinyLLMs (e.g., TinyLlama) for cases with access to pre-compiled small models.<br />
 - -  PEFT techniques like LoRA or prefix-tuning for agents that support task-specific fine-tuning during provisioning (Hu et al., 2021).<br />
@@ -716,12 +716,12 @@ While this thesis prioritized quantization due to its zero-training and stateles
 <p>These approaches require session-state support or training pipelines, but may serve in bounded hybrid agents that retain a minimalist inference core.</p>
 <h3>9.2.2 SLM-MCD Integration Strategies</h3>
 <p>Recent research demonstrates that domain-specific Small Language Models (SLMs) provide complementary optimization to MCD&rsquo;s architectural minimalism (Belcak et al., 2025). Unlike general quantized models, SLMs achieve efficiency through domain specialization while maintaining compatibility with MCD&rsquo;s constraint-first principles (Magnini et al., 2025).</p>
-<p>Domain-Specific MCD Agents:<br />
+<p><strong>Domain-Specific MCD Agents:</strong><br />
 Future implementations could leverage specialized SLMs as base models within MCD frameworks:<br />
 - Healthcare MCD Agents: Utilizing medical SLMs (e.g., BioMistral, mhGPT) for appointment booking and clinical terminology handling while preserving MCD&rsquo;s stateless execution and fallback safety (Singhal et al., 2025)<br />
 - Navigation MCD Agents: Employing robotics-specific SLMs trained on spatial reasoning datasets (Song et al., 2024) to reduce semantic drift in multi-step navigation tasks<br />
 - Code Diagnostics MCD Agents: Integrating code-specific SLMs like Microsoft&rsquo;s CodeBERT family for enhanced prompt debugging while maintaining MCD&rsquo;s transparent boundary acknowledgment</p>
-<p>Multi-SLM Orchestration Under MCD Logic:<br />
+<p><strong>Multi-SLM Orchestration Under MCD Logic:</strong><br />
 Hybrid architectures could combine multiple domain-specific SLMs under MCD&rsquo;s stateless routing logic (Agrawal &amp; Nargund, 2025):</p>
 <div class="highlight"><pre><span></span><code>User Query → Intent Classification → Domain SLM Selection → MCD Execution Layer
            ↓
@@ -730,12 +730,12 @@ Hybrid architectures could combine multiple domain-specific SLMs under MCD&rsquo
     Diagnostics SLM (Q8) → Pattern Recognition → Error Classification
 </code></pre></div>
 
-<p>SLM-Quantization Synergy:<br />
+<p><strong>SLM-Quantization Synergy:</strong><br />
 Domain-specific models trained on specialized datasets may achieve better performance at lower quantization tiers than general models (Pham et al., 2024). For example:<br />
 - Medical terminology SLMs might maintain clinical accuracy at Q4 precision where general LLMs require Q8<br />
 - Spatial reasoning SLMs could enable Q1-tier navigation tasks that general models cannot handle<br />
 - Code-specific SLMs may preserve debugging capability under aggressive compression</p>
-<p>Table 9.2: SLM-MCD Integration Compatibility Matrix</p>
+<p><strong>Table 9.2: SLM-MCD Integration Compatibility Matrix</strong></p>
 <table>
 <thead>
 <tr>
@@ -777,7 +777,7 @@ Domain-specific models trained on specialized datasets may achieve better perfor
 </tr>
 </tbody>
 </table>
-<p>Framework Independence Preservation:<br />
+<p><strong>Framework Independence Preservation:</strong><br />
 MCD architectural principles (stateless execution, fallback safety, degeneracy detection) remain model-agnostic and apply equally to general LLMs, quantized models, or domain-specific SLMs (Touvron et al., 2023). This ensures that SLM integration enhances rather than replaces MCD&rsquo;s core design philosophy.</p>
       </div>
     </div>
@@ -799,19 +799,19 @@ MCD architectural principles (stateless execution, fallback safety, degeneracy d
        <p>An emerging research direction is the development of self-optimizing agents that continuously enforce MCD constraints on themselves without external tuning (Mitchell, 2019; Russell, 2019).</p>
 <h4>9.3.1 Core Concepts for Self-Optimization</h4>
 <ul>
-<li>Self-Reducing Prompt Chains: Agents would be designed to dynamically shorten multi-step reasoning prompts when the Redundancy Index (Section 8.3) indicates that no measurable accuracy gain is being achieved (Basili et al., 1994).</li>
-<li>Entropy-Based Prompt Pruning: This approach would use token-level entropy scoring to detect high-perplexity or low-information branches in a prompt&rsquo;s decision tree. The agent could then prune branches where the KL-divergence from a task-aligned distribution exceeds a set threshold, thereby maintaining prompt efficiency.</li>
-<li>Domain-Aware Self-Optimization: Future auto-minimal agents could leverage SLM domain expertise for enhanced self-optimization:<br />
+<li><strong>Self-Reducing Prompt Chains:</strong> Agents would be designed to dynamically shorten multi-step reasoning prompts when the Redundancy Index (Section 8.3) indicates that no measurable accuracy gain is being achieved (Basili et al., 1994).</li>
+<li><strong>Entropy-Based Prompt Pruning:</strong> This approach would use token-level entropy scoring to detect high-perplexity or low-information branches in a prompt&rsquo;s decision tree. The agent could then prune branches where the KL-divergence from a task-aligned distribution exceeds a set threshold, thereby maintaining prompt efficiency.</li>
+<li><strong>Domain-Aware Self-Optimization:</strong> Future auto-minimal agents could leverage SLM domain expertise for enhanced self-optimization:<br />
   Domain Drift Detection: SLMs trained on specific vocabularies could better detect when task context shifts beyond their expertise domain, triggering MCD fallback mechanisms<br />
   Specialized Entropy Scoring: Domain-specific models provide more accurate entropy measurements for their specialized tasks, enabling precise self-pruning without capability loss<br />
   Adaptive SLM Selection: Self-optimizing agents could dynamically select the most appropriate domain-specific SLM based on input analysis while maintaining MCD&rsquo;s stateless execution</li>
-<li>Quantization-Aware Pruning Synergy: As agents begin self-optimizing, future directions may include quantization-aware pruning strategies that (Iandola et al., 2016):<br />
+<li><strong>Quantization-Aware Pruning Synergy:</strong> As agents begin self-optimizing, future directions may include quantization-aware pruning strategies that (Iandola et al., 2016):<br />
   Dynamically remove low-weight branches in decision trees,<br />
   Ensure pruning does not conflict with existing quantization tiers,<br />
   Preserve compatibility with Q4/Q8 fallback layers.</li>
-<li>Self-Pruning via Capability Scoring: Agents could maintain a minimal execution graph by scoring each decision step for its relevance to the task and automatically dropping low-impact branches, thus avoiding the persistent growth of prompt chains over time.</li>
+<li><strong>Self-Pruning via Capability Scoring:</strong> Agents could maintain a minimal execution graph by scoring each decision step for its relevance to the task and automatically dropping low-impact branches, thus avoiding the persistent growth of prompt chains over time.</li>
 </ul>
-<p>Empirically Calibrated Self-Optimization:<br />
+<p><strong>Empirically Calibrated Self-Optimization:</strong><br />
 Validation provides specific thresholds for auto-minimal agent design:<br />
 - Redundancy Index &gt; 0.5 triggers automatic prompt compression (<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> validation)<br />
 - Token efficiency &lt; 2.6:1 activates degeneracy detection pruning (<a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>
