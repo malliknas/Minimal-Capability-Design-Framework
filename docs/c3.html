@@ -534,7 +534,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>			
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>			
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -717,12 +719,6 @@ This research analyzed 73 peer-reviewed papers and technical reports using a str
 <li><strong>Rust:</strong> Excellent memory safety and performance characteristics, but limited edge AI ecosystem maturity and steep learning curve reduce accessibility for framework validation and adoption.</li>
 </ul>
 <p>This runtime selection ensures that MCD validation reflects realistic edge deployment constraints&mdash;where computational efficiency, zero-dependency execution, and cross-platform consistency determine deployment viability rather than optimal-condition performance benchmarks.</p>
-<p>Each simulation scenario is executed in at least three variations to test:</p>
-<ul>
-<li>A baseline minimal prompt within a nominal token budget.</li>
-<li>A prompt degradation scenario (symbolic compression, random token removal).</li>
-<li>A fallback-only execution scenario without any prior context.</li>
-</ul>
 <p>For each MCD principle under test, 3&ndash;5 runs are conducted per variation, logging token usage, recovery success rate, and failure type to assess robustness (Cohen, 1988).</p>
 <p>Table 3.2 - Metrics Tracked:</p>
 <table>

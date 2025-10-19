@@ -532,7 +532,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>			
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>			
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -825,34 +827,8 @@ Based on <a href="c6.html#t6" target="_blank" style="color: inherit; text-decora
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>While MCD offers strong edge-deployment alignment, it is not without significant trade-offs that limit its applicability (Ribeiro et al., 2016):<br />
-- No Long-Term Task Memory: The framework lacks historical recall, making it unsuitable for persistent case management (Lewis et al., 2020). For example, it cannot reconcile multi-visit patient records without external state.<br />
-- Not Designed for High-Context Planning: Multi-stage scientific reasoning or strategic planning may exceed the stateless capacity of the architecture (Wei et al., 2022). This was confirmed in the <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a> (Semantic Drift) simulation, where reasoning depth was intentionally curtailed.<br />
-- Highly Dependent on Prompt Engineering: The quality of the outcome is tightly coupled to the skill of the prompt designer (Perez et al., 2022) Poor prompt structure magnifies the risk of semantic drift and failure.<br />
-- SLM Integration Considerations: While domain-specific SLMs could potentially address some prompt engineering dependencies and reduce semantic drift in specialized contexts, their integration within MCD frameworks requires careful evaluation of training dependencies and deployment complexity (Belcak et al., 2025). Future implementations must balance SLM domain advantages against MCD&rsquo;s constraint-first design principles.</p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="gx-block">
-  <div class="gx-card gx-page-block" id="8.5">
-    <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">8.5 Security, Ethics, and Risk Management</h4>
-      <div class="header-tools">
-        <a href="#" class="m-r-10 gx-full-card">
-          <i class="ri-fullscreen-line" title="Full Screen"></i>
-        </a>
-      </div>
-    </div>
-    <div class="gx-card-content">
-      <div class="intro">
-        <h4>8.5.1 Security and Ethical Design Safeguards</h4>
-<p>Edge agents face unique risks from prompt manipulation, adversarial input, and exposed hardware (Papernot et al., 2016). While minimalism reduces the attack surface, it can also increase brittleness. To address this, the MCD design checklists (Appendix E) include explicit warning heuristics (Barocas et al., 2017), such as: &ldquo;Does prompt statelessness allow for easy replay attacks?&rdquo; and &ldquo;Is fallback logic deterministic, and can it leak sensitive internal states through degeneration?&rdquo; Minimal agents should employ lightweight authentication and prompt verification where feasible.</p>
-<p>Empirically Validated Safety Advantage:<br />
-<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> constraint validation demonstrates that MCD approaches fail transparently through clear limitation acknowledgment, while over-engineered systems exhibit unpredictable failure patterns under resource overload (Amodei et al., 2016). MCD&rsquo;s bounded reasoning design prevents confident but incorrect responses through explicit fallback states and conservative output restrictions.</p>
-<p>Ethical Boundaries:<br />
-All scenario simulations were designed with no real user data or network exposure. Any adaptation of MCD principles to safety-critical or privacy-sensitive domains must layer additional authentication, encryption, and user consent protocols on top of the framework&rsquo;s minimalist foundation (Jobin et al., 2019).</p>
-<h4>8.5.2 MCD Applicability Boundaries</h4>
+        <p>This section consolidates MCD framework boundaries and limitations identified throughout empirical validation (Chapters 6-7), methodological constraints (Chapter 3), and applicability analysis (Section 8.5). </p>
+		      <h4>MCD Applicability Boundaries</h4>
 <p>The framework is not a universal solution (Bommasani et al., 2021). The following table defines its suitability for different task categories.</p>
 <p>Table 8.3: MCD Suitability Matrix</p>
 <table>
@@ -941,7 +917,105 @@ All scenario simulations were designed with no real user data or network exposur
 </tr>
 </tbody>
 </table>
-<h4>8.5.3 Systematic Risk Assessment</h4>
+<p><strong>Table 8.3.1: Comprehensive MCD Framework Limitations and Boundary Conditions</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Limitation Category</strong></th>
+<th><strong>Specific Constraints</strong></th>
+<th><strong>Impact on Framework</strong></th>
+<th><strong>Detailed Discussion</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Statistical &amp; Sample Size</strong></td>
+<td>- Small sample sizes (n=5 per variant, n=25 per domain)<br />- Wide confidence intervals (e.g., 95% CI: [0.44, 0.98] for 80% completion)<br />- Limited statistical power for parametric inference</td>
+<td>Findings emphasize effect size magnitude and categorical patterns rather than traditional inferential statistics. Cross-tier replication (Q1/Q4/Q8) strengthens categorical claims.</td>
+<td>Section 6.6.2, Section 7.7.1, Section 10.6</td>
+</tr>
+<tr>
+<td><strong>Validation Environment</strong></td>
+<td>- Browser-based WebAssembly testing only<br />- Eliminates real-world variables (network latency, thermal throttling, concurrent loads)<br />- No physical edge hardware validation (Raspberry Pi, Jetson Nano)</td>
+<td>Results apply specifically to controlled, resource-bounded simulation scenarios. Real-world deployment may introduce additional failure modes not captured in browser environment.</td>
+<td>Section 3.6, Section 6.6.2</td>
+</tr>
+<tr>
+<td><strong>Architectural Constraints</strong></td>
+<td>- No persistent memory or session state<br />- Limited multi-turn reasoning chains<br />- Token budget ceiling (90-130 tokens optimal)<br />- Stateless-only operation</td>
+<td>MCD sacrifices peak performance in resource-abundant scenarios for constraint-resilience. Alternative approaches (RAG, conversational agents) excel when memory/context available.</td>
+<td>Section 4.2, Section 8.4, Table 8.3</td>
+</tr>
+<tr>
+<td><strong>Model Dependencies</strong></td>
+<td>- Quantization as sole optimization strategy (excludes pruning, distillation, PEFT)<br />- Transformer-based architecture focus<br />- Three model tiers tested (Q1: Qwen2-0.5B, Q4: TinyLlama-1.1B, Q8: Llama-3.2-1B)</td>
+<td>Framework principles validated through quantization may exhibit different characteristics with alternative optimization approaches (mixture-of-experts, retrieval-augmented, distillation-based models).</td>
+<td>Section 3.3, Section 6.6.2, Table 3.5</td>
+</tr>
+<tr>
+<td><strong>Domain Generalization</strong></td>
+<td>- Generalized implementations (not domain-optimized)<br />- No medical databases (W1), SLAM algorithms (W2), code parsers (W3)<br />- Three domains tested (healthcare, navigation, diagnostics)</td>
+<td>Demonstrates architectural principles rather than optimal domain-specific performance. Specialized enhancements would improve task success but fall outside constraint-first validation scope.</td>
+<td>Section 7.1.4, Section 7.7.2</td>
+</tr>
+<tr>
+<td><strong>SLM Integration</strong></td>
+<td>- No empirical validation with domain-specialized Small Language Models<br />- Theoretical compatibility established but not tested<br />- Quantized general-purpose LLMs used exclusively</td>
+<td>SLM-MCD integration remains unvalidated empirically. Future work required to test MCD principles with purpose-built compact architectures (Phi-3, Gemma, SmolLM).</td>
+<td>Section 7.1.4, Section 8.1.2, Chapter 9.2.2</td>
+</tr>
+<tr>
+<td><strong>Task Applicability Boundaries</strong></td>
+<td>- <strong>High suitability:</strong> FAQ chatbots, symbolic navigation, prompt tuning, edge search (Table 8.3)<br />- <strong>Partial suitability:</strong> Code generation, multimodal captioning, live interviews<br />- <strong>Low suitability:</strong> Continuous learning, safety-critical control, formal verification</td>
+<td>MCD not universally applicable. Task categories requiring persistent model updates, formal verification, or extensive knowledge synthesis require alternative frameworks.</td>
+<td>Table 8.3, Section 8.5, Section 10.6</td>
+</tr>
+<tr>
+<td><strong>Prompt Engineering Expertise</strong></td>
+<td>- MCD implementation: Simple (94% engineering accessibility)<br />- Hybrid strategies: Advanced (74% accessibility, requires ML expertise)<br />- Variable performance based on implementation sophistication</td>
+<td>Framework effectiveness depends on prompt engineering quality. Hybrid multi-strategy approaches require expert-level coordination, limiting accessibility for basic implementations.</td>
+<td>Section 7.7.2, Table 7.1</td>
+</tr>
+<tr>
+<td><strong>Safety &amp; Ethical Boundaries</strong></td>
+<td>- Assumes non-critical deployment contexts<br />- Stateless design may cause silent failures<br />- User misinterpretation risk under prompt limits<br />- Minimalism reduces attack surface but requires additional security layers for sensitive domains</td>
+<td>Framework not designed for safety-critical applications requiring formal verification, audit trails, or guaranteed failure transparency. Deployment in healthcare/financial contexts requires additional safeguards.</td>
+<td>Section 3.6, Section 8.5.2</td>
+</tr>
+<tr>
+<td><strong>Performance Trade-offs</strong></td>
+<td>- MCD prioritizes constraint-resilience over optimal-condition performance<br />- Higher latency in some scenarios (e.g., 1724ms vs 811ms for Few-Shot in W1)<br />- Resource overhead for structured approaches<br />- Minimal user experience features</td>
+<td>Deliberate trade-off: predictable degradation under constraints vs. peak performance in resource-abundant scenarios. Alternative approaches (Few-Shot, Conversational, System Role) excel when resources permit.</td>
+<td>Section 7.5, Section 7.6, Section 10.2</td>
+</tr>
+</tbody>
+</table>
+<p>These limitations reflect deliberate design trade-offs inherent to constraint-first architectural principles. MCD sacrifices peak performance optimization and universal applicability for predictable degradation patterns under resource pressure&mdash;a trade-off validated through systematic testing across quantization tiers (T1-T10) and domain-specific applications (W1-W3). Practitioners should consult Table 8.3 (MCD Suitability Matrix) and the decision tree framework (Section 8.7.2) to determine whether MCD's constraint-resilience advantages align with specific deployment requirements</p>
+
+	  </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="8.5">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">8.5 Security, Ethics, and Risk Management</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <h4>8.5.1 Security and Ethical Design Safeguards</h4>
+<p>Edge agents face unique risks from prompt manipulation, adversarial input, and exposed hardware (Papernot et al., 2016). While minimalism reduces the attack surface, it can also increase brittleness. To address this, the MCD design checklists (Appendix E) include explicit warning heuristics (Barocas et al., 2017), such as: &ldquo;Does prompt statelessness allow for easy replay attacks?&rdquo; and &ldquo;Is fallback logic deterministic, and can it leak sensitive internal states through degeneration?&rdquo; Minimal agents should employ lightweight authentication and prompt verification where feasible.</p>
+<p>Empirically Validated Safety Advantage:<br />
+<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> constraint validation demonstrates that MCD approaches fail transparently through clear limitation acknowledgment, while over-engineered systems exhibit unpredictable failure patterns under resource overload (Amodei et al., 2016). MCD&rsquo;s bounded reasoning design prevents confident but incorrect responses through explicit fallback states and conservative output restrictions.</p>
+<p>Ethical Boundaries:<br />
+All scenario simulations were designed with no real user data or network exposure. Any adaptation of MCD principles to safety-critical or privacy-sensitive domains must layer additional authentication, encryption, and user consent protocols on top of the framework&rsquo;s minimalist foundation (Jobin et al., 2019).</p>
+
+<h4>8.5.2 Systematic Risk Assessment</h4>
 <p>The framework includes a simple risk detection model to help designers identify potential architectural flaws early (Mitchell, 2019).</p>
 <p>MCD Risk Detection Heuristics:<br />
 - Complexity Creep Score: If (Components added / Task requirements ratio) &gt; 1.5 → Warning.<br />
@@ -1010,115 +1084,120 @@ All scenario simulations were designed with no real user data or network exposur
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <h4>How Simulation Results (T1-T10) Inform Decision Thresholds</h4>
-<p>The systematic validation across Tests T1-T10 established quantified thresholds that directly translate into operational decision criteria for MCD deployment (Venable et al., 2016).</p>
-<h5>Token Efficiency Thresholds from <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>/<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> Evidence</h5>
- <p>- 90-Token Capability Plateau: <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a> and <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> independently confirmed semantic saturation beyond 90 tokens, where additional prompt complexity yielded &lt;5% improvement while consuming 2.6x computational resources (Liu et al., 2023; Wei et al., 2022). This empirical boundary informs the Resource Optimization Detector threshold in Appendix E.<br />
-- 60-Token Minimum Viability: <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a> demonstrated MCD maintains 94% success rate down to 60 tokens, while verbose approaches fail at 85 tokens (Sahoo et al., 2024). This establishes the Prompt Collapse Diagnostic lower bound. (Chapter 6)<br />
-- Practical Decision Rule: Deploy MCD agents within 75-85 token budgets, expanding only when failure analysis justifies additional complexity beyond the validated plateau. (Simon, 1955; Kahneman, 2011).</p>
-<h5>Quantization Tier Selection from T10 Validation</h5>
-<p>T10&rsquo;s systematic evaluation across Q1/Q4/Q8 tiers established empirically-grounded tier selection criteria (Dettmers et al., 2022; Jacob et al., 2018):<br />
-- Q1 Performance: 100% task completion with maximum computational efficiency (131 tokens average) but appropriate only for simple tasks (Nagel et al., 2021) (Chapter 6)<br />
-- Q4 Optimal Balance: 100% task success at 1901ms latency, 114 tokens - validated as minimum viable tier for 80% of constraint-bounded reasoning tasks (Chapter 6)<br />
-- Q8 Over-provisioning: Equivalent task success with unnecessary resource consumption (1965ms vs 1901ms) without performance benefits (Chapter 6)</p>
-<p>Decision Integration: The MCD Suitability Matrix (Table 8.2) incorporates these empirical thresholds, with Q4 as default recommendation and automatic escalation protocols when Q1 semantic drift &gt;10% (Frantar et al., 2023).</p>
-<h5>Fallback Loop Complexity from <a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>/<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a> Evidence</h5>
-<p><a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a> and <a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a> independently validated 2-loop maximum thresholds for recovery sequences (Amodei et al., 2016):<br />
-- Resource-Optimized Recovery: Structured fallback achieved 100% recovery success (5/5 trials) within 73 tokens average<br />
-- Resource-Intensive Chains: Achieved equivalent task success but consumed 129 tokens with 1.8x computational overhead<br />
-- Degradation Pattern: Beyond 2 loops, semantic drift exceeded 10% threshold while token consumption exceeded 125-token boundary</p>
-<p>Operational Implication: Bounded fallback sequences prevent runaway recovery while maintaining equivalent effectiveness - encoded in Fallback Loop Complexity Meter diagnostic tool (Basili et al., 1994).</p>
-<h4>Incorporation of Walkthrough Insights (<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>)</h4>
-<p>The domain-specific walkthroughs provided contextual validation of simulation findings while revealing deployment-specific considerations absent from controlled testing  (Yin, 2017; Patton, 2014).</p>
-<h5><a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> Healthcare Booking: Context Reconstruction Validation</h5>
-<p>Walkthrough <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> confirmed <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>&rsquo;s stateless context management findings in operational healthcare scenarios (Berg, 2001):<br />
-- MCD Structured Approach: 4/5 task completion (80%) with 31.0 avg tokens, predictable failure patterns (Chapter7)<br />
-- Few-Shot Pattern: 4/5 completion (80%) with 12.6 tokens, optimal efficiency but pattern-dependent (Chapter7) (Brown et al., 2020)<br />
-- Conversational Fallback: 3/5 completion (60%) with superior user experience when successful but inconsistent performance (Chapter7) (Park et al., 2023)</p>
-<p>Integration Insight: Healthcare contexts require predictable failure modes over peak performance - MCD&rsquo;s transparent limitation acknowledgment (&ldquo;insufficient data for classification&rdquo;) prevents dangerous misclassification where other approaches may confidently provide incorrect responses (Ribeiro et al., 2016).</p>
-<p>Decision Framework Enhancement: Added Risk Assessment Modifier to Table 8.2 for safety-critical domains where MCD&rsquo;s predictable degradation provides liability protection.</p>
-<h5><a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> Spatial Navigation: Semantic Precision Under Constraint</h5>
-<p><a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> validated <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>&rsquo;s spatial reasoning findings while revealing safety communication trade-offs (Thrun et al., 2005):<br />
-- MCD Structured: 3/5 completion (60%) with precise coordinate handling, zero hallucinated routes, but minimal safety guidance (Chapter7)<br />
-- Few-Shot Pattern: 4/5 completion (80%) with excellent directional output (16.8 tokens, 975ms latency) but pattern dependency on simple routes (Chapter7) (Min et al., 2022)<br />
-- Conversational: Complete navigation failure under Q1 constraints despite excellent safety awareness (Chapter7)</p>
-<p>Critical Trade-off Discovery: MCD achieves perfect pathfinding accuracy when successful but provides no safety guidance, creating potential liability in real-world deployment scenarios. (Chapter7) (Howard et al., 2017).</p>
-<p>Decision Framework Refinement: Enhanced MCD Applicability Matrix with Safety Communication Requirements dimension - recommending Few-Shot hybrid for navigation scenarios requiring user guidance.</p>
-<h5><a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> Failure Diagnostics: Diagnostic Accuracy Validation</h5>
-<p><a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> confirmed <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>&rsquo;s resource optimization patterns in technical troubleshooting contexts (Mitchell, 2019):<br />
-- MCD Structured: 4/5 completion (80%) with consistent classification accuracy, higher resource usage (42.3 tokens, 2150ms) but predictable diagnostic patterns (Chapter7)<br />
-- Few-Shot Pattern: 5/5 completion (100%) with excellent pattern matching (28.4 tokens, 1450ms) but domain-specific template dependency (Chapter7) (Dong et al., 2022)<br />
-- System Role: 4/5 completion (80%) with high diagnostic accuracy but verbose responses (58.9 tokens, 1850ms) (Chapter7) (Ouyang et al., 2022)</p>
-<p>Validation Insight: Few-Shot achieves superior performance in optimal diagnostic scenarios, while MCD provides reliable structured classification when token budgets become limited - supporting the resource optimization effects identified in <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>.</p>
-<h4>Anti-patterns Identified from Failure Modes</h4>
-<p>Cross-analysis of simulation and walkthrough failures revealed systematic anti-patterns that inform both diagnostic tools and deployment guidelines (Miles et al., 2013).</p>
-<h5>Anti-Pattern 1: Process-Heavy Reasoning Overhead</h5/>
-<p>Observed Across: <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>, <a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a><br />
-Chain-of-Thought (CoT) approaches consistently demonstrated computational overhead without performance benefits (Zhang et al., 2022):<br />
-- <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> Evidence: CoT consumed 171 tokens average vs 94 tokens for hybrid approaches while achieving identical task success (100%) (Chapter6)<br />
-- <a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a> Validation: CoT showed 2.5x computational cost in browser deployment without accuracy improvements (Chapter6) (Haas et al., 2017)<br />
-- Walkthrough Confirmation: Process-heavy approaches created analysis paralysis in <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> diagnostics while consuming excessive resources</p>
-<p>Anti-Pattern Definition: Process-based reasoning chains that consume cognitive/computational resources for step-by-step descriptions rather than efficient task execution.</p>
-<p>Diagnostic Integration: Enhanced Redundancy Index Calculator to flag approaches with &gt;60% token allocation to process description rather than actionable content.</p>
-<h5>Anti-Pattern 2: Ultra-Minimal Context Insufficiency</h5>
-<p>Observed Across: <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T2</a>, <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> edge cases<br />
-Ultra-minimal compression consistently failed completely despite theoretical token efficiency:<br />
-- <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a> Evidence: Ultra-minimal prompts achieved 0% completion due to insufficient task context, demonstrating extreme compression risks (Chapter6)<br />
-- <a href="c6.html#t2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T2</a> Validation: 0/5 completion for ultra-minimal symbolic processing due to inadequate semantic context (Chapter6)<br />
-- <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> Manifestation: &ldquo;Book something tomorrow&rdquo; failures where insufficient context prevented reliable task completion</p>
-<p>Anti-Pattern Definition: Context reduction beyond semantic sufficiency threshold, causing complete task failure despite optimal token efficiency.</p>
-<p>Diagnostic Integration: Memory Fragility Score enhanced with context sufficiency validator preventing deployment below 60-token minimum threshold established in <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>.</p>
-<h5>Anti-Pattern 3: Conversational Resource Overhead Under Constraint</h5>
-<p>Observed Across: <a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>, <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>, <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> constraint scenarios<br />
-Conversational approaches demonstrated consistent resource inefficiency under constraint pressure:<br />
-- <a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a> Evidence: Conversational fallback consumed 71 vs 66 tokens for structured approaches while achieving equivalent recovery success (Chapter6)<br />
-- <a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> Manifestation: Complete navigation failure under Q1 constraints despite excellent safety awareness when resources permitted (Chapter7)<br />
-- <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> Pattern: Analysis paralysis in technical diagnostics, providing general advice rather than specific actionable guidance</p>
-<p>Anti-Pattern Definition: Resource allocation to relationship-building and conversational elements when constraint pressure requires task-focused efficiency.</p>
-<p>Diagnostic Integration: Semantic Drift Monitor calibrated to flag &gt;15% token allocation to conversational elements when operating under Q1/Q4 constraint conditions.</p>
-<h5>Anti-Pattern 4: Strategy Coordination Complexity Failure</h5>
-<p>Observed Across: <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a> hybrid variants, W1-W3 advanced implementations<br />
-Sophisticated multi-strategy coordination failed under constraint pressure despite theoretical advantages (Bommasani et al., 2021):<br />
-- Hybrid Coordination Breakdown: Strategy alignment complexity created performance degradation when individual approaches conflicted (Chapter7)<br />
-- Implementation Sophistication Barrier: Advanced 75% engineering accessibility requirement limited practical deployment (Chapter7) (Gregor &amp; Hevner, 2013)<br />
-- Resource Allocation Conflicts: Efficiency vs quality objective misalignment under constraint pressure</p>
-<p>Anti-Pattern Definition: Multi-strategy coordination attempts that exceed available engineering sophistication or create resource allocation conflicts.</p>
-<p>Diagnostic Integration: Toolchain Redundancy Estimator enhanced with strategy coordination complexity assessment, recommending single-strategy approaches when coordination overhead exceeds 20% of available resources.</p>
-<h4>Statistical Integration and Threshold Calibration</h4>
+       <h3 id="simulation-derived-decision-thresholds-t1-t10"><strong>Simulation-Derived Decision Thresholds (T1-T10)</strong></h3>
+<p><strong>Token Efficiency Thresholds</strong></p>
+<ul>
+<li><strong>90-Token Capability Plateau:</strong> T1/T6 confirm semantic saturation beyond 90 tokens (&lt;5% improvement at 2.6× resource cost), establishing Resource Optimization Detector threshold (Appendix E.2.1)</li>
+<li><strong>60-Token Minimum Viability:</strong> T1 shows MCD maintains 94% success at 60 tokens while verbose approaches fail at 85 tokens, defining Prompt Collapse Diagnostic lower bound (Appendix E.2.4)</li>
+<li><strong>Practical Rule:</strong> Deploy within 75-85 token budgets; expand only when failure analysis justifies complexity beyond plateau</li>
+</ul>
+<p><strong>Quantization Tier Selection (T10)</strong></p>
+<ul>
+<li><strong>Q1 (Qwen2-0.5B, 300MB):</strong> 100% completion with maximum computational efficiency; appropriate for simple tasks</li>
+<li><strong>Q4 (TinyLlama-1.1B, 560MB):</strong> Optimal balance (1901ms latency, 114 tokens); validated as minimum viable tier for 80% of constraint-bounded tasks</li>
+<li><strong>Q8 (Llama-3.2-1B, 800MB):</strong> Equivalent success with unnecessary overhead (1965ms vs 1901ms)</li>
+<li><strong>Decision Integration:</strong> Q4 default recommendation; Q1→Q4 escalation when semantic drift &gt;10% (Section 6.3.10)</li>
+</ul>
+<p><strong>Fallback Loop Complexity (T3/T9)</strong></p>
+<ul>
+<li><strong>Resource-Optimized:</strong> Structured fallback achieves 100% recovery (5/5 trials) within 73 tokens average</li>
+<li><strong>Resource-Intensive:</strong> Equivalent success but 129 tokens (1.8× overhead)</li>
+<li><strong>Degradation Pattern:</strong> Beyond 2 loops, semantic drift &gt;10% while tokens exceed 125-token boundary</li>
+<li><strong>Operational Rule:</strong> 2-loop maximum prevents runaway recovery; encoded in Fallback Loop Complexity Meter (Appendix E.2.5)</li>
+</ul>
+<hr/>
+<h3 id="walkthrough-insights-w1-w3"><strong>Walkthrough Insights (W1-W3)</strong></h3>
+<p><strong>W1 Healthcare Booking: Context Reconstruction</strong></p>
+<ul>
+<li><strong>MCD Structured:</strong> 4/5 completion (80%), 31.0 avg tokens, predictable failure patterns (Section 7.2)</li>
+<li><strong>Few-Shot:</strong> 4/5 completion (80%), 12.6 tokens, optimal efficiency but pattern-dependent</li>
+<li><strong>Conversational:</strong> 3/5 completion (60%), superior UX when successful but inconsistent</li>
+<li><strong>Integration Insight:</strong> Healthcare requires predictable failure modes—MCD's transparent limitation acknowledgment ("insufficient data") prevents dangerous misclassification vs confident incorrect responses</li>
+<li><strong>Framework Enhancement:</strong> Added Risk Assessment Modifier for safety-critical domains (Appendix G.2.3)</li>
+</ul>
+<p><strong>W2 Spatial Navigation: Semantic Precision</strong></p>
+<ul>
+<li><strong>MCD Structured:</strong> 3/5 completion (60%), zero hallucinated routes, minimal safety guidance (Section 7.3)</li>
+<li><strong>Few-Shot:</strong> 4/5 completion (80%), excellent directional output (16.8 tokens, 975ms) but pattern-dependent</li>
+<li><strong>Conversational:</strong> Complete failure under Q1 despite excellent safety awareness</li>
+<li><strong>Trade-off Discovery:</strong> MCD achieves perfect pathfinding accuracy when successful but provides no safety guidance</li>
+<li><strong>Framework Refinement:</strong> Enhanced MCD Applicability Matrix with Safety Communication dimension; recommend Few-Shot hybrid for navigation requiring user guidance (Appendix G.2.2)</li>
+</ul>
+<p><strong>W3 Failure Diagnostics: Diagnostic Accuracy</strong></p>
+<ul>
+<li><strong>MCD Structured:</strong> 4/5 completion (80%), consistent classification, higher resources (42.3 tokens, 2150ms) (Section 7.4)</li>
+<li><strong>Few-Shot:</strong> 5/5 completion (100%), excellent pattern matching (28.4 tokens, 1450ms), domain-template dependent</li>
+<li><strong>System Role:</strong> 4/5 completion (80%), high accuracy but verbose (58.9 tokens, 1850ms)</li>
+<li><strong>Validation Insight:</strong> Few-Shot superior in optimal scenarios; MCD reliable when token budgets limited</li>
+</ul>
+<hr/>
+<h3 id="anti-patterns-identified-from-failure-modes"><strong>Anti-Patterns Identified from Failure Modes</strong></h3>
+<p><strong>Anti-Pattern 1: Process-Heavy Reasoning Overhead</strong></p>
+<ul>
+<li><strong>Observed:</strong> T1, T6, T8, W1-W3</li>
+<li><strong>Evidence:</strong>
+<ul>
+<li>T6: CoT consumes 171 tokens vs 94 hybrid (identical 100% success) (Section 6.3.6)</li>
+<li>T8: CoT shows 2.5× computational cost in browser deployment without accuracy gains (Section 6.3.8)</li>
+<li>W3: Analysis paralysis in diagnostics while consuming excessive resources</li>
+</ul></li>
+<li><strong>Definition:</strong> Process-based reasoning chains consuming cognitive/computational resources for step-by-step descriptions rather than efficient task execution</li>
+<li><strong>Diagnostic Integration:</strong> Redundancy Index Calculator flags &gt;60% token allocation to process description (Appendix E.2.3)</li>
+<li><strong>Deployment Guidance:</strong> Avoid CoT under constraints; use Few-Shot examples showing reasoning patterns (Appendix G.3.2 Option 3)</li>
+</ul>
+<p><strong>Anti-Pattern 2: Ultra-Minimal Context Insufficiency</strong></p>
+<ul>
+<li><strong>Observed:</strong> T1, T2, T5, W1 edge cases</li>
+<li><strong>Evidence:</strong>
+<ul>
+<li>T1: 0% completion due to insufficient task context (Section 6.3.1)</li>
+<li>T2: 0/5 completion for ultra-minimal symbolic processing (Section 6.3.2)</li>
+<li>W1: "Book something tomorrow" failures from inadequate context</li>
+</ul></li>
+<li><strong>Definition:</strong> Context reduction beyond semantic sufficiency threshold causing complete task failure despite theoretical token efficiency</li>
+<li><strong>Diagnostic Integration:</strong> Memory Fragility Score with context sufficiency validator preventing deployment &lt;60-token minimum (Appendix E.2.2)</li>
+<li><strong>Deployment Guidance:</strong> Structured minimal &gt;60 tokens required; validate context completeness before deployment (Appendix G.3.1 Q5.1)</li>
+</ul>
+<p><strong>Anti-Pattern 3: Conversational Resource Overhead Under Constraint</strong></p>
+<ul>
+<li><strong>Observed:</strong> T3, T7, W1-W3 constraint scenarios</li>
+<li><strong>Evidence:</strong>
+<ul>
+<li>T3: Conversational fallback 71 tokens vs 66 structured (equivalent recovery) (Section 6.3.3)</li>
+<li>W2: Complete navigation failure under Q1 despite excellent safety awareness</li>
+<li>W3: General advice vs specific actionable guidance</li>
+</ul></li>
+<li><strong>Definition:</strong> Resource allocation to relationship-building when constraint pressure requires task-focused efficiency</li>
+<li><strong>Diagnostic Integration:</strong> Semantic Drift Monitor flags &gt;15% token allocation to conversational elements under Q1/Q4 (Appendix E.2.6)</li>
+<li><strong>Deployment Guidance:</strong> Conversational unsuitable for Q1 constraints; use structured prompts (Appendix G.2.1 Priority Matrix)</li>
+</ul>
+<p><strong>Anti-Pattern 4: Strategy Coordination Complexity Failure</strong></p>
+<ul>
+<li><strong>Observed:</strong> T6 hybrid variants, W1-W3 advanced implementations</li>
+<li><strong>Evidence:</strong>
+<ul>
+<li>Hybrid coordination breakdown when strategies conflict (Section 7.2-7.4)</li>
+<li>75% engineering accessibility requirement limits practical deployment</li>
+<li>Efficiency vs quality objective misalignment under constraint pressure</li>
+</ul></li>
+<li><strong>Definition:</strong> Multi-strategy coordination exceeding engineering sophistication or creating resource allocation conflicts</li>
+<li><strong>Diagnostic Integration:</strong> Toolchain Redundancy Estimator assesses coordination complexity; recommends single-strategy when overhead &gt;20% (Appendix E.2.3)</li>
+<li><strong>Deployment Guidance:</strong> Avoid sophisticated multi-strategy under constraints; use validated single approach (Appendix G.2.5)</li>
+</ul>
+<hr/>
+<h3 id="threshold-calibration"><strong>Threshold Calibration</strong></h3>
 <p><strong>Cross-Validation Confidence</strong></p>
-<p>The convergence of simulation and walkthrough findings provides&nbsp;<strong>multi-metric validation</strong>&nbsp;for threshold calibration (Field, 2013; Sullivan &amp; Feinn, 2012):</p>
-<p><strong>90-token plateau:</strong>&nbsp;Confirmed across <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>, <a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>, and <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> diagnostic scenarios through&nbsp;<strong>consistent categorical patterns</strong>&nbsp;(n=25 per domain, 95% CI provided). Effect size analysis reveals large practical significance (&eta;&sup2;&gt;0.14), with cross-tier replication (Q1/Q4/Q8) strengthening reliability claims (Chapter 6).</p>
-<p><strong>Q4 optimal tier:</strong>&nbsp;Validated in <a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a> quantization analysis and W1-W3 operational scenarios. This validates tier selection consistency across diverse task domains.</p>
-<p><strong>2-loop fallback maximum:</strong>&nbsp;Convergent evidence from <a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>, <a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>, and <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> healthcare recovery scenarios demonstrates&nbsp;<strong>systematic performance degradation</strong>&nbsp;beyond 2 recovery cycles, with effect sizes (d &gt; 0.8) indicating large practical significance.</p>
-<p><strong>Domain-Specific Calibration Adjustments</strong></p>
-<p>Walkthrough evidence informed domain-specific threshold modifications:</p>
-<p><strong>Healthcare Safety Margin:</strong>&nbsp;<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a> evidence supports 10% safety buffer on token budgets for critical decision scenarios, balancing constraint-resilience with patient safety requirements.</p>
-<p><strong>Navigation Safety Requirements:</strong>&nbsp;<a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a> findings recommend Few-Shot hybrid over pure MCD when safety communication required&mdash;explicit hazard warnings (e.g., "wet floor C2") prioritize user safety over token minimalism.</p>
-<p><strong>Diagnostic Domain Expertise:</strong>&nbsp;<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a> evidence validates&nbsp;<strong>pattern-based approaches</strong>&nbsp;over structured minimalism in expert troubleshooting contexts where domain knowledge transfer benefits from example-guided reasoning (Barocas et al., 2017).</p>
-<h2>Predictive Framework for Deployment Selection</h2>
-<h2>Empirically-Derived Decision Tree</h2>
-<p>Integration of simulation and walkthrough evidence enables quantified deployment selection:</p>
-<p>Task Classification Assessment:</p>
-<div class="highlight"><pre><span></span><code><span class="err">├─</span><span class="w"> </span><span class="n">Resource</span><span class="w"> </span><span class="n">Constraints</span><span class="p">:</span><span class="w"> </span><span class="n">Severe</span><span class="w"> </span><span class="p">(</span><span class="o">&lt;</span><span class="mi">512</span><span class="n">MB</span><span class="p">)</span>
-<span class="err">│</span><span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="n">Safety</span><span class="w"> </span><span class="n">Critical</span><span class="p">:</span><span class="w"> </span><span class="n">Yes</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">MCD</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="o">%</span><span class="w"> </span><span class="n">safety</span><span class="w"> </span><span class="n">buffer</span>
-<span class="err">│</span><span class="w">  </span><span class="err">└─</span><span class="w"> </span><span class="n">Safety</span><span class="w"> </span><span class="n">Critical</span><span class="p">:</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">MCD</span><span class="w"> </span><span class="n">Q1</span><span class="o">/</span><span class="n">Q4</span><span class="w"> </span><span class="n">tier</span>
-<span class="err">├─</span><span class="w"> </span><span class="n">Resource</span><span class="w"> </span><span class="n">Constraints</span><span class="p">:</span><span class="w"> </span><span class="n">Moderate</span><span class="w"> </span><span class="p">(</span><span class="mi">512</span><span class="n">MB</span><span class="o">-</span><span class="mi">2</span><span class="n">GB</span><span class="p">)</span>
-<span class="err">│</span><span class="w">  </span><span class="err">├─</span><span class="w"> </span><span class="n">Pattern</span><span class="w"> </span><span class="n">Recognition</span><span class="w"> </span><span class="n">Domain</span><span class="p">:</span><span class="w"> </span><span class="n">Yes</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Few</span><span class="o">-</span><span class="n">Shot</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">MCD</span><span class="w"> </span><span class="n">fallback</span>
-<span class="err">│</span><span class="w">  </span><span class="err">└─</span><span class="w"> </span><span class="n">Novel</span><span class="o">/</span><span class="n">Complex</span><span class="w"> </span><span class="n">Reasoning</span><span class="p">:</span><span class="w"> </span><span class="n">Yes</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">MCD</span><span class="w"> </span><span class="n">Q4</span><span class="o">/</span><span class="n">Q8</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">bounded</span><span class="w"> </span><span class="n">fallback</span>
-<span class="err">└─</span><span class="w"> </span><span class="n">Resource</span><span class="w"> </span><span class="n">Constraints</span><span class="p">:</span><span class="w"> </span><span class="n">Unconstrained</span><span class="w"> </span><span class="p">(</span><span class="o">&gt;</span><span class="mi">2</span><span class="n">GB</span><span class="p">)</span>
-<span class="w">   </span><span class="err">└─</span><span class="w"> </span><span class="n">Apply</span><span class="w"> </span><span class="n">resource</span><span class="o">-</span><span class="n">abundant</span><span class="w"> </span><span class="n">framework</span><span class="w"> </span><span class="n">selection</span><span class="w"> </span><span class="n">criteria</span>
-</code></pre></div>
-
-<h2>Performance Expectation Ranges</h2>
-<p>Based on integrated empirical evidence:<br />
-MCD Deployment: 85% performance retention under Q1 constraints, 1.81x token efficiency advantage<br />
-Few-Shot Optimal: 100% success rates in pattern-matching domains when resources permit Q4 tier<br />
-Hybrid Advanced: Superior performance possible but requires 75% engineering sophistication threshold</p>
-<h2>Validation Against Theoretical Framework</h2>
-<p>The empirical integration confirms theoretical predictions while revealing deployment-specific nuances:<br />
-Confirmed Predictions: 90-token plateau, resource optimization effects, stateless viability, graceful degradation patterns<br />
-Refined Understanding: Safety communication trade-offs, pattern dependency boundaries, coordination complexity thresholds, domain-specific optimization requirements<br />
-Practical Impact: The empirical evidence transforms theoretical MCD principles into actionable deployment criteria with quantified performance expectations and validated threshold boundaries.</p>
+<ul>
+<li><strong>90-token plateau:</strong> Confirmed across T1, T6, W3 (n=25 per domain, large effect size η²&gt;0.14, cross-tier Q1/Q4/Q8 replication)</li>
+<li><strong>Q4 optimal tier:</strong> Validated T10 + W1-W3 operational scenarios for tier selection consistency</li>
+<li><strong>2-loop fallback maximum:</strong> Convergent T3, T9, W1 evidence (effect size d&gt;0.8, large practical significance)</li>
+</ul>
+<p><strong>Domain-Specific Adjustments</strong></p>
+<ul>
+<li><strong>Healthcare Safety:</strong> W1 supports 10% safety buffer on token budgets for critical decision scenarios</li>
+<li><strong>Navigation Safety:</strong> W2 recommends Few-Shot hybrid when safety communication required (explicit hazard warnings)</li>
+<li><strong>Diagnostic Expertise:</strong> W3 validates pattern-based approaches in expert troubleshooting contexts</li>
+</ul>
       </div>
     </div>
   </div>
@@ -1135,223 +1214,151 @@ Practical Impact: The empirical evidence transforms theoretical MCD principles i
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>This decision tree synthesizes empirical findings from Chapters 4-7, validation data from Appendices A and E, and domain walkthroughs to provide evidence-based guidance for MCD framework selection and implementation. Each decision point incorporates empirically-derived thresholds validated through browser-based simulations and real-world deployment scenarios.</p>
-<h2>🌳 PHASE 1: Context Assessment &amp; Requirements Analysis</h2>
-<p>START: New Agent Design Request</p>
-<p>Q1: What is the primary deployment context?<br />
-Edge/Constrained (RAM &lt;1GB, offline) → Continue to Q2<br />
-Browser/WebAssembly → Continue to Q2<br />
-Full-stack with resources → Consider alternatives (AutoGPT, LangChain)<br />
-Hybrid (some constraints) → Continue to Q2</p>
-<p>Q2: What is the primary optimization priority?<br />
-Resource Efficiency → Set EFFICIENCY_PRIORITY = HIGH<br />
-User Experience Quality → Set UX_PRIORITY = HIGH<br />
-Professional Output → Set QUALITY_PRIORITY = HIGH<br />
-Educational/Learning → Set EDUCATION_PRIORITY = HIGH<br />
-Balanced Multi-Objective → Set HYBRID_PRIORITY = HIGH</p>
-<p>Q3: Can the task be completed statelessly?<br />
-NO → Evaluate hybrid MCD or alternative frameworks<br />
-YES → Continue to Q4</p>
-<p>Q4: What is acceptable token budget?<br />
-60 tokens → ULTRA_MINIMAL mode<br />
-60-150 tokens → MINIMAL mode<br />
-150-512 tokens → MODERATE mode <br />
-512 tokens → Consider non-MCD approaches<br />
-Variable/Dynamic → ADAPTIVE mode</p>
-<p>Result: Context profile established → PROCEED TO PHASE 2</p>
-<h2>🌳 PHASE 2: Prompt Engineering Approach Selection</h2>
-<p>Based on Empirical Performance Data (Appendices A &amp; 7)</p>
-<p>IF EFFICIENCY_PRIORITY = HIGH:<br />
-Token budget &lt;60 → MCD STRUCTURED (92% efficiency, 81% context-optimal)<br />
-Token budget 60-150 → HYBRID MCD+FEW-SHOT (88% efficiency, 86% context-optimal)<br />
-Hardware RAM &lt;256MB → MCD STRUCTURED (mandatory)</p>
-<p>IF UX_PRIORITY = HIGH:<br />
-Unconstrained environment → CONVERSATIONAL (89% user experience)<br />
-Moderate constraints → SYSTEM ROLE PROFESSIONAL (82% UX, 78% context-optimal)<br />
-Tight constraints → FEW-SHOT PATTERN (68% UX, 78% context-optimal)</p>
-<p>IF QUALITY_PRIORITY = HIGH:<br />
-Professional context → SYSTEM ROLE PROFESSIONAL (86% completion, 82% UX)<br />
-Technical accuracy → HYBRID MULTI-STRATEGY (96% completion, 91% accuracy)<br />
-Balanced quality → FEW-SHOT PATTERN (84% completion, balanced)</p>
-<p>IF EDUCATION_PRIORITY = HIGH:<br />
-Unconstrained → COMPREHENSIVE ANALYSIS (94% educational value)<br />
-Constrained → SYSTEM ROLE + FEW-SHOT (combined approach)<br />
-Resource-limited → Hybrid MCD not suitable</p>
-<p>IF HYBRID_PRIORITY = HIGH:<br />
-Advanced prompt engineering available → HYBRID MULTI-STRATEGY (superior performance)<br />
-Moderate expertise → FEW-SHOT + SYSTEM ROLE combination<br />
-Basic expertise → MCD + FEW-SHOT (proven combination)</p>
-<p>⚠️ ANTI-PATTERNS (Based on Empirical Failures):<br />
-❌ NEVER use Chain-of-Thought (CoT) under constraints → Causes browser crashes, token overflow<br />
-❌ NEVER use verbose conversational in &lt;512 token budget → 28% completion rate<br />
-❌ NEVER use Q8 quantization without Q4 justification → Violates minimality principle<br />
-❌ NEVER use unbounded clarification loops → 1/4 recovery rate, semantic drift</p>
-<p>Result: Primary approach selected → PROCEED TO PHASE 3</p>
-<h2>🌳 PHASE 3: MCD Principle Application &amp; Architecture Design</h2>
-<p>STEP 1: Apply Minimality by Default (Evidence-Based)</p>
-<p>Q5: Component necessity validation:<br />
-Memory components → Can task complete without persistent state?<br />
-YES → REMOVE (Stateless regeneration validated in T4: 5/5 success)<br />
-NO → Keep, justify with fallback design</p>
-<p>Tool/API components → Utilization rate &gt;10%? (Based on T7 findings)<br />
-NO → REMOVE (Degeneracy detection validated)<br />
-YES → Keep, document usage patterns</p>
-<p>Orchestration layers → Does prompt-level routing suffice?<br />
-YES → REMOVE orchestration (MCD validation T3: 4/5 recovery)<br />
-NO → Justify complexity vs. performance gain</p>
-<p>Result: Minimal component set → Continue to STEP 2</p>
-<p>STEP 2: Apply Bounded Rationality (Constraint-Aware)</p>
-<p>Q6: Reasoning chain complexity assessment:  <br />
-3 reasoning steps → HIGH RISK (T5: semantic drift in 2/4 cases)<br />
-Apply symbolic compression → Continue<br />
-Split into sub-tasks → Redesign scope<br />
-Chain-of-Thought needed → ❌ FORBIDDEN under constraints (T6/T7/T8 failures)<br />
-Replace with Few-Shot examples (T6: 5/5 completion vs CoT 2/5)<br />
-≤3 steps → ACCEPTABLE → Continue</p>
-<p>Q7: Token budget allocation:<br />
-Core logic: 40-60% of budget<br />
-Fallback handling: 20-30% of budget<br />
-Input processing: 10-20% of budget<br />
-Buffer for variations: 10-15% of budget</p>
-<p>Result: Bounded reasoning design → Continue to STEP 3</p>
-<p>STEP 3: Apply Degeneracy Detection (Empirically Validated)</p>
-<p>Q8: Redundancy Index calculation (T6 methodology):<br />
-text<br />
-RI = excess_tokens / marginal_correctness_improvement<br />
-RI &gt; 10 → Over-engineered (T6: verbose 145 tokens vs minimal 58 tokens, +0.2 gain)<br />
-RI ≤ 10 → Acceptable complexity</p>
-<p>Q9: Usage pattern analysis:<br />
-Components with &lt;10% utilization → REMOVE<br />
-Prompt pathways never triggered → REMOVE<br />
-All pathways utilized ≥10% → VALIDATED</p>
-<p>Result: Clean architecture → PROCEED TO PHASE 4</p>
-<h2>🌳 PHASE 4: MCD Layer Implementation with Decision Trees</h2>
-<p>LAYER 1: Prompt Layer Design (Approach-Specific)</p>
-<p>Q10: Intent classification decision tree:<br />
-ROOT: Primary intent detection<br />
-Booking intent → booking_subtree(depth≤3, branches≤4)<br />
-Navigation intent → navigation_subtree(depth≤3, branches≤4)<br />
-Diagnostic intent → diagnostic_subtree(depth≤3, branches≤4)<br />
-DEFAULT → escalation_node</p>
-<p>For each subtree, validate constraints:<br />
-Maximum depth ≤3 levels (T5 validation: &gt;3 causes drift)<br />
-Branching factor ≤4 per node (Complexity management)<br />
-Every path has explicit fallback (T3: structured fallback 4/5 success)<br />
-Token cost per path ≤25% total budget</p>
-<p>Decision tree structure: IF-THEN logic in prompt<br />
-text<br />
-Example: &ldquo;IF intent=booking AND slots_complete→confirm, ELSE→clarify&rdquo;</p>
-<p>Q11: Slot extraction decision tree:<br />
-Required slots: {slot1, slot2, slot3, &hellip;}<br />
-Validation rules: IF missing[slot] → specific_clarification<br />
-Fallback tree: missing_slot → clarify → confirm → complete<br />
-Token allocation: ≤40% of total budget for slot processing</p>
-<p>Result: Prompt layer with embedded decision trees → LAYER 2</p>
-<p>LAYER 2: Control Layer Decision Tree Architecture</p>
-<p>Q12: Route selection decision tree:<br />
-Input classification:<br />
-text<br />
-IF simple_query → direct_response_path<br />
-IF complex_request → multi_step_path<br />
-IF ambiguous_input → clarification_path<br />
-IF invalid_input → error_handling_path</p>
-<p>Decision complexity validation:<br />
-Node complexity score ≤ 5 decision points<br />
-Path depth ≤ 3 levels maximum<br />
-Exit conditions explicitly defined<br />
-Fallback routes from every decision point</p>
-<p>Example control tree:<br />
-text</p>
-<div class="highlight"><pre><span></span><code>┌─ USER_INPUT
-├─ classify_intent()
-│  ├─ booking → extract_slots() → validate() → confirm()
-│  ├─ navigation → parse_route() → plan() → execute()
-│  └─ unknown → clarify() → reclassify()
-└─ FALLBACK: escalate_to_human()
-</code></pre></div>
+      <p>This decision tree synthesizes empirical findings from Chapters 4-7, validation data from Appendices A and E, and domain walkthroughs to provide evidence-based guidance for MCD framework selection and implementation. Each decision point incorporates empirically-derived thresholds validated through browser-based simulations and real-world deployment scenarios. <strong>Detailed implementation pseudocode and decision logic are provided in Appendix G.</strong></p>
+<hr/>
+<h3 id="phase-1-context-assessment-requirements-analysis"><strong>🌳 PHASE 1: Context Assessment &amp; Requirements Analysis</strong></h3>
+<p><strong>Primary Decision Points:</strong></p>
+<ol>
+<li><strong>Q1: Deployment Context</strong> → Edge/Constrained (&lt;1GB RAM) vs. Full-stack vs. Hybrid</li>
+<li><strong>Q2: Optimization Priority</strong> → Resource Efficiency vs. UX Quality vs. Professional Output vs. Educational</li>
+<li><strong>Q3: Stateless Viability</strong> → Can task complete without persistent memory?</li>
+<li><strong>Q4: Token Budget</strong> → &lt;60 (ULTRA_MINIMAL) vs. 60-150 (MINIMAL) vs. &gt;150 (MODERATE)</li>
+</ol>
+<p><strong>Output:</strong> Context profile established → Proceed to PHASE 2</p>
+<p><strong>Detailed decision logic, validation criteria, and edge case handling:</strong> See Appendix G.1</p>
+<hr/>
+<h3 id="phase-2-prompt-engineering-approach-selection"><strong>🌳 PHASE 2: Prompt Engineering Approach Selection</strong></h3>
+<p><strong>Evidence-Based Selection (Appendices A &amp; 7):</strong></p>
+<p><strong>Priority-Driven Approach Matrix:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Priority</strong></th>
+<th><strong>Token Budget</strong></th>
+<th><strong>Recommended Approach</strong></th>
+<th><strong>Performance Metrics</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>&lt;60 tokens</td>
+<td>MCD STRUCTURED</td>
+<td>92% efficiency, 81% context-optimal</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>60-150 tokens</td>
+<td>HYBRID MCD+FEW-SHOT</td>
+<td>88% efficiency, 86% context-optimal</td>
+</tr>
+<tr>
+<td><strong>UX</strong></td>
+<td>Unconstrained</td>
+<td>CONVERSATIONAL</td>
+<td>89% user experience</td>
+</tr>
+<tr>
+<td><strong>UX</strong></td>
+<td>Tight constraints</td>
+<td>FEW-SHOT PATTERN</td>
+<td>68% UX, 78% context-optimal</td>
+</tr>
+<tr>
+<td><strong>Quality</strong></td>
+<td>Professional context</td>
+<td>SYSTEM ROLE PROFESSIONAL</td>
+<td>86% completion, 82% UX</td>
+</tr>
+<tr>
+<td><strong>Quality</strong></td>
+<td>Technical accuracy</td>
+<td>HYBRID MULTI-STRATEGY</td>
+<td>96% completion, 91% accuracy</td>
+</tr>
+</tbody>
+</table>
+<p><strong>⚠️ Anti-Patterns (Empirically Validated Failures):</strong></p>
+<ul>
+<li>❌ Chain-of-Thought (CoT) under constraints → Browser crashes, token overflow</li>
+<li>❌ Verbose conversational in &lt;512 token budget → 28% completion rate</li>
+<li>❌ Q8 quantization without Q4 justification → Violates minimality principle</li>
+<li>❌ Unbounded clarification loops → 1/4 recovery rate, semantic drift</li>
+</ul>
+<p><strong>Output:</strong> Primary approach selected → Proceed to PHASE 3</p>
+<p><strong>Detailed approach selection decision trees with nested conditions:</strong> See Appendix G.2</p>
+<hr/>
+<h3 id="phase-3-mcd-principle-application-architecture-design"><strong>🌳 PHASE 3: MCD Principle Application &amp; Architecture Design</strong></h3>
+<p><strong>Three-Step Validation Process:</strong></p>
+<p><strong>STEP 1: Minimality by Default</strong></p>
+<ul>
+<li>Component necessity validation (memory, tools, orchestration)</li>
+<li>Removal criteria: Stateless viability (T4: 5/5), utilization &lt;10% (T7), prompt-routing sufficiency (T3: 4/5)</li>
+</ul>
+<p><strong>STEP 2: Bounded Rationality</strong></p>
+<ul>
+<li>Reasoning chain complexity: ≤3 steps acceptable, &gt;3 high drift risk (T5: 2/4 failures)</li>
+<li>Token budget allocation: Core logic 40-60%, Fallback 20-30%, Input 10-20%, Buffer 10-15%</li>
+</ul>
+<p><strong>STEP 3: Degeneracy Detection</strong></p>
+<ul>
+<li>Redundancy Index: RI = excess_tokens / marginal_correctness_improvement</li>
+<li>Threshold: RI ≤ 10 acceptable (T6 validation: 145 vs. 58 tokens, +0.2 gain = RI 435)</li>
+</ul>
+<p><strong>Output:</strong> Clean minimal architecture → Proceed to PHASE 4</p>
+<p><strong>Detailed component analysis, calculation methods, and validation workflows:</strong> See Appendix G.3</p>
+<hr/>
+<h3 id="phase-4-mcd-layer-implementation-with-decision-trees"><strong>🌳 PHASE 4: MCD Layer Implementation with Decision Trees</strong></h3>
+<p><strong>Three-Layer Architecture:</strong></p>
+<p><strong>LAYER 1: Prompt Layer Design</strong></p>
+<ul>
+<li>Adaptation pattern selection (Dynamic/Semi-Static per Section 5.2.1)</li>
+<li>Intent classification decision tree (depth ≤3, branches ≤4 per node)</li>
+<li>Slot extraction with validation rules</li>
+<li>Token allocation: ≤40% budget for slot processing</li>
+</ul>
+<p><strong>LAYER 2: Control Layer Decision Tree</strong></p>
+<ul>
+<li>Route selection (simple_query → direct, complex → multi-step, ambiguous → clarify)</li>
+<li>Complexity validation: ≤5 decision points per node, ≤3 path depth</li>
+<li>Explicit fallback from every decision point</li>
+</ul>
+<p><strong>LAYER 3: Execution Layer (Quantization-Aware)</strong></p>
+<ul>
+<li>Tier selection tree: Simple→Q1, Moderate→Q4, Complex→Q8</li>
+<li>Dynamic tier routing with drift monitoring (&gt;10% threshold)</li>
+<li>Hardware constraint mapping: &lt;256MB→Q1/Q4 only, 256MB-1GB→Q4/Q8</li>
+</ul>
+<p><strong>Output:</strong> Layered architecture with embedded decision logic → Proceed to PHASE 5</p>
+<p><strong>Complete decision tree structures, pseudocode, and implementation examples:</strong> See Appendix G.4</p>
+<hr/>
+<h3 id="phase-5-evidence-based-validation-testing"><strong>🌳 PHASE 5: Evidence-Based Validation &amp; Testing</strong></h3>
+<p><strong>Test Suite Framework:</strong></p>
+<p><strong>Core MCD Validation (T1-T10 Methodology):</strong></p>
+<ul>
+<li>T1-Style: Approach effectiveness (≥90% expected performance)</li>
+<li>T4-Style: Stateless context reconstruction (≥90% recovery: 5/5 vs 2/5)</li>
+<li>T6-Style: Over-engineering detection (RI ≤ 10, no components &gt;20% overhead)</li>
+<li>T7-Style: Constraint stress test (≥80% controlled failure)</li>
+<li>T8-Style: Deployment environment (no crashes, &lt;500ms latency)</li>
+<li>T10-Style: Quantization tier validation (optimal tier ≥90% cases)</li>
+</ul>
+<p><strong>Domain-Specific Validation (W1-W3 Style):</strong></p>
+<ul>
+<li>Task domain deployment (W1), real-world scenario execution (W2), failure mode analysis (W3)</li>
+<li>Comparative performance vs. non-MCD approaches</li>
+</ul>
+<p><strong>Diagnostic Checks:</strong></p>
+<ul>
+<li>Performance vs. Complexity Analysis</li>
+<li>Decision Tree Health Metrics (path length, branching variance, dead paths)</li>
+<li>Context-Optimality Scoring</li>
+</ul>
+<p><strong>Output:</strong> Deployment decision (PASS → Deploy ✅ | FAIL → Redesign)</p>
+<p><strong>Complete test protocols, success criteria, and diagnostic procedures:</strong> See Appendix G.5</p>
+<hr/>
+<h3 id="mcd-framework-quick-reference-dashboard"><strong>🌳 MCD Framework Quick Reference Dashboard</strong></h3>
 
-<p>Result: Control logic as decision tree → LAYER 3</p>
-<p>LAYER 3: Execution Layer (Quantization-Aware Decision Tree)</p>
-<p>Q13: Quantization tier selection tree (Based on T10 findings):<br />
-Task complexity assessment:<br />
-Simple (FAQ, basic classification) → TRY Q1 first<br />
-IF drift_detected → FALLBACK to Q4<br />
-ELSE → USE Q1 (optimal efficiency)</p>
-<p>Moderate (slot-filling, navigation) → START with Q4<br />
-IF performance inadequate → ESCALATE to Q8<br />
-ELSE → USE Q4 (validated sweet spot)</p>
-<p>Complex (multi-step reasoning) → START with Q8<br />
-IF overkill detected → DOWNGRADE to Q4<br />
-ELSE → USE Q8 (necessary complexity)</p>
-<p>Hardware constraint decision tree:<br />
-RAM &lt;256MB → FORCE Q1/Q4 only<br />
-RAM 256MB-1GB → Q4/Q8 acceptable<br />
-Browser/WASM → Q4 optimal (T8 validation)<br />
-1GB RAM → All tiers available</p>
-<p>Dynamic tier routing logic:<br />
-START with lowest viable tier<br />
-Monitor semantic drift (&gt;10% threshold from T10)<br />
-IF drift_detected → ESCALATE tier<br />
-IF overprovisioned → DEGRADE tier</p>
-<p>Result: Tiered execution with decision routing → PHASE 5</p>
-<h2>🌳 PHASE 5: Evidence-Based Validation &amp; Testing</h2>
-<p>TEST SUITE 1: Core MCD Validation (T1-T10 Methodology)</p>
-<p><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>-Style: Approach Effectiveness Test<br />
-Run selected approach vs alternatives<br />
-Measure: completion rate, token efficiency, latency<br />
-Pass threshold: ≥90% of expected performance</p>
-<p><a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>-Style: Stateless Context Reconstruction<br />
-Reset agent state between turns<br />
-Test explicit slot reinjection vs implicit reference<br />
-Pass threshold: ≥90% context recovery (validated: 5/5 vs 2/5)</p>
-<p><a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>-Style: Over-Engineering Detection<br />
-Calculate Redundancy Index for all components<br />
-Identify capability plateaus beyond efficiency thresholds<br />
-Pass threshold: RI ≤ 10, no components &gt;20% token overhead</p>
-<p><a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>-Style: Constraint Stress Test<br />
-Test decision tree behavior under resource pressure<br />
-Validate fallback activation and graceful degradation<br />
-Pass threshold: ≥80% controlled failure (no hallucination)</p>
-<p><a href="c6.html#t8" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T8</a>-Style: Deployment Environment Test<br />
-WebAssembly/browser compatibility validation<br />
-Memory usage monitoring (&lt;500MB validated stable)<br />
-Pass threshold: no crashes, latency &lt;500ms</p>
-<p><a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>-Style: Quantization Tier Validation<br />
-Test tier selection decision tree<br />
-Validate fallback routing Q1→Q4→Q8<br />
-Pass threshold: optimal tier selected ≥90% cases</p>
-<p>TEST SUITE 2: Domain-Specific Validation (W1-W3 Style)<br />
-<a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>: Task domain deployment test<br />
-<a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>: Real-world scenario execution<br />
-<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>: Failure mode documentation and analysis<br />
-Comparative performance vs non-MCD approaches</p>
-<p>DIAGNOSTIC CHECKS: Multi-Dimensional Analysis</p>
-<p>Performance vs Complexity Analysis:<br />
-Efficiency score vs resource usage<br />
-Quality score vs token cost<br />
-User experience vs constraint compliance</p>
-<p>Decision Tree Health Metrics:<br />
-Average decision path length<br />
-Branching factor variance<br />
-Fallback activation frequency<br />
-Dead path identification (never used routes)</p>
-<p>Context-Optimality Scoring:<br />
-Resource-constrained context score<br />
-User experience context score<br />
-Professional quality context score<br />
-Overall adaptability score</p>
-<p>FINAL DECISION MATRIX<br />
-All core tests PASS + Decision trees validated?<br />
-YES → DEPLOY MCD AGENT ✅<br />
-NO → Return to failed phase for redesign</p>
-<p>Performance meets context-specific requirements?<br />
-Resource efficiency priority → Score ≥80%<br />
-User experience priority → Score ≥75%<br />
-Professional quality priority → Score ≥85%</p>
-<p>MCD approach unsuitable after evidence-based analysis?<br />
-Recommend alternative frameworks with justification</p>
-<h2>🌳 MCD Framework Quick Reference Dashboard</h2>
-<p>text</p>
 <div class="highlight"><pre><span></span><code><span class="err">┌─────────────────────────────────────────────────────────────────┐</span>
 <span class="err">│</span><span class="w">             </span><span class="n">MCD</span><span class="w"> </span><span class="n">DECISION</span><span class="w"> </span><span class="n">TREE</span><span class="w"> </span><span class="n">v2</span><span class="o">.</span><span class="mi">0</span><span class="w"> </span><span class="err">–</span><span class="w"> </span><span class="n">QUICK</span><span class="w"> </span><span class="n">REFERENCE</span><span class="w">           </span><span class="err">│</span>
 <span class="err">├─────────────────────────────────────────────────────────────────┤</span>
@@ -1384,10 +1391,11 @@ Recommend alternative frameworks with justification</p>
   </div>
 </div>
 
+
 <div class="gx-block">
   <div class="gx-card gx-page-block" id="8.7.3">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">8.7.3 Practical Application Guidelines</h4>
+      <h4 class="gx-card-title">8.7.3 Validation Against Original Framework</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -1396,166 +1404,109 @@ Recommend alternative frameworks with justification</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>Real-World Deployment Decision Tree<br />
-The MCD Suitability Matrix (Table 8.2) provides the foundation for a systematic decision-making process when determining architectural approach for specific deployment scenarios.</p>
-<h3>Step-by-Step Decision Process:</h3>
-<p>Phase 1: Task Classification<br />
-text<br />
-Is the task stateless?<br />
-├─ YES → Proceed to Phase 2 (Resource Assessment)<br />
-└─ NO → Does it require persistent memory?<br />
-           ├─ YES → Consider RAG/Full-Stack Framework<br />
-           └─ NO → Evaluate for Hybrid MCD Architecture</p>
-<p>Phase 2: Resource Assessment<br />
-text<br />
-What are the deployment constraints?<br />
-├─ Severe (&lt; 512MB RAM) → MCD Q1/Q4 recommended<br />
-├─ Moderate (512MB-2GB) → MCD Q4/Q8 or Hybrid feasible<br />
-└─ Unconstrained (&gt; 2GB) → Full-stack may be appropriate</p>
-<p>Phase 3: Domain Suitability Check<br />
-text<br />
-Task Category from Table 8.2:<br />
-├─ High Suitability → Implement MCD directly<br />
-├─ Partial Suitability → Apply diagnostic heuristics from Appendix E<br />
-└─ Low Suitability → Consider alternative architectures</p>
-<h3>Mapping Empirical Thresholds to Design Decisions</h3>
-<p>The validation evidence from Chapters 6-7 provides concrete thresholds for operational deployment:</p>
-<p>Token Budget Allocation:<br />
-90-token plateau threshold: Beyond this point, additional prompt complexity yields &lt;5% improvement at 2.6x resource cost<br />
-60-token minimum floor: MCD maintains 94% success rate down to this compression level<br />
-Deployment guideline: Start with 75-85 token budget, expand only if failure analysis justifies additional complexity</p>
-<p>Resource Constraint Mapping:<br />
-Q1 deployment (ultra-minimal): Simple FAQ, basic navigation, single-turn interactions<br />
-Q4 deployment (optimal balance): Complex booking, diagnostic assistance, multi-step workflows<br />
-Q8 deployment (strategic fallback): Complex reasoning, edge cases requiring additional capability</p>
-<p>Performance Expectations:<br />
-MCD agents: 85% performance retention under Q1 constraints vs 40% for traditional approaches<br />
-Latency targets: 430ms average response time validated across constraint tiers<br />
-Failure characteristics: Transparent degradation with clear limitation acknowledgment</p>
-<h3>Integration with Existing Diagnostic Tools (Appendix E)</h3>
-<p>Pre-deployment Diagnostic Sequence:</p>
-<p>Capability Plateau Analysis<br />
-Run Capability Plateau Detector on initial prompt design<br />
-If &gt;90 tokens detected: Apply prompt compression techniques<br />
-Validate that compressed version maintains &gt;94% task success</p>
-<p>Memory Fragility Assessment<br />
-Execute Memory Fragility Score calculation<br />
-If &gt;40% state dependence: Implement explicit context regeneration<br />
-Confirm &gt;90% stateless reconstruction accuracy</p>
-<p>Redundancy Index Calculation<br />
-Apply Toolchain Redundancy Estimator to all components<br />
-Remove components with &lt;10% utilization<br />
-Verify latency improvement from redundancy elimination</p>
-<p>Deployment Readiness Checklist<br />
-text<br />
-✓ Token budget within empirically validated range (≥60 tokens minimum, ≤90 tokens optimal plateau)<br />
-✓ Memory fragility score &lt;40%<br />
-✓ Component utilization &gt;10% for all included modules<br />
-✓ Fallback sequences terminate within 2 loops<br />
-✓ Quantization tier selected based on complexity requirements</p>
-<p>Operational Monitoring Integration:<br />
-Semantic Drift Monitor: Continuous comparison across quantization tiers<br />
-Dynamic Tier Selection: Automatic Q1→Q4→Q8 escalation when drift &gt;10%<br />
-Performance Tracking: Ongoing validation against established efficiency benchmarks</p>
-<p>Example Application: Healthcare Booking Agent</p>
-<p>Decision Tree Application:<br />
-Task Classification: Stateless appointment scheduling → MCD suitable<br />
-Resource Assessment: Edge deployment (512MB constraint) → Q4 tier recommended<br />
-Domain Check: High suitability per Table 8.2</p>
-<p>Diagnostic Application:<br />
-Capability Plateau: 80-token prompt identified as optimal (below 90-token threshold)<br />
-Memory Fragility: 15% state dependence (well below 40% threshold)<br />
-Redundancy: All components show &gt;10% utilization</p>
-<p>Result: Deploy with Q4 tier, 80-token prompt, stateless architecture</p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="gx-block">
-  <div class="gx-card gx-page-block" id="8.7.4">
-    <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">8.7.4 Validation Against Original Framework</h4>
-      <div class="header-tools">
-        <a href="#" class="m-r-10 gx-full-card">
-          <i class="ri-fullscreen-line" title="Full Screen"></i>
-        </a>
-      </div>
-    </div>
-    <div class="gx-card-content">
-      <div class="intro">
-        <p>Comparison with Chapter 4&rsquo;s Theoretical Framework<br />
-</p>
-<p>The empirical program across Tests <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>&ndash;<a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>&nbsp;and Walkthroughs <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>&ndash;<a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a>&nbsp;confirms Chapter 4&rsquo;s principles and calibrates deployment thresholds: a 90-token capability plateau with &lt;5%&nbsp;marginal gains at 2.6&times; resource cost, a two‑loop fallback cap, and Q4 as the default efficiency tier under constraints.<span data-state="closed"></span></p>
+       <p>The empirical program (T1–T10, W1–W3) validates Chapter 4's theoretical principles and establishes quantified deployment thresholds: a <strong>90-token capability plateau</strong> with &lt;5% marginal gains at 2.6× resource cost, a <strong>two-loop fallback cap</strong> preventing semantic drift, and <strong>Q4 as optimal tier</strong> for 80% of constraint-bounded tasks.</p>
+<h3 id="core-principle-validation"><strong>Core Principle Validation</strong></h3>
+<p><strong>Minimality by Default (Section 4.2.3)</strong></p>
 <ul>
-<li>
-<p>Bounded Rationality&mdash;Prediction: constrain reasoning within compact prompts; Validation: <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>/<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>&nbsp;show a 90-token saturation with minimal gains beyond; Refinement: tiered execution Q1&rarr;Q4&rarr;Q8 to operationalize bounded reasoning under hardware limits.</p>
-</li>
-<li>
-<p>Degeneracy Detection&mdash;Prediction: remove unused pathways; Validation: removing components under a 10%&nbsp;utilization threshold yields 15&ndash;30 ms latency savings in <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>/<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a>; Refinement: adopt 10%&nbsp;as the operational cutoff.</p>
-</li>
-<li>
-<p>Minimality by Default&mdash;Prediction: start minimal and add only when needed; Validation: near 94%&nbsp;task success with &sim;67% fewer resources in controlled tests; Refinement: replicated across healthcare <a href="c7.html#7.2" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W1</a>, navigation <a href="c7.html#7.3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W2</a>, and diagnostics <a href="c7.html#7.4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">W3</a></p>
-</li>
-<li>
-<p>Prompt Layer&mdash;Evidence: <a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>&ndash;<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>&nbsp;confirm semantic saturation near 90&nbsp;tokens; Improvement: add modality anchoring for multi‑modal settings; Maintained: stateless regeneration and minimal symbolic prompting.</p>
-</li>
-<li>
-<p>Control Layer&mdash;Evidence: <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>&nbsp;shows high stateless context reconstruction without persistent memory; Improvement: quantified fallback thresholds in symbolic decision trees; Maintained: no external orchestration with deterministic fallback paths.</p>
-</li>
-<li>
-<p>Execution Layer&mdash;Evidence: <a href="c6.html#t10" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T10</a>&nbsp;validates Q4 as the balance point for latency and accuracy; Improvement: dynamic tier selection with calibrated thresholds; Maintained: local‑only, hardware‑aware execution.</p>
-</li>
+<li><strong>Validation:</strong> T1/T4 achieve 94% task success with ~67% fewer resources vs. traditional approaches</li>
+<li><strong>Refinement:</strong> 10% utilization threshold (T7/T9: 15–30ms latency savings when removing low-utilization components)</li>
+<li><strong>Domain Evidence:</strong> Healthcare (W1), navigation (W2), diagnostics (W3) replicate constraint-resilience across domains</li>
 </ul>
-<h3>Heuristic calibration</h3>
-<div>
-<div>
+<p><strong>Bounded Rationality (Section 4.2.1)</strong></p>
+<ul>
+<li><strong>Validation:</strong> 90-token saturation point (T1/T6); T5 shows 52% semantic drift beyond 3 reasoning steps</li>
+<li><strong>Refinement:</strong> Q1→Q4→Q8 tiered execution with dynamic routing (T10) operationalizes bounded reasoning under hardware limits</li>
+<li><strong>Token Allocation:</strong> Core 40-60%, Fallback 20-30%, Input 10-20%, Buffer 10-15% (Appendix G.3.2)</li>
+</ul>
+<p><strong>Degeneracy Detection (Section 4.2.2)</strong></p>
+<ul>
+<li><strong>Validation:</strong> &lt;10% component utilization triggers removal, yielding 15–30ms latency improvements (T7/T9)</li>
+<li><strong>Refinement:</strong> Redundancy Index ≤10 threshold (T6: RI=435 indicates extreme over-engineering)</li>
+<li><strong>Deployment Tool:</strong> Dead path detection integrated into Appendix G.5 validation workflows</li>
+</ul>
+<h3 id="architecture-layer-validation"><strong>Architecture Layer Validation</strong></h3>
+<p><strong>Prompt Layer (Section 4.3.1)</strong></p>
+<ul>
+<li><strong>Finding:</strong> 90-token semantic saturation confirmed (T1–T3)</li>
+<li><strong>Adaptation Patterns:</strong> Dynamic/Semi-Static taxonomy (Section 5.2.1) validated through W1/W2/W3</li>
+<li><strong>Stateless Regeneration:</strong> 92% context reconstruction without persistent memory (T4: 5/5 vs. 2/5 implicit)</li>
+</ul>
+<p><strong>Control Layer (Section 4.3.2)</strong></p>
+<ul>
+<li><strong>Finding:</strong> Prompt-level routing achieves 80% success (T3: 4/5), eliminating orchestration overhead (−30 tokens, −25ms latency)</li>
+<li><strong>Fallback:</strong> ≤2 iterations prevent 50% semantic drift (T5), maintaining 420ms average resolution time (T9)</li>
+</ul>
+<p><strong>Execution Layer (Section 4.3.3)</strong></p>
+<ul>
+<li><strong>Finding:</strong> Q4 (TinyLlama-1.1B, 560MB) optimal for 80% of tasks (T10)</li>
+<li><strong>Dynamic Routing:</strong> &gt;10% drift triggers Q1→Q4 escalation; T8 validates browser/WASM deployment (&lt;500ms latency)</li>
+</ul>
+<h3 id="table-84-empirically-calibrated-deployment-heuristics"><strong>Table 8.4: Empirically-Calibrated Deployment Heuristics</strong></h3>
 <table>
 <thead>
 <tr>
-<th>Heuristic</th>
-<th>Empirical calibration</th>
-<th>Validation source</th>
+<th><strong>Heuristic</strong></th>
+<th><strong>Calibrated Threshold</strong></th>
+<th><strong>Validation</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Capability Plateau Detector</td>
-<td>90-token threshold with &lt;5%&nbsp;marginal gain criterion</td>
-<td><a href="c6.html#t1" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T1</a>/<a href="c6.html#t3" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T3</a>/<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a></td>
+<td>90-token threshold; &lt;5% marginal gain</td>
+<td>T1/T3/T6</td>
 </tr>
 <tr>
 <td>Memory Fragility Score</td>
-<td>40% dependence indicates &sim;67%&nbsp;failure risk when stateless</td>
-<td><a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>&nbsp;stateless tests</td>
+<td>40% dependence = ~67% stateless failure risk</td>
+<td>T4</td>
 </tr>
 <tr>
 <td>Toolchain Redundancy Estimator</td>
-<td>10%&nbsp;utilization cutoff with 15&ndash;30ms latency impact</td>
-<td><a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>/<a href="c6.html#t9" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T9</a></td>
+<td>10% utilization cutoff → 15–30ms savings</td>
+<td>T7/T9</td>
+</tr>
+<tr>
+<td>Redundancy Index</td>
+<td>RI ≤10 acceptable; &gt;10 over-engineered</td>
+<td>T6</td>
+</tr>
+<tr>
+<td>Reasoning Chain Depth</td>
+<td>≤3 steps; &gt;3 triggers ~52% semantic drift</td>
+<td>T5</td>
+</tr>
+<tr>
+<td>Quantization Tier Selection</td>
+<td>Q4 optimal for 80% tasks; Q1→Q4→Q8 routing</td>
+<td>T10</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<h3>Scope boundaries</h3>
+<p><strong>Integration:</strong> All thresholds operationalized in Appendix G decision tree (G.1–G.5) with validation protocols.</p>
+<h3 id="scope-boundaries"><strong>Scope Boundaries</strong></h3>
+<p><strong>Memory-Dependent Tasks:</strong> T4 observes complete context loss without explicit slot reinjection; hybrid architectures (Section 4.8) required for persistent conversation.</p>
+<p><strong>Complex Reasoning Chains:</strong> T5 shows ~52% drift beyond 3 steps; mitigation via task decomposition (Appendix G.3.2 Option 2) or symbolic compression (G.3.2 Option 1).</p>
+<p><strong>Safety-Critical Applications:</strong> T7 demonstrates 80% controlled degradation with transparent limitation acknowledgment; requires external verification beyond MCD guarantees.</p>
+<h3 id="maturity-assessment"><strong>Maturity Assessment</strong></h3>
+<p><strong>Validated Strengths:</strong></p>
 <ul>
-<li>
-<p>Memory‑dependent tasks require explicit reinjection; <a href="c6.html#t4" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T4</a>&nbsp;observes complete context loss without reinjection under stateless constraints.</p>
-</li>
-<li>
-<p>Complex reasoning chains drift beyond 3&nbsp;steps with approximately 52%&nbsp;semantic drift in <a href="c6.html#t5" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T5</a>, bounding safe reasoning depth.</p>
-</li>
-<li>
-<p>Safety‑critical use shows graceful degradation in <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a>
-&nbsp;but needs external verification beyond core MCD guarantees.</p>
-</li>
+<li>85-94% performance under Q1 constraints vs. 40% for traditional approaches</li>
+<li>Cross-domain validation (W1/W2/W3) confirms generalizability</li>
+<li>Tested hardware: ESP32-S3 (512KB RAM) to Jetson Nano (4GB RAM); platforms: Browser/WebAssembly (T8), embedded Linux (T10)</li>
 </ul>
-<h3>Maturity statement</h3>
-<p>Core principles remain sound, thresholds make the framework deployment‑ready, scope limits are explicit, and calibrated rules extend from ESP32‑S3 to Jetson Nano with Q4 as the practical default tier.</p>
-<h3>Cross‑references</h3>
-<p>See Chapter 4 for theoretical foundations and diagnostics, Chapter 6 for T1&ndash;T10&nbsp;validation details, Chapter 7 for W1&ndash;W3&nbsp;domain evidence, and Appendix E for full diagnostic definitions.</p>
-
-<p>The evaluation confirms that MCD agents can achieve sufficient task performance under constraint-first conditions. Yet, MCD does have boundaries&mdash;particularly around tasks requiring memory or complex chaining.<br /> Chapter 9 explores extensions beyond these boundaries. It proposes future directions for hybrid architectures, benchmark validation, and auto-minimal agents, pushing MCD beyond its current design envelope.</p>
+<p><strong>Empirical Contributions:</strong></p>
+<ul>
+<li>90-token plateau prevents over-engineering; 2-loop fallback bounds prevent semantic drift</li>
+<li>Q4 tier identification reduces deployment complexity</li>
+<li>Section 5.2.1 adaptation patterns enable task-structure-aware implementation</li>
+</ul>
+<p><strong>Explicit Limitations:</strong></p>
+<ul>
+<li>Stateful agents require hybrid architectures (Section 4.8)</li>
+<li>Multi-step reasoning (&gt;3 steps) needs decomposition strategies</li>
+<li>Safety-critical systems require domain-specific verification layers (T7)</li>
+</ul>
 
       </div>
     </div>
@@ -1619,8 +1570,7 @@ Chapter 9 explores extensions beyond these boundaries. It proposes future direct
 <li><a class="topic" href="#8.7">8.7 MCD Framework Application Decision Tree</a></li>
 <li><a class="topic" href="#8.7.1">8.7.1 Integration of Empirical Findings</a></li>
 <li><a class="topic" href="#8.7.2">8.7.2 MCD Framework Application Decision Tree</a></li>
-<li><a class="topic" href="#8.7.3">8.7.3 Practical Application Guidelines</a></li>
-<li><a class="topic" href="#8.7.4">8.7.4 Validation Against Original Framework</a></li>
+<li><a class="topic" href="#8.7.3">8.7.3 Validation Against Original Framework</a></li>
 <li><a class="topic" href="#roadmap">Next Chapter Preview</a></li>
 									</ul>
 								</nav>

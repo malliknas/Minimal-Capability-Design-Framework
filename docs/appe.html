@@ -532,7 +532,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>				
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>				
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -589,9 +591,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     <div class="gx-card-content">
       <div class="intro">
        <h4>Contents Overview</h4>
-<p>This appendix serves as a consolidated reference table of the MCD diagnostic heuristics introduced in Chapter 4, including methods for Capability Plateau detection, Redundancy Index calculation, Semantic Drift detection, and Prompt Collapse diagnostics.</p>
-<h4>Purpose Statement</h4>
-<p>To provide practitioners with a ready-to-apply toolkit for validating minimal agent designs and detecting over-engineering before deployment.</p>
+<p>This appendix serves as a consolidated reference for MCD diagnostic heuristics introduced in Chapter 4, including methods for Capability Plateau detection, Redundancy Index calculation, Semantic Drift monitoring, and Prompt Collapse diagnostics. All thresholds are empirically validated through T1-T10 simulations and W1-W3 domain walkthroughs.</p>
+<h3 id="purpose-statement"><strong>Purpose Statement</strong></h3>
+<p>To provide practitioners with a ready-to-apply toolkit for validating minimal agent designs, detecting over-engineering before deployment, and ensuring constraint-compliant architecture through quantified diagnostic metrics.</p>
                      
       </div>
     </div>
@@ -610,90 +612,90 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Table E.1: Complete MCD Heuristics and Diagnostic Tools</p>
+       <p><strong>Table E.1: Complete MCD Heuristics and Diagnostic Tools</strong></p>
 <table>
 <thead>
 <tr>
-<th>Diagnostic Tool</th>
-<th>Purpose</th>
-<th>Calibrated Threshold</th>
-<th>Measurement Method</th>
-<th>Failure Indicator</th>
-<th>Chapter Reference</th>
-<th>Validation Tests</th>
+<th><strong>Diagnostic Tool</strong></th>
+<th><strong>Purpose</strong></th>
+<th><strong>Calibrated Threshold</strong></th>
+<th><strong>Measurement Method</strong></th>
+<th><strong>Failure Indicator</strong></th>
+<th><strong>Chapter Reference</strong></th>
+<th><strong>Validation Tests</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Capability Plateau Detector</td>
+<td><strong>Capability Plateau Detector</strong></td>
 <td>Detects diminishing returns in prompt/tool additions</td>
-<td>90-token saturation point</td>
+<td>90-130 token saturation range</td>
 <td>Token efficiency analysis: semantic value per token</td>
 <td>Additional complexity yields &lt;5% improvement while consuming 2.6x resources</td>
-<td>Chapter 4, Section 4.6</td>
+<td>Section 6.3.6, Section 8.3</td>
 <td>T1, T3, T6</td>
 </tr>
 <tr>
-<td>Memory Fragility Score</td>
+<td><strong>Memory Fragility Score</strong></td>
 <td>Measures agent dependence on state persistence</td>
 <td>40% dependence threshold</td>
 <td>Stateless reconstruction accuracy testing</td>
-<td>&gt;40% dependence indicates 67% failure rate without persistent state</td>
-<td>Chapter 4, Section 4.6.2</td>
+<td>&gt;40% dependence indicates high fragility risk; T4 validates 5/5 stateless success</td>
+<td>Section 4.2, Section 6.3.4</td>
 <td>T4, T5</td>
 </tr>
 <tr>
-<td>Toolchain Redundancy Estimator</td>
+<td><strong>Toolchain Redundancy Estimator</strong></td>
 <td>Identifies unused or rarely-used modules</td>
 <td>&lt;10% utilization triggers removal</td>
 <td>Component usage tracking during execution</td>
-<td>Components below 10% utilization add 15-30ms latency overhead with 2% task success contribution</td>
-<td>Chapter 4, Section 4.6</td>
+<td>Components below 10% utilization add latency overhead with minimal task contribution</td>
+<td>Section 4.2, Section 6.3.7</td>
 <td>T7, T9</td>
 </tr>
 <tr>
-<td>Semantic Drift Monitor</td>
-<td>Tracks reasoning quality degradation</td>
+<td><strong>Semantic Drift Monitor</strong></td>
+<td>Tracks reasoning quality degradation across quantization tiers</td>
 <td>&gt;10% semantic drift threshold</td>
-<td>Semantic consistency comparison across quantization tiers</td>
+<td>Cosine similarity comparison Q1 vs Q4 outputs</td>
 <td>Drift &gt;10% triggers automatic tier escalation (Q1→Q4→Q8)</td>
-<td>Chapter 5, Section 5.5</td>
+<td>Section 6.3.10</td>
 <td>T2, T10</td>
 </tr>
 <tr>
-<td>Prompt Collapse Diagnostic</td>
+<td><strong>Prompt Collapse Diagnostic</strong></td>
 <td>Identifies critical prompt compression limits</td>
 <td>60-token minimum threshold</td>
 <td>Task success rate under progressive token reduction</td>
-<td>MCD maintains 94% success at 60 tokens; verbose approaches fail at 85 tokens</td>
-<td>Chapter 4, Section 4.5</td>
-<td>T1, T2, T3</td>
+<td>MCD maintains 94% success at 60 tokens; failure below indicates insufficient minimality</td>
+<td>Section 6.3.6</td>
+<td>T1, T2, T3, T6</td>
 </tr>
 <tr>
-<td>Context Reconstruction Validator</td>
+<td><strong>Context Reconstruction Validator</strong></td>
 <td>Tests stateless context recovery capability</td>
-<td>&gt;90% accuracy requirement</td>
+<td>≥90% accuracy requirement</td>
 <td>Multi-turn interaction without persistent memory</td>
 <td>&lt;90% accuracy indicates architectural dependency on session state</td>
-<td>Chapter 5, Section 5.3</td>
+<td>Section 4.2, Section 6.3.4</td>
 <td>T4</td>
 </tr>
 <tr>
-<td>Fallback Loop Complexity Meter</td>
+<td><strong>Fallback Loop Complexity Meter</strong></td>
 <td>Prevents runaway recovery sequences</td>
-<td>2-loop maximum threshold</td>
+<td>≤2 loops maximum threshold</td>
 <td>Recovery sequence depth and token consumption</td>
-<td>&gt;2 loops leads to semantic drift and &gt;125 token consumption</td>
-<td>Chapter 5, Section 5.4</td>
-<td>T9</td>
+<td>&gt;2 loops leads to semantic drift (T5: 2/4 drift beyond 3 steps)</td>
+<td>Section 5.4, Section 6.3.5</td>
+<td>T3, T5, T9</td>
 </tr>
 <tr>
-<td>Quantization Tier Optimizer</td>
+<td><strong>Quantization Tier Optimizer</strong></td>
 <td>Selects minimum viable capability tier</td>
 <td>Q4 optimal balance point</td>
 <td>Performance vs resource consumption analysis</td>
-<td>Q1: 60% success, Q4: 96% success, Q8: equivalent with 67% overhead</td>
-<td>Chapter 5, Section 5.5</td>
+<td>Q1: 85% retention, Q4: 95% success, Q8: equivalent with overhead</td>
+<td>Section 6.3.10</td>
 <td>T10</td>
 </tr>
 </tbody>
@@ -715,69 +717,153 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <h3>E.2.1 Capability Plateau Detector</h3>
-<p>Implementation Protocol:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">detect_capability_plateau</span><span class="p">(</span><span class="n">prompt_tokens</span><span class="p">,</span> <span class="n">semantic_score</span><span class="p">,</span> <span class="n">resource_cost</span><span class="p">):</span>
+        <h3 id="e21-capability-plateau-detector"><strong>E.2.1 Capability Plateau Detector</strong></h3>
+<p><strong>Implementation Protocol:</strong></p>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">detect_capability_plateau</span><span class="p">(</span><span class="n">prompt_tokens</span><span class="p">,</span> <span class="n">semantic_score</span><span class="p">,</span> <span class="n">resource_cost</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Detects when additional prompt complexity yields diminishing returns.</span>
+
+<span class="sd">    Threshold Calibration: 90-130 token saturation range (T6 validation)</span>
+<span class="sd">    - Conservative lower bound: 90 tokens (design-time warning)</span>
+<span class="sd">    - Empirical upper bound: 130 tokens (hard saturation)</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">prompt_tokens</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
         <span class="n">efficiency_ratio</span> <span class="o">=</span> <span class="n">semantic_score</span> <span class="o">/</span> <span class="n">resource_cost</span>
-        <span class="k">if</span> <span class="n">efficiency_ratio</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>  <span class="c1"># &lt;5% improvement</span>
-            <span class="k">return</span> <span class="s2">&quot;PLATEAU_DETECTED&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;WITHIN_BOUNDS&quot;</span>
-</code></pre></div>
+        <span class="k">if</span> <span class="n">efficiency_ratio</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>  <span class="c1"># &lt;5% improvement threshold</span>
+            <span class="k">return</span> <span class="s2">"PLATEAU_DETECTED"</span><span class="p">,</span> <span class="s2">"Consider removing complexity beyond 90-token boundary"</span>
+    <span class="k">return</span> <span class="s2">"WITHIN_BOUNDS"</span><span class="p">,</span> <span class="s2">"Prompt complexity acceptable"</span>
+</code></pre>
+</div>
+<p><strong>Practical Application:</strong></p>
+<ul>
+<li><strong>Monitor during design:</strong> Track token additions vs task completion improvements</li>
+<li><strong>Deployment threshold:</strong> Stop adding complexity beyond 90-token boundary (conservative) or 130-token ceiling (validated saturation)</li>
+<li><strong>Resource calculation:</strong> Measure latency/memory cost per token added</li>
+<li><strong>Validation evidence:</strong> T1-T3, T6 demonstrate plateau effects across multiple domains</li>
+</ul>
+<p><strong>Threshold Calibration Methodology:</strong></p>
+<p>The 90-130 token capability plateau range was empirically derived through systematic ablation testing (T1, T6) rather than prescriptive universal constraint:</p>
+<p><strong>Empirical Evidence:</strong></p>
+<ul>
+<li><strong>T1 variants:</strong> Optimal performance-to-resource ratio at 60-85 tokens</li>
+<li><strong>T6 variants:</strong> Capability saturation observed at 94-131 tokens across comparisons</li>
+<li><strong>Cross-test convergence:</strong> 90-130 token range validated through independent trials</li>
+<li><strong>Section 8.3 analysis:</strong> Confirmed plateau effect with 2.6x resource cost for &lt;5% improvement</li>
+</ul>
+<p><strong>Threshold Selection Rationale:</strong> 
+90 tokens represents the conservative lower bound where marginal improvements typically fall below 5% while computational costs increase 2.6×. This provides a design-time warning signal rather than strict enforcement boundary. 130 tokens represents empirical saturation ceiling validated across T1-T6.</p>
+<p><strong>Task-Dependent Calibration:</strong></p>
+<ul>
+<li><strong>Simple slot-filling:</strong> 60-80 tokens optimal (W1 Healthcare booking)</li>
+<li><strong>Spatial navigation:</strong> 70-90 tokens sufficient (W2 Indoor navigation with deterministic logic)</li>
+<li><strong>Complex diagnostics:</strong> 90-130 tokens required (W3 System diagnostics with heuristic classification)</li>
+</ul>
+<p><strong>Practitioner Guidance:</strong> Treat 90 tokens as optimization starting point rather than absolute constraint, adjusting based on domain-specific complexity validated through T1-style testing.</p>
+<hr/>
+<h3 id="e22-memory-fragility-score"><strong>E.2.2 Memory Fragility Score</strong></h3>
+<p><strong>Calculation Method:</strong></p>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_memory_fragility</span><span class="p">(</span><span class="n">stateless_accuracy</span><span class="p">,</span> <span class="n">stateful_accuracy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Measures dependence on persistent state vs stateless reconstruction.</span>
 
-<p>Practical Application:<br />
-Monitor during design: Track token additions vs task completion improvements<br />
-Deployment threshold: Stop adding complexity beyond 90-token boundary<br />
-Resource calculation: Measure latency/memory cost per token added<br />
-Validation evidence: T1-T3 demonstrate plateau effects across multiple domains</p>
-<h3>E.2.2 Memory Fragility Score</h3>
-<p>Calculation Method:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_memory_fragility</span><span class="p">(</span><span class="n">stateless_accuracy</span><span class="p">,</span> <span class="n">stateful_accuracy</span><span class="p">):</span>
+<span class="sd">    Validation: T4 shows 5/5 stateless success with explicit slot reinjection</span>
+<span class="sd">    Threshold: &gt;40% dependence indicates high fragility risk</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">stateful_accuracy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"ERROR"</span><span class="p">,</span> <span class="s2">"Insufficient stateful baseline"</span>
+
     <span class="n">dependence_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">stateful_accuracy</span> <span class="o">-</span> <span class="n">stateless_accuracy</span><span class="p">)</span> <span class="o">/</span> <span class="n">stateful_accuracy</span>
-    <span class="k">if</span> <span class="n">dependence_ratio</span> <span class="o">&gt;</span> <span class="mf">0.40</span><span class="p">:</span>  <span class="c1"># 40% dependence threshold</span>
-        <span class="k">return</span> <span class="s2">&quot;HIGH_FRAGILITY_RISK&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;STATELESS_READY&quot;</span>
-</code></pre></div>
 
-<p>Practical Application:<br />
-Test protocol: Run identical tasks with and without persistent state<br />
-Risk assessment: &gt;40% dependence indicates deployment vulnerability<br />
-Validation method: T4 confirms 96% stateless reconstruction accuracy for MCD<br />
-Design implication: High fragility scores require architecture revision</p>
-<h3>E.2.3 Toolchain Redundancy Estimator</h3>
-<p>Usage Tracking Implementation:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">analyze_toolchain_redundancy</span><span class="p">(</span><span class="n">component_usage_log</span><span class="p">,</span> <span class="n">execution_time</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">dependence_ratio</span> <span class="o">&gt;</span> <span class="mf">0.40</span><span class="p">:</span>  <span class="c1"># 40% dependence threshold</span>
+        <span class="k">return</span> <span class="s2">"HIGH_FRAGILITY_RISK"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"State dependence: </span><span class="si">{</span><span class="n">dependence_ratio</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">elif</span> <span class="n">dependence_ratio</span> <span class="o">&gt;</span> <span class="mf">0.20</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"MODERATE_FRAGILITY"</span><span class="p">,</span> <span class="s2">"Consider stateless optimization"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"STATELESS_READY"</span><span class="p">,</span> <span class="s2">"Architecture validated for stateless deployment"</span>
+</code></pre>
+</div>
+<p><strong>Practical Application:</strong></p>
+<ul>
+<li><strong>Test protocol:</strong> Run identical tasks with explicit context reinjection (stateless) vs implicit session memory (stateful)</li>
+<li><strong>Risk assessment:</strong> &gt;40% dependence indicates deployment vulnerability under resource constraints</li>
+<li><strong>Validation method:</strong> T4 confirms 5/5 stateless reconstruction success for MCD with explicit slot passing</li>
+<li><strong>Design implication:</strong> High fragility scores require architecture revision per Section 4.2 principles</li>
+</ul>
+<hr/>
+<h3 id="e23-toolchain-redundancy-estimator"><strong>E.2.3 Toolchain Redundancy Estimator</strong></h3>
+<p><strong>Usage Tracking Implementation:</strong></p>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">analyze_toolchain_redundancy</span><span class="p">(</span><span class="n">component_usage_log</span><span class="p">,</span> <span class="n">total_executions</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Identifies underutilized components for removal.</span>
+
+<span class="sd">    Threshold: &lt;10% utilization triggers removal (T7 validation)</span>
+<span class="sd">    Benefit: 15-30ms latency savings per removed component</span>
+<span class="sd">    """</span>
+    <span class="n">redundant_components</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">component_usage_log</span><span class="p">:</span>
         <span class="n">utilization_rate</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">usage_count</span> <span class="o">/</span> <span class="n">total_executions</span>
-        <span class="k">if</span> <span class="n">utilization_rate</span> <span class="o">&lt;</span> <span class="mf">0.10</span><span class="p">:</span>  <span class="c1"># &lt;10% utilization</span>
+
+        <span class="k">if</span> <span class="n">utilization_rate</span> <span class="o">&lt;</span> <span class="mf">0.10</span><span class="p">:</span>  <span class="c1"># &lt;10% utilization threshold</span>
             <span class="n">latency_overhead</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">avg_latency</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;REMOVE_</span><span class="si">{</span><span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_SAVES_</span><span class="si">{</span><span class="n">latency_overhead</span><span class="si">}</span><span class="s2">ms&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;TOOLCHAIN_OPTIMIZED&quot;</span>
-</code></pre></div>
+            <span class="n">redundant_components</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">"name"</span><span class="p">:</span> <span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">"utilization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">utilization_rate</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"latency_savings"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">latency_overhead</span><span class="si">}</span><span class="s2">ms"</span><span class="p">,</span>
+                <span class="s2">"recommendation"</span><span class="p">:</span> <span class="s2">"REMOVE"</span>
+            <span class="p">})</span>
 
-<p>Practical Application:<br />
-Monitoring period: Track component usage over representative task cycles<br />
-Removal threshold: Components with &lt;10% utilization should be removed<br />
-Performance impact: T7/T9 show 15-30ms latency savings from redundancy removal<br />
-Implementation: Systematic audit during development and pre-deployment</p>
-<h3>E.2.4 Semantic Drift Monitor</h3>
-<p>Real-time Detection:<br />
-python</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">monitor_semantic_drift</span><span class="p">(</span><span class="n">q1_output</span><span class="p">,</span> <span class="n">q4_output</span><span class="p">,</span> <span class="n">similarity_threshold</span><span class="o">=</span><span class="mf">0.90</span><span class="p">):</span>
-    <span class="n">semantic_similarity</span> <span class="o">=</span> <span class="n">calculate_cosine_similarity</span><span class="p">(</span><span class="n">q1_output</span><span class="p">,</span> <span class="n">q4_output</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">redundant_components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"TOOLCHAIN_OPTIMIZED"</span><span class="p">,</span> <span class="n">redundant_components</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"REDUNDANCY_DETECTED"</span><span class="p">,</span> <span class="n">redundant_components</span>
+</code></pre>
+</div>
+<p><strong>Practical Application:</strong></p>
+<ul>
+<li><strong>Monitoring period:</strong> Track component usage over representative task cycles (minimum n=100 interactions)</li>
+<li><strong>Removal threshold:</strong> Components with &lt;10% utilization should be removed (T7 validation)</li>
+<li><strong>Performance impact:</strong> T7/T9 show 15-30ms latency savings from redundancy removal</li>
+<li><strong>Implementation:</strong> Systematic audit during development and pre-deployment validation</li>
+</ul>
+<hr/>
+<h3 id="e24-semantic-drift-monitor"><strong>E.2.4 Semantic Drift Monitor</strong></h3>
+<p><strong>Real-time Detection:</strong></p>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">monitor_semantic_drift</span><span class="p">(</span><span class="n">q1_output</span><span class="p">,</span> <span class="n">q4_output</span><span class="p">,</span> <span class="n">similarity_threshold</span><span class="o">=</span><span class="mf">0.90</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Monitors quality degradation across quantization tiers.</span>
+
+<span class="sd">    Threshold: &gt;10% drift (similarity &lt;90%) triggers escalation</span>
+<span class="sd">    Validation: T10 dynamic tier routing</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics.pairwise</span><span class="w"> </span><span class="kn">import</span> <span class="n">cosine_similarity</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
+
+    <span class="c1"># Calculate semantic similarity</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s1">'all-MiniLM-L6-v2'</span><span class="p">)</span>
+    <span class="n">q1_embedding</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="n">q1_output</span><span class="p">])</span>
+    <span class="n">q4_embedding</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="n">q4_output</span><span class="p">])</span>
+
+    <span class="n">semantic_similarity</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">q1_embedding</span><span class="p">,</span> <span class="n">q4_embedding</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">drift_percentage</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">semantic_similarity</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
     <span class="k">if</span> <span class="n">semantic_similarity</span> <span class="o">&lt;</span> <span class="n">similarity_threshold</span><span class="p">:</span>  <span class="c1"># &gt;10% drift</span>
-        <span class="k">return</span> <span class="s2">&quot;ESCALATE_TO_Q4&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;MAINTAIN_Q1&quot;</span>
-</code></pre></div>
-
-<p>Practical Application:<br />
-Continuous monitoring: Compare outputs across quantization tiers<br />
-Automatic escalation: &gt;10% drift triggers Q1→Q4→Q8 progression<br />
-Performance validation: T10 demonstrates effective tier selection<br />
-Edge deployment: Critical for maintaining quality under resource constraints</p>
+        <span class="k">return</span> <span class="s2">"ESCALATE_TO_Q4"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Drift detected: </span><span class="si">{</span><span class="n">drift_percentage</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"MAINTAIN_Q1"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Stable performance: </span><span class="si">{</span><span class="n">drift_percentage</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% drift"</span>
+</code></pre>
+</div>
+<p><strong>Practical Application:</strong></p>
+<ul>
+<li><strong>Continuous monitoring:</strong> Compare outputs across quantization tiers in production</li>
+<li><strong>Automatic escalation:</strong> &gt;10% drift triggers Q1→Q4→Q8 progression (T10 validation)</li>
+<li><strong>Performance validation:</strong> T10 demonstrates effective tier selection with drift-based routing</li>
+<li><strong>Edge deployment:</strong> Critical for maintaining quality under resource constraints without manual intervention</li>
+</ul>
       </div>
     </div>
   </div>
@@ -797,40 +883,40 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Table E.2: MCD Validation Workflow Sequence</p>
+       <p><strong>Table E.2: MCD Validation Workflow Sequence</strong></p>
 <table>
 <thead>
 <tr>
-<th>Phase</th>
-<th>Diagnostic Tools Applied</th>
-<th>Success Criteria</th>
-<th>Failure Actions</th>
+<th><strong>Phase</strong></th>
+<th><strong>Diagnostic Tools Applied</strong></th>
+<th><strong>Success Criteria</strong></th>
+<th><strong>Failure Actions</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Design Phase</td>
+<td><strong>Design Phase</strong></td>
 <td>Capability Plateau Detector, Prompt Collapse Diagnostic</td>
-<td>&lt;90 tokens, &gt;94% task success at 60-token minimum</td>
-<td>Redesign prompt structure, remove unnecessary complexity</td>
+<td>&lt;90 tokens (conservative) or &lt;130 tokens (ceiling), ≥94% task success at 60-token minimum</td>
+<td>Redesign prompt structure, apply symbolic compression (Section 5.2.1)</td>
 </tr>
 <tr>
-<td>Implementation Phase</td>
+<td><strong>Implementation Phase</strong></td>
 <td>Memory Fragility Score, Context Reconstruction Validator</td>
-<td>&lt;40% state dependence, &gt;90% stateless accuracy</td>
-<td>Implement explicit context regeneration protocols</td>
+<td>&lt;40% state dependence, ≥90% stateless accuracy (T4: 5/5 success)</td>
+<td>Implement explicit context regeneration protocols (Section 4.2)</td>
 </tr>
 <tr>
-<td>Pre-deployment Phase</td>
+<td><strong>Pre-deployment Phase</strong></td>
 <td>Toolchain Redundancy Estimator, Fallback Loop Complexity</td>
-<td>&lt;10% unused components, ≤2 fallback loops</td>
+<td>&lt;10% unused components, ≤2 fallback loops maximum</td>
 <td>Remove redundant modules, simplify recovery sequences</td>
 </tr>
 <tr>
-<td>Runtime Phase</td>
+<td><strong>Runtime Phase</strong></td>
 <td>Semantic Drift Monitor, Quantization Tier Optimizer</td>
-<td>&lt;10% drift, Q4 optimal balance</td>
-<td>Dynamic tier escalation, performance rebalancing</td>
+<td>&lt;10% drift, Q4 optimal balance (T10: 80% of tasks)</td>
+<td>Dynamic tier escalation Q1→Q4→Q8, performance rebalancing</td>
 </tr>
 </tbody>
 </table>
@@ -850,45 +936,59 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Table E.3: Validation Evidence for Diagnostic Thresholds</p>
-<table>
+      <p><strong>Table E.3: Validation Evidence for Diagnostic Thresholds</strong></p>
+	  <table>
 <thead>
 <tr>
-<th>Heuristic</th>
-<th>Calibration Source</th>
-<th>Sample Size</th>
-<th>Statistical Validation</th>
-<th>Practical Validation</th>
+<th><strong>Heuristic</strong></th>
+<th><strong>Calibration Source</strong></th>
+<th><strong>Sample Size</strong></th>
+<th><strong>Statistical Validation</strong></th>
+<th><strong>Practical Validation</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>90-token plateau</td>
-<td>T1 prompting analysis, T6 over-engineering detection</td>
-<td>~85 trials across variant comparisons (n=5 per variant, 10 tests)</td>
-<td>Categorical consistency across tests; 95% CI provided</td>
-<td>Consistent across medical, spatial, diagnostic domains</td>
+<td><strong>90-130 token plateau</strong></td>
+<td>T1 prompting analysis, T6 over-engineering detection, Section 8.3</td>
+<td>n=5 per variant across 10 test configurations (T1-T6)</td>
+<td>Categorical consistency across tests; 95% CI: [0.44, 0.98] for 80% completion</td>
+<td>Consistent across healthcare (W1), spatial (W2), diagnostic (W3) domains</td>
 </tr>
 <tr>
-<td>40% fragility threshold</td>
+<td><strong>40% fragility threshold</strong></td>
 <td>T4 stateless integrity testing</td>
-<td>Multiple model instances, browser sessions (n=5 per variant)</td>
-<td>Cross-tier validation (Q1/Q4/Q8); effect size: large</td>
-<td>Healthcare appointment scenarios (W1)</td>
+<td>n=5 per variant across Q1/Q4/Q8 tiers</td>
+<td>Cross-tier validation; T4: 5/5 stateless vs 2/5 implicit success</td>
+<td>Healthcare appointment scenarios (W1), slot-filling validation</td>
 </tr>
 <tr>
-<td>10% redundancy cutoff</td>
+<td><strong>10% redundancy cutoff</strong></td>
 <td>T7 bounded adaptation, T9 fallback complexity</td>
-<td>Systematic component tracking across tests</td>
+<td>Component tracking across representative task cycles</td>
 <td>Degeneracy detection validated through repeated measurements</td>
-<td>Navigation robotics (W2), Edge monitoring (W3)</td>
+<td>Navigation (W2), diagnostics (W3), 15-30ms latency improvements</td>
 </tr>
 <tr>
-<td>10% semantic drift</td>
+<td><strong>10% semantic drift</strong></td>
 <td>T10 quantization tier matching</td>
-<td>Q1/Q4/Q8 comparison analysis (n=5 per tier)</td>
+<td>n=5 per tier (Q1/Q4/Q8) comparison</td>
 <td>Dynamic tier selection validated through categorical differences</td>
-<td>Real-time capability matching without session memory</td>
+<td>Real-time capability matching, 85% Q1 retention, 95% Q4 success</td>
+</tr>
+<tr>
+<td><strong>60-token minimum</strong></td>
+<td>T1, T2, T3, T6 progressive compression</td>
+<td>n=5 per variant across multiple token budgets</td>
+<td>94% success rate maintained at 60-token floor</td>
+<td>Universal across all three walkthroughs (W1/W2/W3)</td>
+</tr>
+<tr>
+<td><strong>≤2 loop maximum</strong></td>
+<td>T3 fallback validation, T5 semantic drift analysis</td>
+<td>Multiple recovery sequence tests</td>
+<td>T5: 2/4 semantic drift beyond 3 steps validates ≤2 threshold</td>
+<td>Bounded clarification prevents runaway loops (W1/W3)</td>
 </tr>
 </tbody>
 </table>
@@ -908,15 +1008,17 @@ Edge deployment: Critical for maintaining quality under resource constraints</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Pre-deployment Diagnostic Checklist:<br />
-Capability Plateau: Prompt complexity stays within 90-token efficiency boundary<br />
-Memory Independence: Agent achieves &gt;90% accuracy without persistent state<br />
-Component Utilization: All tools/modules show &gt;10% usage or are removed<br />
-Semantic Stability: &lt;10% drift between quantization tiers under normal operation<br />
-Prompt Resilience: Maintains &gt;94% success rate down to 60-token compression<br />
-Fallback Bounds: Recovery sequences terminate within 2 loops maximum<br />
-Context Regeneration: Stateless reconstruction maintains &gt;90% accuracy<br />
-Tier Optimization: Q4 selected as default with automatic escalation protocols</p>
+      <p><strong>Pre-deployment Diagnostic Checklist:</strong></p>
+<ul>
+<li>☐ <strong>Capability Plateau:</strong> Prompt complexity stays within 90-130 token efficiency range</li>
+<li>☐ <strong>Memory Independence:</strong> Agent achieves ≥90% accuracy without persistent state (T4 validation)</li>
+<li>☐ <strong>Component Utilization:</strong> All tools/modules show ≥10% usage or are removed (T7 degeneracy detection)</li>
+<li>☐ <strong>Semantic Stability:</strong> &lt;10% drift between quantization tiers under normal operation (T10 monitoring)</li>
+<li>☐ <strong>Prompt Resilience:</strong> Maintains ≥94% success rate down to 60-token compression (T1/T6 floor)</li>
+<li>☐ <strong>Fallback Bounds:</strong> Recovery sequences terminate within ≤2 loops maximum (T5 drift prevention)</li>
+<li>☐ <strong>Context Regeneration:</strong> Stateless reconstruction maintains ≥90% accuracy (T4: 5/5 explicit slot passing)</li>
+<li>☐ <strong>Tier Optimization:</strong> Q4 selected as default with automatic Q1→Q4→Q8 escalation protocols (T10 validation)</li>
+</ul>
 
       </div>
     </div>
@@ -934,66 +1036,66 @@ Tier Optimization: Q4 selected as default with automatic escalation protocols</p
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <hr />
-
-<p>Cross-Reference Map:<br />
-Chapter 4, Section 4.6: Theoretical foundations for diagnostic development<br />
-Chapter 5, Section 5.1-5.7: Implementation integration across architectural layers<br />
-Chapter 6, Tests T1-T10: Empirical validation of all diagnostic thresholds<br />
-Chapter 7, Walkthroughs W1-W3: Real-world application in healthcare, navigation, and diagnostic scenarios<br />
-Chapter 8: Comparative analysis against full-stack frameworks using these heuristics</p>
-<p>Validation Cross-Reference Table:</p>
+<p><strong>Cross-Reference Map:</strong></p>
+<ul>
+<li><strong>Chapter 4:</strong> Theoretical foundations for MCD principles and diagnostic development</li>
+<li><strong>Chapter 5:</strong> Implementation integration across architectural layers (Sections 5.1-5.7)</li>
+<li><strong>Chapter 6:</strong> Empirical validation of all diagnostic thresholds (Tests T1-T10)</li>
+<li><strong>Chapter 7:</strong> Real-world application validation in healthcare (W1), navigation (W2), diagnostics (W3)</li>
+<li><strong>Chapter 8:</strong> Comparative analysis against full-stack frameworks using these heuristics</li>
+</ul>
+<p><strong>Table E.4: Validation Cross-Reference Matrix</strong></p>
 <table>
 <thead>
 <tr>
-<th>Test/Walkthrough</th>
-<th>Primary Heuristics Validated</th>
-<th>Secondary Heuristics</th>
-<th>Domain Application</th>
+<th><strong>Test/Walkthrough</strong></th>
+<th><strong>Primary Heuristics Validated</strong></th>
+<th><strong>Secondary Heuristics</strong></th>
+<th><strong>Domain Application</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>T1-T3</td>
+<td><strong>T1-T3</strong></td>
 <td>Capability Plateau Detector, Prompt Collapse Diagnostic</td>
 <td>Semantic Drift Monitor</td>
-<td>Token efficiency analysis</td>
+<td>Token efficiency analysis, progressive compression</td>
 </tr>
 <tr>
-<td>T4-T5</td>
+<td><strong>T4-T5</strong></td>
 <td>Memory Fragility Score, Context Reconstruction Validator</td>
 <td>Fallback Loop Complexity</td>
-<td>Stateless operation validation</td>
+<td>Stateless operation validation, semantic drift detection</td>
 </tr>
 <tr>
-<td>T6-T9</td>
-<td>Toolchain Redundancy Estimator, Fallback Loop Complexity</td>
-<td>Capability Plateau Detector</td>
-<td>Component optimization</td>
+<td><strong>T6-T9</strong></td>
+<td>Toolchain Redundancy Estimator, Capability Plateau Detector</td>
+<td>Fallback Loop Complexity</td>
+<td>Component optimization, over-engineering detection</td>
 </tr>
 <tr>
-<td>T10</td>
+<td><strong>T10</strong></td>
 <td>Quantization Tier Optimizer, Semantic Drift Monitor</td>
-<td>All heuristics</td>
-<td>Dynamic capability matching</td>
+<td>All heuristics integrated</td>
+<td>Dynamic capability matching, tier-based routing</td>
 </tr>
 <tr>
-<td>W1 Healthcare</td>
+<td><strong>W1 Healthcare</strong></td>
 <td>Memory Fragility Score, Context Reconstruction</td>
-<td>Semantic Drift Monitor</td>
-<td>Appointment booking systems</td>
+<td>Semantic Drift Monitor, Capability Plateau</td>
+<td>Appointment booking, dynamic slot-filling (Section 5.2.1)</td>
 </tr>
 <tr>
-<td>W2 Navigation</td>
+<td><strong>W2 Navigation</strong></td>
 <td>Semantic Drift Monitor, Quantization Tier Optimizer</td>
 <td>Toolchain Redundancy</td>
-<td>Robotic pathfinding</td>
+<td>Robotic pathfinding, semi-static deterministic logic</td>
 </tr>
 <tr>
-<td>W3 Diagnostics</td>
+<td><strong>W3 Diagnostics</strong></td>
 <td>Capability Plateau Detector, Toolchain Redundancy</td>
 <td>All heuristics</td>
-<td>Edge monitoring systems</td>
+<td>Edge monitoring systems, heuristic classification</td>
 </tr>
 </tbody>
 </table>
@@ -1005,7 +1107,7 @@ Chapter 8: Comparative analysis against full-stack frameworks using these heuris
 <div class="gx-block">
   <div class="gx-card gx-page-block" id="ref">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">References</h4>
+      <h4 class="gx-card-title">End of Appendix E</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -1015,12 +1117,7 @@ Chapter 8: Comparative analysis against full-stack frameworks using these heuris
     <div class="gx-card-content">
       <div class="intro">
 
- <p>Chapter 4, Section 4.6: MCD Subsystem Definitions<br />
-Chapter 5: Instantiated Agent Design Patterns<br />
-Chapter 6, Tests T1-T10: Empirical validation of layer interactions<br />
-Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p>
-<hr />
-<p>This configuration framework ensures reproducible, statistically valid results while maintaining the ecological validity of real-world deployment constraints. All parameters were optimized for browser-based execution environments typical of edge AI deployment scenarios.</p>
+<p>This diagnostic framework ensures reproducible, statistically valid results while maintaining ecological validity of real-world deployment constraints. All thresholds were optimized for browser-based WebAssembly execution environments typical of edge AI deployment scenarios validated in T8.</p>
       </div>
     </div>
   </div>
@@ -1030,7 +1127,7 @@ Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p
       <section class="chapter-nav">
          <nav class="page-nav" aria-label="Page navigation">
             <a class="nav-link prev" href="c10.html#links" rel="prev">Prev : Chapter 10</a>
-           <a class="nav-link next" href="#" rel="next">End</a>
+           <a class="nav-link next" href="appf.html" rel="next">Appendix F</a>
          </nav>
       </section>
       
@@ -1059,7 +1156,7 @@ Chapter 7, Walkthroughs W1-W3: Applied layer architecture in domain scenarios</p
 <li><a class="topic" href="#e4">E.4 Empirical Calibration Evidence</a></li>
 <li><a class="topic" href="#e5">E.5 Practitioner Implementation Checklist</a></li>
 <li><a class="topic" href="#e6">E.6 Integration with Simulation and Walkthrough Testing</a></li>
-<li><a class="topic" href="#ref">References</a></li>
+<li><a class="topic" href="#ref">End of Appendix E</a></li>
 									</ul>
 								</nav>
 							</div>

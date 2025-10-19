@@ -532,7 +532,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>			
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>			
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -649,37 +651,32 @@ The framework is designed to be extensible to a wide range of edge applications,
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>The controlled simulations (Chapter 6) and applied walkthroughs (Chapter 7) yielded several key findings that validate the MCD approach:</p>
-<p><strong>Compact Prompts are Sufficient:</strong><br />
-The simulations confirmed that compact, capability-focused prompts can achieve near-optimal results within strict token budgets, validating the principle of Bounded Rationality (Liu et al., 2023; Wei et al., 2022).</p>
-<p><strong>Statelessness is Viable:</strong><br />
-Stateless fallback and recovery loops were shown to successfully sustain task completion even under degraded or ambiguous inputs, demonstrating the robustness of the Stateless Regeneration approach (Anthropic, 2024).</p>
-<p><strong>Failure Modes are Predictable:</strong><br />
-The primary failure modes emerged in multi-turn semantic drift and over-compressed symbolic inputs, confirming that the most significant risks in MCD are related to context management, not a lack of capability (Amodei et al., 2016). Safe-failure behaviour (0% hallucinations vs 87% for verbose agents under overload) was verified in <a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> stress tests. [Chapter 6]</p>
-<p><strong>Over-Engineering Reduces Performance:</strong><br />
-The walkthroughs confirmed the Capability Plateau observations from the simulations (<a href="c6.html#t6" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T6</a>), showing that over-engineered prompts often waste tokens without improving accuracy (Strubell et al., 2019).</p>
-<p><strong>Optimization Scope Confirmed in Practice:</strong><br />
-The simulations validated that quantized models (especially Q4 and Q8) could deliver predictable behavior under edge constraints without needing dynamic fine-tuning or toolchains, confirming the selection of quantization as the optimal first-tier MCD-compatible strategy. Future MCD implementations may also leverage domain-specific Small Language Models as base models, potentially achieving superior Q4 performance in specialized tasks while preserving architectural independence and stateless execution principles.
-<p>Across the ten-test simulation battery (T1-T10) and Walkthrough validation (W1-W3), MCD demonstrated substantial constraint-resilience advantages with a 2.1:1 reliability ratio under resource pressure conditions, maintaining 75-80% task completion when alternative approaches degraded to 40-60% success rates under identical Q1 constraint scenarios. This performance differential represents a large effect size (Cohen's d ≈ 1.4-1.8 estimated across domains), with consistent cross-tier patterns (Q1/Q4/Q8) providing robust qualitative validation (Field, 2013).</p>
-<h4>10.2.1 Distinctive Contributions of the MCD Framework</h4>
-<p>MCD addresses a fundamental gap in current agent architectures: deployment under resource constraints (Bommasani et al., 2021). While existing frameworks optimize for cloud environments with abundant computational resources, MCD provides a systematic approach for scenarios where traditional architectures are not viable.</p>
-<p><strong>Architectural Differentiation</strong><br />
-Constraint-native design approach. Unlike post-hoc optimization strategies that reduce existing frameworks, MCD employs design-time constraints as architectural principles (Gregor &amp; Hevner, 2013). This represents a paradigm shift from &ldquo;build complex, then optimize&rdquo; to &ldquo;build minimal, then validate sufficiency.&rdquo;</p>
-<p>Empirical validation demonstrates this approach yields measurable advantages:<br />
-- 2.1:1 constraint-resilience advantage compared to verbose frameworks under Q1/Q4 resource pressure (T1-T10 validation)<br />
-- 2.6:1 token efficiency while maintaining task success rates (Chapter 6)<br />
-- Zero dangerous failures versus 87% hallucination rate in over-engineered systems under resource pressure (<a href="c6.html#t7" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">T7</a> analysis)</p>
-<p><strong>Deployment Context Differentiation</strong><br />
-MCD targets deployment environments that existing frameworks cannot address:<br />
-- Resource-constrained platforms: ESP32 microcontrollers (4MB RAM), embedded medical devices, air-gapped systems, and browser-based applications with WebAssembly constraints.<br />
-- Safety-critical contexts: Applications requiring predictable failure modes and transparent limitation acknowledgment, where confident but incorrect responses pose operational risks.<br />
-- Cost-sensitive deployments: Scenarios where computational budgets, latency requirements, or power constraints make traditional agent stacks economically or technically infeasible.</p>
-<p><strong>Methodological Contributions</strong><br />
-Diagnostic framework for over-engineering detection. MCD provides systematic tools for identifying capability plateaus and redundant architectural components—a capability absent in existing frameworks that assume &ldquo;more complexity equals better performance.&rdquo;</p>
-<p>Quantization-aware deployment tiers. The Q1/Q4/Q8 tiered approach enables dynamic capability matching to deployment constraints, supported by empirical validation across 375 test scenarios.</p>
-<p>Validated safety advantages. Unlike frameworks that fail unpredictably under constraint, MCD demonstrates measurable safe degradation patterns, making it suitable for applications where failure transparency is essential.</p>
-<p><strong>Practical Significance</strong><br />
-This work demonstrates that architectural minimalism can outperform complexity in constraint-bounded scenarios—a finding with implications for the growing edge AI market, IoT deployments, and privacy-conscious applications where traditional cloud-dependent frameworks are not viable solutions.</p>
+       <p>The controlled simulations (Chapter 6) and applied walkthroughs (Chapter 7) yielded several key findings that validate the MCD approach:</p>
+<p><strong>Compact Prompts are Sufficient:</strong><br /> The simulations confirmed that compact, capability-focused prompts can achieve near-optimal results within strict token budgets, validating the principle of Bounded Rationality&nbsp;(Liu et al., 2023; Wei et al., 2022).</p>
+<p><strong>Statelessness is Viable:</strong><br /> Stateless fallback and recovery loops were shown to successfully sustain task completion even under degraded or ambiguous inputs, demonstrating the robustness of the Stateless Regeneration approach (Anthropic, 2024).</p>
+<p><strong>Failure Modes are Predictable:</strong><br /> The primary failure modes emerged in multi-turn semantic drift and over-compressed symbolic inputs, confirming that the most significant risks in MCD are related to context management, not a lack of capability (Amodei et al., 2016). Safe-failure behaviour (0% hallucinations vs 87% for verbose agents under overload) was verified in T7 stress tests. [Chapter 6]</p>
+<p><strong>Over-Engineering Reduces Performance:</strong><br /> The walkthroughs confirmed the Capability Plateau observations from the simulations (T6), showing that over-engineered prompts often waste tokens without improving accuracy (Strubell et al., 2019).</p>
+<p><strong>Optimization Scope Confirmed in Practice:</strong><br /> The simulations validated that quantized models (especially Q4 and Q8) could deliver predictable behavior under edge constraints without needing dynamic fine-tuning or toolchains, confirming the selection of quantization as the optimal first-tier MCD-compatible strategy. Future MCD implementations may also leverage domain-specific Small Language Models as base models, potentially achieving superior Q4 performance in specialized tasks while preserving architectural independence and stateless execution principles.</p>
+<p>Across the ten-test simulation battery (T1-T10) and Walkthrough validation (W1-W3), MCD demonstrated&nbsp;<strong>substantial constraint-resilience advantages</strong>&nbsp;with a 2.1:1 reliability ratio under resource pressure conditions, maintaining &ge;80% task completion (n=5 per variant; wide CIs acknowledged) task completion when alternative approaches degraded to 40-60% success rates under identical Q1 constraint scenarios.&nbsp;<strong>This performance differential represents a large effect size (Cohen's d &asymp; 1.4-1.8 estimated across domains)</strong>, with consistent cross-tier patterns (Q1/Q4/Q8) providing robust qualitative validation (Field, 2013).</p>
+<h3><strong>10.2.5 Distinctive Contributions of the MCD Framework</strong></h3>
+<p>MCD addresses a fundamental gap in current agent architectures:&nbsp;deployment under resource constraints (Bommasani et al., 2021). While existing frameworks optimize for cloud environments with abundant computational resources, MCD provides a systematic approach for scenarios where traditional architectures are not viable.</p>
+<p><strong>Architectural Differentiation</strong><br /> Constraint-native design approach.&nbsp;Unlike post-hoc optimization strategies that reduce existing frameworks, MCD employs design-time constraints as architectural principles (Gregor &amp; Hevner, 2013). This represents a paradigm shift from "build complex, then optimize" to "build minimal, then validate sufficiency."</p>
+<p>Empirical validation demonstrates this approach yields measurable advantages:</p>
+<ul>
+<li>2.1:1 constraint-resilience advantage compared to verbose frameworks under Q1/Q4 resource pressure (T1-T10 validation)</li>
+<li>2.6:1 token efficiency&nbsp;while maintaining task success rates (Chapter 6)</li>
+<li>Zero dangerous failures&nbsp;versus 87% hallucination rate in over-engineered systems under resource pressure (T7 analysis)</li>
+</ul>
+<p><strong>Deployment Context Differentiation</strong><br /> MCD targets deployment environments that existing frameworks cannot address:</p>
+<ul>
+<li>Resource-constrained platforms:&nbsp;ESP32 microcontrollers (4MB RAM), embedded medical devices, air-gapped systems, and browser-based applications with WebAssembly constraints.</li>
+<li>Safety-critical contexts:&nbsp;Applications requiring predictable failure modes and transparent limitation acknowledgment, where confident but incorrect responses pose operational risks.</li>
+<li>Cost-sensitive deployments:&nbsp;Scenarios where computational budgets, latency requirements, or power constraints make traditional agent stacks economically or technically infeasible.</li>
+</ul>
+<p><strong>Methodological Contributions</strong><br /> Diagnostic framework for over-engineering detection.&nbsp;MCD provides systematic tools for identifying capability plateaus and redundant architectural components&mdash;a capability absent in existing frameworks that assume "more complexity equals better performance."</p>
+<p>Quantization-aware deployment tiers.&nbsp;The Q1/Q4/Q8 tiered approach enables dynamic capability matching to deployment constraints, supported by empirical validation across 375 test scenarios.</p>
+<p>Validated safety advantages.&nbsp;Unlike frameworks that fail unpredictably under constraint, MCD demonstrates measurable safe degradation patterns, making it suitable for applications where failure transparency is essential.</p>
+<p><strong>Practical Significance</strong><br /> This work demonstrates that&nbsp;architectural minimalism can outperform complexity&nbsp;in constraint-bounded scenarios&mdash;a finding with implications for the growing edge AI market, IoT deployments, and privacy-conscious applications where traditional cloud-dependent frameworks are not viable solutions.</p>
       </div>
     </div>
   </div>
@@ -912,6 +909,9 @@ This work demonstrates that architectural minimalism can outperform complexity�
 <li>
 <p><a href="appf.html" class="btn btn-link nav-link"><b>Appendix F</b></a> This appendix provides detailed calculations supporting effect size claims throughout the thesis, addressing small sample size limitations (n=5 per variant) through emphasis on practical significance rather than inferential statistics.</p>
 </li>
+<li>
+<p><a href="appg.html" class="btn btn-link nav-link"><b>Appendix G</b></a> Implementation guidance for the MCD Framework Decision Tree introduced in Section 8.7.2. Practitioners applying MCD principles to real-world deployment scenarios should consult this appendix for detailed decision logic, validation workflows, and empirically-derived thresholds from Chapters 4-7.</p>
+</li>
 </ul>
 	<hr>	  
 		  <hr>
@@ -921,7 +921,7 @@ This work demonstrates that architectural minimalism can outperform complexity�
 	   <a href="assets/MCD_Walkthrough_Results_2025-09-18.json" target="_blank" class="btn btn-success" class="btn btn-link nav-link">Software Output for Chapter - 7 / .JSON files</a> <hr>
 	  <p>The thesis is validated using the MCD Simulation Runner, a browser-based research framework that empirically tests resource-efficient large language model (LLM) deployment strategies. It runs standardized T1&ndash;T10 tests and domain-specific W1&ndash;W3 walkthroughs across multiple quantization tiers using WebGPU and WebLLM with live analytics and exportable results.</p>
 <p>The framework operates entirely locally in modern browsers with GPU acceleration, ensuring privacy, reproducibility, and cross-platform consistency without server dependencies. Its interactive UI manages model loading, test execution, real-time detailed analysis, and result exports for comprehensive evaluation.</p>
-<p>Key features include quantization-aware model management, semantic drift detection, multi-strategy domain validation, and strict reproducibility via fixed seeds, cross-validation, and standardized hardware/browser setups documented in the appendices.</p>
+<p>Key features include quantization-aware model management, semantic drift detection, multi-strategy domain validation, and strict reproducibility via cross-validation, and standardized hardware/browser setups documented in the appendices.</p>
 <p>Key capabilities</p>
 <ul>
 <li>
@@ -935,6 +935,12 @@ This work demonstrates that architectural minimalism can outperform complexity�
 </li>
 </ul>
 <p>This validation software forms the empirical backbone of the thesis, enabling rigorous, reproducible benchmarking of constraint-resilient LLM designs in resource-limited environments. It provides critical infrastructure to support the thesis claims with quantitative, peer-reviewable evidence.</p>
+<hr>
+<p><b>Data Source:</b></p>
+<p><a href="https://malliknas.github.io/Minimal-Capability-Design-Framework/assets/mcd-unified-comprehensive-analysis-2025-10-01.json">`MCD_Tests_Results_. json` (T1-T10)</a></p>
+<p><a href="https://malliknas.github.io/Minimal-Capability-Design-Framework/assets/MCD_Walkthrough_Results_2025-09-18.json">'MCD_Walkthrough_Results_. json` (W1-W3)</a></p>
+<p>Metrics derived from browser-based validation framework JSON outputs.</br> Complete test results available via thesis repository   <a href="index.html#download" class="btn btn-link nav-link"><b>Downloads</b></a>  </p>
+<p>All measurements include execution timestamps, model configurations, and environmental parameters for reproducibility.</p>
 
 	  <hr>	 
 	  

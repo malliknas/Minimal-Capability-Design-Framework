@@ -1,0 +1,2266 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Designing Lightweight AI Agents for Edge Deployment - Appendix G">
+	<title>Appendix G</title>
+
+	<!-- App favicon -->
+	<link rel="shortcut icon" href="assets/img/favicon/favicon.ico">
+
+	<!-- Icon CSS -->
+	<link href="assets/css/vendor/materialdesignicons.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/remixicon.css" rel="stylesheet">
+
+	<!-- Vendor -->
+	<link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/vendor/prism.css" rel="stylesheet">
+
+	<!-- Main CSS -->
+	<link id="mainCss" href="assets/css/style.css" rel="stylesheet">
+	<style>
+	 /* Light-only document scheme */
+:root{ 
+  color-scheme: only light;
+  /* Core palette */
+  --text:   #1a1a1a;      /* slightly softer than pure black */
+  --text-body: #2d2d2d;   /* body text */
+  --muted:  #6b7280;      /* gray-500 */
+  --bg-soft:#f9fafb;      /* very light grey */
+  --surface:#ffffff;      /* white */
+  --border: #e5e7eb;      /* light divider */
+  --accent: #4b5563;      /* gray-600 */
+}
+
+/* Global base */
+html, body{ 
+  color:var(--text-body); 
+  background:var(--surface); 
+  font-weight:400;
+}
+a{ color:var(--accent); text-decoration:none; font-weight:500; }
+a:hover{ color:var(--text); }
+h1, h2, h3, h4, h5, h6{ color:var(--text) !important; font-weight:600; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* Breadcrumbs */
+.breadcrumb,
+.nav-breadcrumb{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.95rem; color:var(--muted);
+  margin:1rem 0 1.25rem; padding:.5rem .75rem;
+  background:var(--bg-soft); border:1px solid var(--border); border-radius:10px;
+}
+.breadcrumb a, .nav-breadcrumb a{ color:var(--accent); font-weight:500; }
+.breadcrumb a:hover, .nav-breadcrumb a:hover{ text-decoration:underline; }
+.breadcrumb .current, .nav-breadcrumb .current, .nav-breadcrumb strong{ color:var(--text); font-weight:600; }
+.breadcrumb .sep, .nav-breadcrumb .sep{ color:var(--border); user-select:none; }
+.gx-header .breadcrumb{ font-size:clamp(.85rem, .8rem + .2vw, .95rem); padding:.4rem .6rem; }
+
+/* Page navigation */
+.page-nav{
+  margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:1rem; text-align:center;
+}
+.page-nav .nav-link{
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1rem; border:1px solid var(--border); border-radius:8px;
+  font-weight:500;
+  box-shadow:0 1px 1px rgba(0,0,0,.02);
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.page-nav .nav-link:hover{ background:var(--bg-soft); transform:translateY(-1px); }
+.page-nav .nav-link:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.page-nav .prev::before{ content:"← "; }
+.page-nav .next::after{ content:" →"; }
+.gx-header .page-nav{ border-top:0; padding-top:0; margin-top:0; }
+.gx-header .page-nav .nav-link{ font-size:clamp(.85rem, .82rem + .18vw, .95rem); padding:.5rem .8rem; }
+
+/* Thesis title */
+.thesis-title{ 
+  color:var(--text) !important; 
+  margin-bottom:0.5rem; 
+  font-size:clamp(1.8rem, 1.4rem + 1.2vw, 2.2rem); 
+  line-height:1.3;
+  font-weight:700;
+}
+.thesis-subtitle{ 
+  color:var(--muted) !important; 
+  font-size:clamp(1rem, .96rem + .3vw, 1.2rem); 
+  font-style:italic; 
+  margin-bottom:1.5rem;
+  line-height:1.4;
+  font-weight:400;
+}
+
+/* Cards */
+.gx-block{ margin-bottom:1rem; }
+.gx-card-content{ padding:1rem 1.25rem; }
+.gx-card-header{ padding:0.75rem 1rem; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem; font-weight:600; font-size:.95rem;
+  color:var(--accent); background:var(--surface); text-decoration:none;
+  padding:.6rem 1.2rem; border:1px solid var(--border); border-radius:8px;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+}
+.btn:hover{ background:var(--bg-soft); transform:translateY(-1px); color:var(--text); }
+.btn-primary{ background:#4b5563; color:#fff; border-color:#4b5563; }
+.btn-success{ background:#6b7280; color:#fff; border-color:#6b7280; }
+
+/* Code and muted */
+pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(--text); }
+.muted{ color:var(--muted); }
+
+/* Topics sidebar */
+.gx-topic .topic-sidebar{
+  position:sticky; top:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.topic-sidebar .gx-card-header{ background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1rem; }
+.topic-sidebar .gx-card-title{ margin:0; color:var(--text); font-size:.95rem; font-weight:600; }
+.topic-sidebar .gx-card-content{ padding:.75rem; max-height:min(70vh, 560px); overflow:auto; }
+.gx-topic .topic-list{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.gx-topic .topic-list a{
+  display:flex; align-items:center; gap:.5rem; line-height:1.2;
+  color:var(--accent); background:transparent; font-weight:450;
+  padding:.5rem .75rem; border:1px solid transparent; border-radius:8px;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.gx-topic .topic-list a:hover{ color:var(--text); background:var(--bg-soft); border-color:var(--border); }
+.gx-topic .topic-list a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.gx-topic .topic-list a.active,
+.gx-topic .topic-list a[aria-current="page"],
+.gx-topic .topic-list a[aria-current="true"]{
+  color:var(--text); background:var(--bg-soft); border-color:var(--border); font-weight:600; position:relative;
+}
+.gx-topic .topic-list a.active::before,
+.gx-topic .topic-list a[aria-current="page"]::before,
+.gx-topic .topic-list a[aria-current="true"]::before{
+  content:""; position:absolute; left:0; top:10%; bottom:10%; width:3px; background:var(--accent); border-radius:3px;
+}
+
+/* Intro content - readable and compact */
+.intro{
+  font-size:1rem;
+  font-weight:400;
+  line-height:1.5;
+  color:var(--text-body);
+}
+
+.intro p{
+  font-size: 1rem;           /* Changed from 1.05rem to 1rem */
+  font-weight: 400;
+  line-height: 1.55;         /* Slightly tighter from 1.6 */
+  color: var(--text-body);
+  margin: 0 0 0.85rem 0;     /* Reduced bottom margin from 1rem */
+  letter-spacing: 0.01em;    /* Reduced from 0.02em */
+  text-rendering: optimizeLegibility;
+  text-align: justify;
+  text-justify: inter-word;
+      
+  font-feature-settings: "liga", "kern";
+  -webkit-font-feature-settings: "liga", "kern";
+  -moz-font-feature-settings: "liga", "kern";
+  -ms-font-feature-settings: "liga", "kern";
+  -o-font-feature-settings: "liga", "kern";  
+}
+
+.intro h3{
+  font-size:1.1rem;          /* Slightly reduced from 1.15rem */
+  font-weight:600;
+  color:var(--text);
+  margin:1.2rem 0 0.5rem;    /* Increased top margin slightly */
+  line-height:1.3;
+}
+
+.intro h4{
+  font-size:1rem;            /* Reduced from 1.05rem */
+  font-weight:600;
+  color:var(--text);
+  margin:0.9rem 0 0.4rem;
+  line-height:1.3;
+}
+
+.intro strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+/* Compact lists with better readability */
+.intro ul,
+.intro ol{
+  margin:0.35rem 0 0.6rem;   /* Reduced top margin */
+  padding-left:1.25rem;
+}
+
+.intro ul li,
+.intro ol li{
+  margin:0.12rem 0;          /* Reduced from 0.15rem */
+  padding-left:0.2rem;
+  font-size:0.98rem;         /* Slightly reduced from 1rem */
+  font-weight:400;
+  line-height:1.5;           /* Slightly tighter from 1.45 */
+  color:var(--text-body);
+}
+
+.intro ul li::marker{
+  color:var(--muted);
+  font-size:0.75rem;
+}
+
+.intro ol li::marker{
+  color:var(--muted);
+  font-weight:500;
+}
+
+/* Clean, readable tables */
+.intro table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.75rem 0;
+  background:var(--surface);
+  font-size:0.95rem;
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.intro table th{
+  padding:0.6rem 0.75rem;
+  text-align:left;
+  background:var(--bg-soft);
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+  color:var(--text);
+  line-height:1.4;
+}
+
+.intro table td{
+  padding:0.55rem 0.75rem;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  line-height:1.45;
+  font-weight:400;
+  color:var(--text-body);
+}
+
+.intro table td strong{
+  font-weight:600;
+  color:var(--text);
+}
+
+.intro table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.intro table tbody tr:hover{
+  background:rgba(249, 250, 251, 0.5);
+}
+
+/* Responsive */
+@media (max-width:640px){
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
+
+
+/* Responsive table wrapper */
+.table-responsive {
+  margin: 20px 0;
+  width: 100%;
+}
+
+/* Desktop (769px and above): Normal full-width behavior */
+@media (min-width: 769px) {
+  .table-responsive {
+    overflow-x: visible; /* No scroll on desktop */
+  }
+  
+  .table-responsive table {
+    width: 100%;
+    table-layout: auto;
+    white-space: normal; /* Allow text wrapping */
+  }
+}
+
+/* Tablet and Mobile (768px and below): Enable scrolling */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px -15px; /* Extend to screen edges */
+    border-radius: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .table-responsive table {
+    min-width: 600px; /* Force horizontal scroll for wide tables */
+    width: auto;
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+  
+  .table-responsive th,
+  .table-responsive td {
+    padding: 8px 10px !important;
+  }
+  
+  /* Visual indicator for swipe on mobile */
+  .table-responsive::after {
+    content: '← Swipe to see more →';
+    display: block;
+    text-align: center;
+    padding: 8px;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-style: italic;
+  }
+}
+
+/* Extra small mobile (480px and below) */
+@media (max-width: 480px) {
+  .table-responsive table {
+    font-size: 0.75rem;
+    min-width: 500px;
+  }
+  
+  .table-responsive th,
+  .table-responsive td {
+    padding: 6px 8px !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width:768px){
+  .intro p{
+    font-size: 0.95rem;       /* Smaller on mobile */
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .intro h3{
+    font-size: 1.05rem;
+    margin: 1rem 0 0.4rem;
+  }
+  
+  .intro h4{
+    font-size: 0.95rem;
+    margin: 0.8rem 0 0.35rem;
+  }
+  
+  .intro ul li,
+  .intro ol li{
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width:640px){
+  .intro p{
+    font-size: 0.93rem;       /* Even smaller on very small screens */
+    line-height: 1.48;
+  }
+  
+  .page-nav{ flex-direction:column; }
+  .breadcrumb, .nav-breadcrumb{ font-size:.9rem; border-radius:8px; }
+  .topic-sidebar .gx-card-content{ max-height:none; }
+  .intro table{ font-size:0.9rem; }
+  .intro table th, .intro table td{ padding:0.45rem 0.6rem; }
+}
+
+</style>
+</head>
+
+<body>
+	<main class="wrapper sb-default">
+		<!-- Loader -->
+		<div id="gx-overlay">
+			<div class="gx-ellipsis">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Header -->
+			<header class="gx-header">
+			<div class="container-fluid">
+				<div class="gx-header-items">
+					<div class="left-header">
+						<a href="javascript:void(0)" class="gx-toggle-sidebar">
+							<span class="outer-ring">
+								<span class="inner-ring"></span>
+							</span>
+						</a>
+						
+					</div>
+					<div class="right-header">
+						<a href="javascript:void(0)" class="btn-topic m-r-5"><i class="ri-menu-2-line"></i></a>
+						<a href="index.html" class="gx-btn-primary">Thesis Home</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- sidebar -->
+		<div class="gx-sidebar-overlay"></div>
+		<div class="gx-sidebar" data-mode="dark">
+			<div class="gx-sb-logo">
+				<a href="index.html" class="sb-full"><img src="assets/img/logo/full-logo.png" alt="logo"></a>
+				<a href="index.html" class="sb-collapse"><img src="assets/img/logo/collapse-logo.png" alt="logo"></a>
+			</div>
+			<div class="gx-sb-wrapper">
+				<div class="gx-sb-content">
+					<ul class="gx-sb-list">
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-item">
+							<a href="index.html" class="gx-page-link">
+								<i class="ri-star-smile-line"></i><span class="condense"><span class="hover-title">Thesis Main Page</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part I: Foundations</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part I: Foundations<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="c1.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 1</a></li>
+								<li class="list"><a href="c2.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 2</a></li>
+								<li class="list"><a href="c3.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 3</a></li>
+									
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part II: The MCD Framework</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part II: The MCD Framework<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								
+								<li class="list"><a href="c4.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 4</a></li>
+								<li class="list"><a href="c5.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 5</a></li>
+											
+							</ul>
+						</li>
+							<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Part III: Validation, Extension & Conclusion</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-file-text-line"></i>
+								<span class="condense">Part III: Validation, Extension & Conclusion<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+						
+								<li class="list"><a href="c6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 6</a></li>
+								<li class="list"><a href="c7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 7</a></li>
+								<li class="list"><a href="c8.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 8</a></li>
+								<li class="list"><a href="c9.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 9</a></li>
+								<li class="list"><a href="c10.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Chapter 10</a></li>			
+							</ul>
+						</li>
+						
+						
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">References</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">References<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="ref.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>References</a></li>
+								
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Appendices</li>
+						<li class="gx-sb-item sb-drop-item">
+							<a href="javascript:void(0)" class="gx-drop-toggle">
+								<i class="ri-time-line"></i>
+								<span class="condense">Appendices<i
+										class="drop-arrow ri-arrow-down-s-line"></i></span>
+							</a>
+							<ul class="gx-sb-drop condense">
+								<li class="list"><a href="appa6.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A Chap 6</a></li>
+								<li class="list"><a href="appa7.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix A Chap 7</a></li>
+								<li class="list"><a href="appb.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix B</a></li>
+								<li class="list"><a href="appc.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix C</a></li>			
+								<li class="list"><a href="appd.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix D</a></li>
+								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix E</a></li>
+                                <li class="list"><a href="appf.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>	 											
+							</ul>
+						</li>
+						<li class="gx-sb-item-separator"></li>
+						<li class="gx-sb-title condense">Links</li>
+						<li class="gx-sb-item">
+							<a href="https://github.com/malliknas/Minimal-Capability-Design-Framework" target="_blank" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Software</span> </span>
+							</a>
+						</li>
+						<li class="gx-sb-item">
+							<a href="index.html#download" class="gx-page-link">
+								<i class="ri-install-line"></i><span class="condense"><span class="hover-title">Download</span> </span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- main content -->
+		<div class="gx-main-content">
+			<div class="container-fluid">
+				<!-- Page title & breadcrumb -->
+				<div class="gx-page-title gx-page-title-2">
+					<div class="gx-breadcrumb">
+						<h5>Appendix F</h5>
+						<ul>
+							<li><a href="index.html">Thesis Main Page</a></li>
+							<li>Appendix F</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row sections">
+					<div class="col-xl-9 col-md-12">
+
+    <div class="thesis-intro">
+      <h1 class="thesis-title">Designing Lightweight AI Agents for Edge Deployment</h1>
+      <p class="thesis-subtitle">A Minimal Capability Framework with Insights from Literature Synthesis</p>
+
+<!-- Part I Overview -->
+
+
+ 
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="ch1-intro">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">Appendix G: MCD Framework Decision Tree Implementation</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+<p>This appendix provides comprehensive implementation guidance for the MCD Framework Application Decision Tree introduced in Section 8.7.2. Practitioners applying MCD principles to real-world deployment scenarios should consult this appendix for detailed decision logic, validation workflows, and empirically-derived thresholds from Chapters 4-7.</p>
+<p><strong>Structure Overview:</strong></p>
+<ul>
+<li><strong>G.1</strong> – Phase 1: Context assessment questions and priority classification</li>
+<li><strong>G.2</strong> – Phase 2: Approach selection decision trees with anti-pattern enforcement</li>
+<li><strong>G.3</strong> – Phase 3: MCD principle validation workflows (minimality, rationality, degeneracy)</li>
+<li><strong>G.4</strong> – Phase 4: Three-layer implementation with pseudocode examples</li>
+<li><strong>G.5</strong> – Phase 5: Evidence-based validation test protocols</li>
+</ul>
+<p>Each decision point includes <strong>empirical thresholds</strong> (e.g., token budgets, complexity limits, performance criteria) validated through browser-based simulations (T1-T10) and domain walkthroughs (W1-W3), ensuring practitioners can apply MCD framework with quantified deployment expectations. </br> In Reference to <a href="c8.html#8.7" target="_blank" class="btn btn-primary">Chapter 8 - MCD Framework Decision Tree</a> </p>
+                     
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="g1">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">G.1 Phase 1: Context Assessment &amp; Requirements Analysis</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+<p><strong>Purpose:</strong> Establish deployment profile through systematic questioning, determining whether MCD principles align with task requirements and resource constraints.</p>
+<h3 id="q1-primary-deployment-context-classification"><strong>Q1: Primary Deployment Context Classification</strong></h3>
+<pre><code>CONTEXT_DECISION_TREE:
+
+  IF deployment IN [Edge Device, RAM &lt;1GB, Offline, Battery-Powered]:
+    → CONTEXT = CONSTRAINED
+    → RATIONALE: Hardware limits require resource-efficient approaches
+    → PROCEED TO Q2
+
+  ELIF deployment IN [Browser, WebAssembly, Client-Side]:
+    → CONTEXT = BROWSER_EDGE
+    → RATIONALE: WASM environment validated in T8 (Q4 tier optimal)
+    → PROCEED TO Q2
+
+  ELIF deployment IN [Cloud, Full-Stack, RAM &gt;2GB]:
+    → EXIT_RECOMMENDATION: AutoGPT, LangChain, LangGraph
+    → RATIONALE: Resource abundance enables richer frameworks
+    → MCD not optimal for unconstrained environments
+
+  ELIF deployment == Hybrid:
+    → CONTEXT = HYBRID_CONSTRAINTS
+    → PROCEED TO Q2 with detailed constraint profiling
+</code></pre>
+<p><strong>Deployment Context Examples:</strong></p>
+<ul>
+<li><strong>Constrained:</strong> Raspberry Pi, Jetson Nano, smartphone edge inference</li>
+<li><strong>Browser Edge:</strong> In-browser agents, PWAs, WebAssembly deployment</li>
+<li><strong>Hybrid:</strong> Progressive enhancement (edge-first with cloud fallback)</li>
+</ul>
+<hr/>
+<h3 id="q2-optimization-priority-assignment"><strong>Q2: Optimization Priority Assignment</strong></h3>
+<pre><code>PRIORITY_MATRIX:
+
+  [1] Resource Efficiency (EFFICIENCY_PRIORITY = HIGH):
+      → Optimization: Token minimization, memory footprint, latency
+      → Empirical validation: T1/T6 token efficiency analysis
+
+  [2] User Experience Quality (UX_PRIORITY = HIGH):
+      → Optimization: Natural language, conversation flow, error messages
+      → Empirical validation: W1 UX scoring (89% conversational vs 68% MCD)
+
+  [3] Professional Output (QUALITY_PRIORITY = HIGH):
+      → Optimization: Accuracy, completeness, domain expertise
+      → Empirical validation: W3 diagnostic quality (96% hybrid vs 84% MCD)
+
+  [4] Educational/Learning (EDUCATION_PRIORITY = HIGH):
+      → Optimization: Explanatory depth, pedagogical structure
+      → Use case: Tutoring agents, learning assistants
+
+  [5] Balanced Multi-Objective (HYBRID_PRIORITY = HIGH):
+      → Optimization: Weighted balance across dimensions
+      → Requires advanced prompt engineering (74% accessibility threshold)
+</code></pre>
+<p><strong>Note:</strong> Priority selection determines approach selection in Phase 2.</p>
+<hr/>
+<h3 id="q3-stateless-capability-assessment"><strong>Q3: Stateless Capability Assessment</strong></h3>
+<pre><code>STATELESS_VALIDATION_CHECKLIST:
+
+  Task Requirements Analysis:
+    [Q3.1] Persistent conversation history needed? YES/NO
+    [Q3.2] Learning across sessions required? YES/NO
+    [Q3.3] Cumulative knowledge updates required? YES/NO
+
+  DECISION LOGIC:
+
+    IF ALL_ANSWERS == NO:
+      → Task = STATELESS_COMPATIBLE
+      → T4 Validation: 5/5 stateless regeneration success
+      → PROCEED TO Q4
+
+    ELIF PARTIAL_YES (1-2 requirements):
+      → Evaluate HYBRID_MCD_ARCHITECTURE
+      → Design: Stateless core + external state manager
+      → Document: State dependencies (Section 4.2)
+      → WARNING: Increased complexity vs pure MCD
+
+    ELSE (ALL_YES):
+      → MCD NOT SUITABLE
+      → RECOMMENDATION: RAG/Vector DB + LangChain
+      → EXIT with architectural justification
+</code></pre>
+<p><strong>Stateless Viability Examples:</strong></p>
+<ul>
+<li><strong>✅ Suitable:</strong> FAQ, appointment booking, navigation, single-turn diagnostics</li>
+<li><strong>⚠️ Hybrid:</strong> Multi-turn conversations with session context</li>
+<li><strong>❌ Unsuitable:</strong> Personalized learning, customer relationship management</li>
+</ul>
+<hr/>
+<h3 id="q4-token-budget-classification"><strong>Q4: Token Budget Classification</strong></h3>
+<pre><code>TOKEN_BUDGET_DECISION_TREE:
+
+  User specifies acceptable token budget:
+
+  [1] budget &lt; 60 tokens:
+      → MODE = ULTRA_MINIMAL
+      → RISK: T6 validation shows 60% failure rate &lt;60 tokens
+      → RECOMMENDATION: Relax constraints if feasible
+      → IF MANDATORY: Use symbolic logic, IF-THEN routing
+
+  [2] 60 ≤ budget ≤ 150 tokens:
+      → MODE = MINIMAL (VALIDATED RANGE)
+      → EVIDENCE: T1/T6 show 94% success rate maintenance
+      → OPTIMAL: 75-85 token sweet spot (Section 8.3)
+
+  [3] 150 &lt; budget ≤ 512 tokens:
+      → MODE = MODERATE
+      → NOTE: Approaching 90-130 token capability plateau
+      → CONSIDERATION: Diminishing returns beyond 90 tokens
+
+  [4] budget &gt; 512 tokens:
+      → MODE = RESOURCE_ABUNDANT
+      → EXIT_RECOMMENDATION: Non-MCD approaches likely optimal
+      → RATIONALE: MCD sacrifices peak performance for constraints
+
+  [5] budget = Variable/Dynamic:
+      → MODE = ADAPTIVE
+      → IMPLEMENTATION: Dynamic allocation (Section 5.3)
+      → VALIDATION: Tier-based routing (Q1→Q4→Q8)
+</code></pre>
+<p><strong>Empirical Token Budget Guidance (from T1/T6):</strong></p>
+<ul>
+<li><strong>Minimum viable:</strong> 60 tokens (94% success floor)</li>
+<li><strong>Optimal range:</strong> 75-90 tokens (peak efficiency-to-performance)</li>
+<li><strong>Plateau threshold:</strong> 90-130 tokens (&lt; 5% improvement beyond)</li>
+</ul>
+<hr/>
+<p><strong>G.1 Output:</strong> Context profile fully documented → <strong>PROCEED TO PHASE 2 (Appendix G.2)</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="g2">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">G.2 Phase 2: Prompt Engineering Approach Selection</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+<p><strong>Purpose:</strong> Select optimal prompt engineering approach based on context profile from Phase 1, using empirically-validated performance data from Chapters 6-7. Each priority (Efficiency, UX, Quality, Education, Hybrid) maps to specific approaches with quantified trade-offs.</p>
+<p><strong>Decision Framework:</strong> Priority-driven selection trees route practitioners to approaches validated through T1-T10 simulations and W1-W3 domain walkthroughs, with explicit anti-pattern enforcement preventing empirically-documented failure modes.</p>
+<hr/>
+<h3 id="g21-efficiency-priority-decision-tree"><strong>G.2.1 Efficiency Priority Decision Tree</strong></h3>
+<p><strong>When to Use:</strong> EFFICIENCY_PRIORITY = HIGH (from G.1 Q2) — Deployments prioritizing token minimization, memory footprint reduction, and latency optimization.</p>
+<pre><code>EFFICIENCY_APPROACH_SELECTOR:
+
+  [Branch 1] Token Budget &lt; 60 tokens (ULTRA_MINIMAL):
+    → APPROACH: MCD STRUCTURED (MANDATORY)
+    → PERFORMANCE: 92% efficiency, 81% context-optimal
+    → VALIDATION: T1 approach comparison, T6 over-engineering detection
+    → RATIONALE: Only viable approach at extreme constraints
+    → QUANTIZATION: Force Q1 tier (Qwen2-0.5B, 300MB)
+    → RISK: 60% failure rate if budget &lt;60 (T6 evidence)
+
+  [Branch 2] 60 ≤ Token Budget ≤ 150 (MINIMAL):
+    → APPROACH: HYBRID MCD+FEW-SHOT
+    → PERFORMANCE: 88% efficiency, 86% context-optimal
+    → VALIDATION: T1/W1/W2/W3 cross-domain validation
+    → RATIONALE: Balances efficiency with pattern learning
+    → QUANTIZATION: Start Q4 tier, fallback to Q1 if needed
+    → IMPLEMENTATION: MCD structure + 2-3 Few-Shot examples
+
+  [Branch 3] Hardware RAM &lt; 256MB (HARDWARE OVERRIDE):
+    → APPROACH: MCD STRUCTURED (MANDATORY)
+    → PERFORMANCE: Same as Branch 1
+    → RATIONALE: Hardware constraint supersedes token budget
+    → QUANTIZATION: Force Q1/Q4 tiers only
+    → VALIDATION: T8 deployment environment testing
+    → NOTE: Hardware limitations override task complexity
+
+  [Branch 4] DEFAULT (Budget &gt;150, RAM ≥256MB):
+    → APPROACH: MCD STRUCTURED with Q4 tier
+    → PERFORMANCE: 85% retention under Q1, 95% under Q4
+    → FALLBACK: Escalate to Hybrid if performance &lt;80%
+    → QUANTIZATION: Q4 optimal (TinyLlama-1.1B, 560MB)
+    → VALIDATION: T10 quantization tier validation
+</code></pre>
+<p><strong>Practical Example:</strong></p>
+<ul>
+<li><strong>Scenario:</strong> Edge device FAQ chatbot, 256MB RAM, 80-token budget</li>
+<li><strong>Selection:</strong> Branch 2 → Hybrid MCD+Few-Shot</li>
+<li><strong>Implementation:</strong> MCD slot-filling structure + 3 Few-Shot Q&amp;A examples</li>
+<li><strong>Expected Performance:</strong> 88% efficiency, 430ms average latency (W1 data)</li>
+</ul>
+<hr/>
+<h3 id="g22-user-experience-priority-decision-tree"><strong>G.2.2 User Experience Priority Decision Tree</strong></h3>
+<p><strong>When to Use:</strong> UX_PRIORITY = HIGH (from G.1 Q2) — Deployments prioritizing natural language interaction, conversation flow, and user-friendly error handling.</p>
+<pre><code>UX_APPROACH_SELECTOR:
+
+  [Branch 1] Deployment Constraints = Unconstrained (&gt;2GB RAM, &gt;512 tokens):
+    → APPROACH: CONVERSATIONAL
+    → PERFORMANCE: 89% user experience score
+    → VALIDATION: W1 healthcare booking walkthrough
+    → TRADEOFF: 1.5x token cost, 2.1x latency vs MCD
+    → RATIONALE: Natural flow maximizes satisfaction when resources permit
+    → WARNING: Degrades severely under constraint pressure (28% at &lt;512 tokens)
+
+  [Branch 2] Deployment Constraints = Moderate (512MB-2GB, 150-512 tokens):
+    → APPROACH: SYSTEM ROLE PROFESSIONAL
+    → PERFORMANCE: 82% UX, 78% context-optimal
+    → VALIDATION: W1/W2 walkthroughs
+    → BALANCE: Professional framing + constraint-awareness
+    → QUANTIZATION: Q4 tier recommended
+    → IMPLEMENTATION: Structured persona with graceful degradation
+
+  [Branch 3] Deployment Constraints = Tight (&lt;512MB, &lt;150 tokens):
+    → APPROACH: FEW-SHOT PATTERN
+    → PERFORMANCE: 68% UX, 78% context-optimal
+    → VALIDATION: W3 diagnostics walkthrough
+    → JUSTIFICATION: Best UX achievable under strict constraints
+    → QUANTIZATION: Q1/Q4 adaptive routing
+    → NOTE: Conversational approach fails here (28% completion)
+
+  [Branch 4] FALLBACK (Constraints = Severe):
+    → APPROACH: MCD STRUCTURED with enhanced error messages
+    → PERFORMANCE: 60% UX (baseline), 92% efficiency
+    → COMPROMISE: Sacrifice conversational flow for reliability
+    → ENHANCEMENT: Add user-friendly clarification templates
+    → VALIDATION: T7 constraint stress test (80% controlled degradation)
+</code></pre>
+<p><strong>Practical Example:</strong></p>
+<ul>
+<li><strong>Scenario:</strong> Browser-based appointment booking, moderate constraints</li>
+<li><strong>Selection:</strong> Branch 2 → System Role Professional</li>
+<li><strong>Implementation:</strong> "Healthcare scheduling assistant" persona + structured prompts</li>
+<li><strong>Expected Performance:</strong> 82% UX, 1724ms latency (W1 data)</li>
+</ul>
+<hr/>
+<h3 id="g23-quality-priority-decision-tree"><strong>G.2.3 Quality Priority Decision Tree</strong></h3>
+<p><strong>When to Use:</strong> QUALITY_PRIORITY = HIGH (from G.1 Q2) — Deployments prioritizing accuracy, completeness, and domain expertise over efficiency or UX.</p>
+<pre><code>QUALITY_APPROACH_SELECTOR:
+
+  [Branch 1] Context = Professional Domain (Healthcare, Legal, Finance):
+    → APPROACH: SYSTEM ROLE PROFESSIONAL
+    → PERFORMANCE: 86% completion, 82% UX
+    → VALIDATION: W1 healthcare, W3 diagnostics
+    → RATIONALE: Expertise framing improves accuracy perception
+    → QUANTIZATION: Q4/Q8 tier for complex reasoning
+    → DOMAINS: Healthcare, diagnostics, formal communication
+
+  [Branch 2] Requirement = Technical Accuracy (&gt;90% correctness):
+    → APPROACH: HYBRID MULTI-STRATEGY
+    → PERFORMANCE: 96% completion, 91% accuracy
+    → VALIDATION: W3 system diagnostics (highest quality)
+    → WARNING: Requires 75% engineering sophistication threshold
+    → IMPLEMENTATION: MCD + Few-Shot + System Role coordination
+    → QUANTIZATION: Q8 tier preferred (Llama-3.2-1B, 800MB)
+    → TRADEOFF: 2.3x complexity vs MCD alone
+
+  [Branch 3] Requirement = Balanced Quality (80-90% target):
+    → APPROACH: FEW-SHOT PATTERN
+    → PERFORMANCE: 84% completion, balanced across metrics
+    → VALIDATION: W2 spatial navigation
+    → RATIONALE: Pattern learning without full hybrid complexity
+    → QUANTIZATION: Q4 tier optimal
+    → ACCESSIBILITY: 89% engineering accessibility (vs 74% hybrid)
+
+  [Branch 4] EVALUATION REQUIRED (Ambiguous quality needs):
+    → DECISION POINT: Task complexity vs resource availability
+    → IF complex_reasoning AND resources_available:
+        → TRY: Hybrid Multi-Strategy
+    → ELIF moderate_complexity:
+        → TRY: Few-Shot Pattern
+    → ELSE:
+        → FALLBACK: MCD with domain-specific examples
+    → VALIDATE: Run T1-style comparison before deployment
+</code></pre>
+<p><strong>Practical Example:</strong></p>
+<ul>
+<li><strong>Scenario:</strong> System diagnostics agent, technical accuracy critical</li>
+<li><strong>Selection:</strong> Branch 2 → Hybrid Multi-Strategy</li>
+<li><strong>Implementation:</strong> MCD routing + Few-Shot diagnostic examples + System Role expertise</li>
+<li><strong>Expected Performance:</strong> 96% completion, 91% accuracy (W3 data)</li>
+</ul>
+<hr/>
+<h3 id="g24-hybrid-priority-decision-tree"><strong>G.2.4 Hybrid Priority Decision Tree</strong></h3>
+<p><strong>When to Use:</strong> HYBRID_PRIORITY = HIGH (from G.1 Q2) — Deployments requiring balanced optimization across efficiency, UX, and quality.</p>
+<pre><code>HYBRID_APPROACH_SELECTOR:
+
+  [Branch 1] Prompt Engineering Expertise = Advanced (ML engineering team):
+    → APPROACH: HYBRID MULTI-STRATEGY
+    → COORDINATION: MCD + Few-Shot + System Role
+    → PERFORMANCE: Superior across all metrics (W1/W2/W3)
+    → ACCESSIBILITY: 74% engineering threshold
+    → QUANTIZATION: Dynamic tier routing (Q1→Q4→Q8)
+    → MAINTENANCE: High complexity, requires ongoing tuning
+    → VALIDATION: All T1-T10 tests + W1-W3 walkthroughs
+
+  [Branch 2] Expertise = Moderate (Software engineering background):
+    → APPROACH: FEW-SHOT + SYSTEM ROLE (Two-Strategy)
+    → COORDINATION: Simpler than full hybrid
+    → PERFORMANCE: Good balance without complexity overhead
+    → ACCESSIBILITY: 82% engineering threshold
+    → QUANTIZATION: Q4 tier with Q8 fallback
+    → IMPLEMENTATION: System Role persona + Few-Shot examples
+
+  [Branch 3] Expertise = Basic (Product/UX team):
+    → APPROACH: MCD + FEW-SHOT
+    → PROVEN COMBINATION: 88% efficiency, 86% context-optimal
+    → JUSTIFICATION: Validated in W1/W2, accessible implementation
+    → ACCESSIBILITY: 94% engineering threshold
+    → QUANTIZATION: Start Q4, fallback Q1
+    → MAINTENANCE: Low complexity, stable performance
+
+  [Branch 4] ITERATIVE STRATEGY (Unknown expertise):
+    → START: MCD STRUCTURED baseline
+    → MEASURE: Performance across efficiency/UX/quality dimensions
+    → ITERATE: Add Few-Shot examples incrementally
+    → VALIDATE: T1 approach comparison after each iteration
+    → STOP: When improvement &lt;5% for 2 consecutive iterations
+    → RESULT: Custom-tuned hybrid adapted to team capabilities
+</code></pre>
+<p><strong>Practical Example:</strong></p>
+<ul>
+<li><strong>Scenario:</strong> Navigation assistant, balanced requirements, moderate expertise</li>
+<li><strong>Selection:</strong> Branch 2 → Few-Shot + System Role</li>
+<li><strong>Implementation:</strong> "Navigation expert" persona + spatial reasoning examples</li>
+<li><strong>Expected Performance:</strong> Balanced 80%+ across efficiency/UX/quality (W2 data)</li>
+</ul>
+<hr/>
+<h3 id="g25-anti-pattern-enforcement-critical-validation"><strong>G.2.5 Anti-Pattern Enforcement (Critical Validation)</strong></h3>
+<p><strong>Purpose:</strong> Prevent empirically-validated failure modes that cause catastrophic degradation under constraint conditions.</p>
+<pre><code>FORBIDDEN_APPROACHES_VALIDATOR:
+
+  [Anti-Pattern 1] Chain-of-Thought under Constraints:
+    IF approach_includes(CoT) AND constraints == True:
+      → REJECT: Empirically validated failures
+      → EVIDENCE: T6/T7/T8 browser crashes, token overflow
+      → COMPLETION RATE: 2/5 with CoT vs 5/5 with Few-Shot
+      → ROOT CAUSE: Reasoning chains exceed token budgets
+      → ALTERNATIVE: Replace with Few-Shot examples (T6 validation)
+      → EXCEPTION: None — CoT universally incompatible with constraints
+
+  [Anti-Pattern 2] Verbose Conversational under Budget Pressure:
+    IF approach == Conversational AND token_budget &lt; 512:
+      → REJECT: 28% completion rate (W1 evidence)
+      → EVIDENCE: Conversational requires 1.5x tokens vs MCD
+      → FAILURE MODE: Natural language phrasing exceeds budgets
+      → ALTERNATIVE: System Role Professional (82% UX at constraints)
+      → THRESHOLD: Conversational viable only when budget ≥512
+
+  [Anti-Pattern 3] Q8 without Q4 Justification:
+    IF quantization == Q8 AND NOT performance_inadequacy_at_Q4:
+      → REJECT: Violates minimality principle (Section 4.2)
+      → EVIDENCE: T10 shows Q4 optimal for 80% of tasks
+      → VALIDATION REQUIRED: Document Q4 failures before Q8 escalation
+      → RATIONALE: Resource efficiency core to MCD philosophy
+      → PROCESS: Try Q4 → Measure drift → Escalate if drift &gt;10%
+
+  [Anti-Pattern 4] Unbounded Clarification Loops:
+    IF clarification_loops == Unbounded:
+      → REJECT: 1/4 recovery rate, semantic drift (T5: 2/4 drift)
+      → EVIDENCE: Loops &gt;2 iterations cause confusion
+      → FAILURE MODE: Progressive semantic drift accumulation
+      → ALTERNATIVE: Bounded loops (≤2 iterations, explicit termination)
+      → IMPLEMENTATION: Hard limit + graceful escalation message
+      → VALIDATION: T3 structured fallback (4/5 success with bounds)
+</code></pre>
+<p><strong>Critical Implementation Note:</strong> All four anti-patterns <strong>must</strong> be checked before deployment. Violations historically correlate with &gt;70% failure rates in constraint conditions.</p>
+<hr/>
+<p><strong>G.2 Output:</strong> Primary approach selected, validated, and anti-pattern checked → <strong>PROCEED TO PHASE 3 (Appendix G.3)</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="g3">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">G.3 Phase 3: MCD Principle Application Workflows</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+        <p><strong>Purpose:</strong> Systematically apply MCD's three core principles—Minimality by Default, Bounded Rationality, Degeneracy Detection—to validate and refine architectural designs from Phase 2. Each principle includes empirically-derived validation workflows with quantified thresholds from Chapters 4-7.</p>
+<p><strong>Critical Context:</strong> Phase 3 transforms selected approaches into constraint-compliant architectures through iterative component validation, ensuring every element justifies its token/memory cost through measurable performance contribution.</p>
+<hr/>
+<h3 id="g31-step-1-minimality-by-default-validation"><strong>G.3.1 Step 1: Minimality by Default Validation</strong></h3>
+<p><strong>Principle Foundation:</strong> Remove all components unless empirical evidence demonstrates necessity (Section 4.2). Default assumption: simpler architectures outperform complex ones under constraints.</p>
+<hr/>
+<h4 id="q5-component-necessity-assessment"><strong>Q5: Component Necessity Assessment</strong></h4>
+<p><strong>For Each Component in [Memory, Tools/APIs, Orchestration Layers]:</strong></p>
+<hr/>
+<p><strong>Q5.1 Memory Component Validation</strong></p>
+<pre><code>MEMORY_NECESSITY_TEST:
+
+  Question: Can task complete without persistent state?
+
+  TEST PROTOCOL (T4 Methodology):
+    1. Implement stateless regeneration workflow
+    2. Run 5 trials with explicit context reinjection
+    3. Run 5 trials with implicit reference (baseline)
+    4. Measure completion rate for both conditions
+
+  DECISION LOGIC:
+
+    IF stateless_completion_rate ≥ 90% (5/5 trials succeed):
+      → ACTION: REMOVE memory component
+      → EVIDENCE: T4 validation shows 5/5 stateless vs 2/5 implicit
+      → BENEFIT: -200 tokens, -40MB RAM, +15% latency improvement
+      → DOCUMENT: Stateless viability confirmed
+      → IMPLEMENTATION: Use explicit slot reinjection (Section 4.2)
+
+    ELSE (stateless_rate &lt; 90%):
+      → ACTION: KEEP memory, justify with fallback design
+      → CALCULATE: Memory Fragility Score (Appendix E.2.2)
+      → FORMULA: MFS = state_dependencies / total_interactions
+      → THRESHOLD: If MFS &gt; 40% → High fragility, redesign required
+      → MITIGATION: Implement hybrid stateless core + external state
+</code></pre>
+<p><strong>Practical Example:</strong></p>
+<ul>
+<li><strong>Task:</strong> Healthcare appointment booking (W1)</li>
+<li><strong>Test Results:</strong> 5/5 stateless completions with {doctor_type, date, time} reinjection</li>
+<li><strong>Decision:</strong> Remove session memory, use explicit slot passing</li>
+<li><strong>Benefit:</strong> 200-token reduction, simplified architecture</li>
+</ul>
+<hr/>
+<p><strong>Q5.2 Tool/API Component Validation</strong></p>
+<pre><code>TOOL_UTILIZATION_TEST:
+
+  Question: Utilization rate &gt;10%? (T7 Degeneracy Threshold)
+
+  MEASUREMENT PROTOCOL:
+    1. Track tool invocations across test scenarios
+    2. Calculate: utilization_rate = invocations / total_interactions
+    3. Measure latency impact: latency_with_tool vs latency_baseline
+
+  DECISION LOGIC:
+
+    IF utilization_rate &lt; 10%:
+      → ACTION: REMOVE tool/API component
+      → EVIDENCE: T7 shows &lt;10% triggers degeneracy detection
+      → RATIONALE: Maintenance overhead outweighs rare utility
+      → DOCUMENT: Degeneracy threshold violated
+      → BENEFIT: Reduced complexity, faster response times
+
+    IF 10% ≤ utilization_rate &lt; 30%:
+      → ACTION: CONDITIONAL KEEP (monitor closely)
+      → REQUIREMENT: Document specific use cases justifying inclusion
+      → VALIDATE: Latency improvement must be &gt;15% when triggered
+      → WARNING: Borderline utility, candidate for future removal
+
+    IF utilization_rate ≥ 30%:
+      → ACTION: KEEP tool, document usage patterns
+      → VALIDATE: Latency improvement justifies inclusion cost
+      → MONITOR: Track utilization trends over deployment lifecycle
+</code></pre>
+<p><strong>Practical Example:</strong></p>
+<ul>
+<li><strong>Tool:</strong> Medical terminology API for appointment booking</li>
+<li><strong>Utilization:</strong> 8% (only triggered for ambiguous specialty names)</li>
+<li><strong>Decision:</strong> Remove API, use Few-Shot examples of common specialties</li>
+<li><strong>Benefit:</strong> -50ms average latency, simplified deployment</li>
+</ul>
+<hr/>
+<p><strong>Q5.3 Orchestration Layer Validation</strong></p>
+<pre><code>ORCHESTRATION_NECESSITY_TEST:
+
+  Question: Does prompt-level routing suffice? (Section 5.3)
+
+  TEST PROTOCOL:
+    1. Implement IF-THEN routing directly in prompt
+    2. Implement equivalent orchestration layer routing
+    3. Run T3-style structured fallback test (5 trials each)
+    4. Measure: completion rate, latency, token cost
+
+  DECISION LOGIC:
+
+    IF prompt_routing_success ≥ 80% (4/5 trials):
+      → ACTION: REMOVE orchestration layer
+      → EVIDENCE: T3 shows 4/5 structured fallback success
+      → BENEFIT: -30 tokens overhead, -25ms latency
+      → DOCUMENT: Prompt-native routing validated
+      → IMPLEMENTATION: Use symbolic IF-THEN in prompt text
+
+    ELIF prompt_routing_success 60-79% (3/5 trials):
+      → ACTION: HYBRID APPROACH
+      → DESIGN: Simple router for complex cases only
+      → FALLBACK: Default to prompt routing when possible
+      → JUSTIFY: Document specific failure modes requiring orchestration
+
+    ELSE (prompt_routing &lt; 60%):
+      → ACTION: KEEP orchestration layer
+      → JUSTIFY: Document complexity vs performance gain
+      → VALIDATE: Calculate Redundancy Index (Step 3)
+      → THRESHOLD: RI must be ≤10 to justify complexity
+</code></pre>
+<p><strong>Practical Example:</strong></p>
+<ul>
+<li><strong>Task:</strong> Navigation routing between {booking, navigation, diagnostic} intents</li>
+<li><strong>Prompt Routing:</strong> 4/5 successful classifications with IF-THEN structure</li>
+<li><strong>Orchestration Layer:</strong> 5/5 successes but +30 tokens, +25ms latency</li>
+<li><strong>Decision:</strong> Remove orchestration, use prompt-native IF-THEN</li>
+<li><strong>Benefit:</strong> Simpler architecture, validated performance</li>
+</ul>
+<hr/>
+<h3 id="g32-step-2-bounded-rationality-application"><strong>G.3.2 Step 2: Bounded Rationality Application</strong></h3>
+<p><strong>Principle Foundation:</strong> Limit reasoning complexity to ≤3 sequential steps; replace natural language reasoning chains with symbolic compression (Section 4.2).</p>
+<hr/>
+<h4 id="q6-reasoning-chain-complexity-assessment"><strong>Q6: Reasoning Chain Complexity Assessment</strong></h4>
+<pre><code>REASONING_COMPLEXITY_ANALYZER:
+
+  Task Decomposition Protocol:
+    1. Break task into atomic reasoning steps
+    2. COUNT: number_of_sequential_steps
+    3. IDENTIFY: dependencies between steps
+    4. MEASURE: token cost per reasoning step
+
+  COMPLEXITY DECISION TREE:
+
+    IF sequential_steps &gt; 3:
+      → RISK_LEVEL = HIGH
+      → EVIDENCE: T5 shows semantic drift in 2/4 cases beyond 3 steps
+      → WARNING: Failure probability increases exponentially &gt;3 steps
+      → PROCEED TO MITIGATION OPTIONS
+
+    ELIF sequential_steps = 3:
+      → RISK_LEVEL = MODERATE
+      → ACTION: Apply symbolic compression (Option 1)
+      → VALIDATE: Ensure no cascading failures
+      → MONITOR: Track drift rates in production
+
+    ELIF sequential_steps &lt; 3:
+      → RISK_LEVEL = LOW
+      → ACTION: PROCEED with bounded reasoning design
+      → VALIDATION: Standard T1-style testing sufficient
+</code></pre>
+<hr/>
+<h4 id="mitigation-options-for-high-complexity-tasks-3-steps"><strong>Mitigation Options for High-Complexity Tasks (&gt;3 steps)</strong></h4>
+<pre><code>
+COMPLEXITY_REDUCTION_STRATEGIES:
+
+  [Option 1] Symbolic Compression:
+    TECHNIQUE: Replace natural language with symbolic logic
+
+    BEFORE (Natural Language, 45 tokens):
+      "Think carefully about the route from your current location to 
+       the destination, considering all landmarks and directions..."
+
+    AFTER (Symbolic, 12 tokens):
+      "Calculate: current_pos → landmarks → destination"
+
+    VALIDATION: Maintains semantics, reduces token cost 73%
+    EVIDENCE: W2 navigation shows equivalent accuracy
+    BENEFIT: -33 tokens per reasoning step
+
+    ⭐ ADAPTATION PATTERN NOTE:
+       Symbolic compression effectiveness varies by domain structure (Section 5.2.1):
+       - Semi-Static domains (W2 navigation): Deterministic rules enable aggressive compression
+       - Dynamic domains (W1 booking, W3 diagnostics): Moderate compression with adaptive logic
+       Implementation guidance: See G.4.1 Adaptation Pattern Classification
+
+
+  [Option 2] Task Decomposition:
+    TECHNIQUE: Split into independent sub-agents
+
+    DESIGN:
+      - Each sub-agent: ≤3 reasoning steps maximum
+      - Coordination: Sequential execution, NOT chained reasoning
+      - State passing: Explicit outputs → explicit inputs
+
+    EXAMPLE (System Diagnostics):
+      - Sub-agent 1: Symptom classification (2 steps)
+      - Sub-agent 2: Priority assignment (2 steps)
+      - Sub-agent 3: Action recommendation (2 steps)
+      Total: 6 steps divided into 3 independent agents
+
+    VALIDATION: T3 shows modular agents maintain 4/5 success rate
+    TRADEOFF: +50ms coordination latency, but safer than chaining
+
+  [Option 3] Chain-of-Thought Replacement (CRITICAL):
+    RULE: IF CoT seems necessary → FORBIDDEN under constraints
+
+    EVIDENCE: T6/T7/T8 show catastrophic CoT failures
+      - T6: 2/5 completion rate with CoT vs 5/5 with Few-Shot
+      - T7: Browser crashes with CoT under memory pressure
+      - T8: Token overflow in 4/5 WASM deployments
+
+    ALTERNATIVE: Few-Shot examples showing reasoning patterns
+
+    BEFORE (CoT, 120 tokens):
+      "Let's think step by step. First, I need to understand..."
+
+    AFTER (Few-Shot, 60 tokens):
+      Example 1: Input X → Output Y (reasoning implicit in examples)
+      Example 2: Input A → Output B
+      Apply to current: Input Z → Output ?
+
+    VALIDATION: T6 shows 5/5 Few-Shot success vs 2/5 CoT
+    BENEFIT: 2x token reduction, 100% reliability improvement
+</code></pre>
+<hr/>
+<h4 id="q7-token-budget-allocation"><strong>Q7: Token Budget Allocation</strong></h4>
+<pre><code>TOKEN_BUDGET_ALLOCATOR:
+
+  Input: Total_Budget (from G.1 Q4)
+
+  ALLOCATION FORMULA (Empirically Validated):
+    Core_Logic:          40-60% of Total_Budget
+    Fallback_Handling:   20-30% of Total_Budget
+    Input_Processing:    10-20% of Total_Budget
+    Buffer_Variations:   10-15% of Total_Budget
+
+  VALIDATION CHECKS:
+
+    CHECK 1: Budget sum must equal 100%
+      IF SUM(allocations) ≠ 1.0:
+        → ERROR: "Budget allocation must total 100%"
+        → ACTION: Rebalance percentages
+
+    CHECK 2: Core logic must dominate
+      IF Core_Logic &lt; 40% OR Core_Logic &gt; 60%:
+        → WARNING: "Unbalanced allocation may cause failures"
+        → RECOMMENDATION: Shift tokens to core from buffer/input
+
+    CHECK 3: Fallback budget adequate
+      IF Fallback &lt; 20%:
+        → ERROR: "Insufficient fallback budget"
+        → EVIDENCE: T3/T7 show ≥20% required for recovery
+
+  WORKED EXAMPLE (Total_Budget = 80 tokens):
+
+    Allocation Calculation:
+      Core_Logic:       48 tokens  (60% - upper bound for complex task)
+      Fallback:         20 tokens  (25% - mid-range for safety)
+      Input:            8 tokens   (10% - minimal for slot extraction)
+      Buffer:           4 tokens   ( 5% - tight but acceptable)
+      ─────────────────────────────
+      Total:            80 tokens  (100% ✓)
+
+    Validation:
+      ✓ Core dominates (60%)
+      ✓ Fallback adequate (25%)
+      ✓ Sum equals 100%
+      → APPROVED for deployment
+</code></pre>
+<p><strong>Critical Note:</strong> Token budgets &lt;60 total require proportional adjustment but maintain relative percentages. For example, 50-token budget: Core 30 (60%), Fallback 10 (20%), Input 5 (10%), Buffer 5 (10%).</p>
+<hr/>
+<h3 id="g33-step-3-degeneracy-detection"><strong>G.3.3 Step 3: Degeneracy Detection</strong></h3>
+<p><strong>Principle Foundation:</strong> Quantify component value through Redundancy Index; remove elements contributing &lt;10% marginal improvement (T6 methodology).</p>
+<hr/>
+<h4 id="q8-redundancy-index-calculation"><strong>Q8: Redundancy Index Calculation</strong></h4>
+<pre><code>REDUNDANCY_INDEX_PROTOCOL:
+
+  FORMULA:
+    RI = excess_tokens / marginal_correctness_improvement
+
+  MEASUREMENT PROCEDURE:
+
+    STEP 1: Establish Baseline
+      - Implement minimal prompt (Section 4.2 guidance)
+      - Run 5 test trials across representative scenarios
+      - MEASURE:
+        * task_success_rate_baseline (0-100%)
+        * token_count_baseline
+        * latency_baseline (ms)
+
+    STEP 2: Test Enhanced Version
+      - Add proposed component/feature to baseline
+      - Run 5 test trials with identical scenarios
+      - MEASURE:
+        * task_success_rate_enhanced (0-100%)
+        * token_count_enhanced
+        * latency_enhanced (ms)
+
+    STEP 3: Calculate Metrics
+      excess_tokens = token_count_enhanced - token_count_baseline
+      improvement = task_success_rate_enhanced - task_success_rate_baseline
+      RI = excess_tokens / improvement
+
+      latency_overhead = latency_enhanced - latency_baseline
+
+  INTERPRETATION THRESHOLDS:
+
+    IF RI &gt; 10:
+      → CLASSIFICATION: OVER-ENGINEERED
+      → EVIDENCE: T6 verbose case study
+        * Verbose prompt: 145 tokens
+        * Minimal prompt: 58 tokens
+        * Improvement: +0.2 on 0-4 scale (+5% absolute)
+        * RI = (145-58) / 0.05 = 87 / 0.05 = 1,740
+        * Conclusion: Extreme over-engineering
+      → ACTION: Remove enhancement, revert to baseline
+      → BENEFIT: Token savings without performance loss
+
+    IF 5 ≤ RI ≤ 10:
+      → CLASSIFICATION: BORDERLINE ACCEPTABLE
+      → ACTION: Conditional keep with monitoring
+      → REQUIREMENT: Document specific justification
+      → REVIEW: Reassess after deployment data collection
+
+    IF RI &lt; 5:
+      → CLASSIFICATION: JUSTIFIED COMPLEXITY
+      → ACTION: Keep enhanced version
+      → RATIONALE: Improvement justifies token cost
+      → DOCUMENT: RI value for future reference
+</code></pre>
+<p><strong>Worked Example:</strong></p>
+<pre><code>CASE STUDY: Healthcare Booking Enhanced Clarification
+
+Baseline Version:
+  - Token count: 65 tokens
+  - Success rate: 84% (21/25 trials)
+  - Latency: 380ms
+
+Enhanced Version (added multi-turn clarification):
+  - Token count: 95 tokens
+  - Success rate: 92% (23/25 trials)
+  - Latency: 450ms
+
+Calculation:
+  excess_tokens = 95 - 65 = 30 tokens
+  improvement = 0.92 - 0.84 = 0.08 (8%)
+  RI = 30 / 0.08 = 375
+
+  latency_overhead = 450 - 380 = +70ms
+
+Interpretation:
+  RI = 375 &gt;&gt; 10 → OVER-ENGINEERED
+  Decision: Remove multi-turn clarification
+  Alternative: Single-turn bounded clarification (RI = 6.2, acceptable)
+</code></pre>
+<hr/>
+<h3><strong>Q9: Usage Pattern Analysis</strong></h3>
+<div class="codehilite">
+<pre><span></span><code>USAGE_PATTERN_VALIDATOR:
+
+  FOR EACH component_or_pathway IN architecture:
+
+    METRIC: Utilization Rate
+      utilization_rate = actual_uses / total_possible_uses
+
+    DECISION LOGIC:
+
+      IF utilization_rate &lt; 10%:
+        → FLAG: Unused or rarely-triggered component
+        → ACTION: REMOVE component immediately
+        → RATIONALE: Maintenance cost exceeds rare utility
+        → DOCUMENT: "Degeneracy threshold violated"
+        → CROSS-CHECK: Verify no edge-case dependencies
+
+      IF 10% ≤ utilization_rate &lt; 25%:
+        → FLAG: Low-usage component
+        → ACTION: Mark for review after deployment
+        → MONITOR: Track trend over time (increasing/decreasing)
+        → CONDITION: Keep if critical for edge cases
+
+      IF utilization_rate ≥ 25%:
+        → STATUS: VALIDATED
+        → ACTION: Keep component
+        → DOCUMENT: Usage patterns for long-term monitoring
+        → OPTIMIZE: Consider frequency-based caching
+
+  DEAD PATH DETECTION:
+
+    FOR EACH decision_pathway IN prompt_logic:
+      IF pathway_triggered_count == 0 across all test cases:
+        → ALERT: "DEAD PATH IDENTIFIED"
+        → INVESTIGATION: Why was pathway never triggered?
+          * Unreachable condition?
+          * Redundant with other pathways?
+          * Test coverage gap?
+        → ACTION OPTIONS:
+          1. Remove dead pathway entirely
+          2. Merge with active pathways
+          3. Add test coverage if genuinely needed
+        → UPDATE: Decision tree structure after removal
+</code></pre>
+</div>
+<h3 id="practical-example"><strong>Practical Example:</strong></h3>
+<div class="codehilite">
+<pre><span></span><code>CASE STUDY: Indoor Navigation Agent Path Analysis (W2 Domain)
+
+Pathway Usage Results (n=100 navigation queries):
+  - direct_route:           52 triggers (52% utilization) → KEEP ✓
+  - obstacle_avoidance:     31 triggers (31% utilization) → KEEP ✓
+  - multi_waypoint:         11 triggers (11% utilization) → KEEP ✓
+  - accessibility_route:     4 triggers ( 4% utilization) → REMOVE ✗
+  - emergency_exit:          2 triggers ( 2% utilization) → REMOVE ✗
+  - scenic_route:            0 triggers ( 0% utilization) → REMOVE ✗ (DEAD PATH)
+
+Actions Taken:
+  1. Remove accessibility_route pathway (below 10% threshold)
+     - Justification: Specialized requests should escalate to human assistance
+  2. Remove emergency_exit pathway (below 10% threshold)
+     - Justification: Safety-critical routing requires real-time fire alarm integration
+  3. Remove scenic_route pathway (never triggered)
+     - Justification: Dead path with no real-world usage patterns
+  4. Token savings: -22 tokens from removed pathways
+  5. Simplified decision tree: 6 branches → 3 branches
+  6. Latency improvement: -15ms average
+
+Result: Focused navigation agent maintains 94% route success (direct + obstacle + waypoint) 
+        with 27% token reduction and improved response times
+</code></pre>
+</div>
+<hr/>
+<p><strong>G.3 Output:</strong> Clean minimal architecture validated through three-principle workflow → <strong>PROCEED TO PHASE 4 (Appendix G.4)</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="g4">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">G.4 Phase 4: Layer Implementation with Decision Trees</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+  <p><strong>Purpose:</strong> Implement validated MCD architecture from Phase 3 through three-layer structure—Prompt Layer (intent classification/slot extraction), Control Layer (routing logic), Execution Layer (quantization-aware model selection). Each layer includes constraint validation and empirical thresholds from T3/T5/T10.</p>
+<p><strong>Critical Context:</strong> Layer separation enables modular testing, maintenance, and dynamic tier routing while maintaining stateless operation principles.</p>
+<hr/>
+<h3 id="g41-layer-1-prompt-layer-design-with-adaptation-patterns"><strong>G.4.1 Layer 1: Prompt Layer Design (With Adaptation Patterns)</strong></h3>
+<p><strong>Purpose:</strong> Embed decision logic directly into prompt text using IF-THEN structures, intent classification trees, and slot extraction workflows. Implementation strategy varies by <strong>task structure</strong> following Table 5.1 adaptation pattern taxonomy from Section 5.2.1.</p>
+<p><strong>Critical Design Principle:</strong> Match prompt logic complexity to task structure—over-engineering navigation wastes tokens; under-engineering diagnostics fails variable patterns (Section 5.2.1).</p>
+<hr/>
+<h3 id="adaptation-pattern-classification-table-51-integration"><strong>Adaptation Pattern Classification (Table 5.1 Integration)</strong></h3>
+<p><strong>Before Implementation:</strong> Determine adaptation mechanism based on task characteristics.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Pattern Type</strong></th>
+<th><strong>When to Use</strong></th>
+<th><strong>Implementation Strategy</strong></th>
+<th><strong>Validation Evidence</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dynamic</strong></td>
+<td>Natural language variability, unpredictable information density</td>
+<td>Conditional slot extraction with runtime intent parsing</td>
+<td>W1: 84% completion with dynamic slot-filling</td>
+</tr>
+<tr>
+<td><strong>Semi-Static</strong></td>
+<td>Structured relationships, mathematical transformations</td>
+<td>Deterministic coordinate calculations with fixed rules</td>
+<td>W2: 85% success with coordinate logic</td>
+</tr>
+<tr>
+<td><strong>Dynamic</strong></td>
+<td>Heuristic classification, variable complexity patterns</td>
+<td>Adaptive category routing with priority-based sequencing</td>
+<td>W3: 91% accuracy with heuristic classification</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="intent-classification-decision-tree-structure"><strong>Intent Classification Decision Tree Structure</strong></h3>
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Pseudocode for Prompt Layer Intent Classification</span>
+<span class="c1"># Constraints: Depth ≤3, Branches ≤4, Token ≤25% budget per path</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">intent_classification_tree</span><span class="p">(</span><span class="n">user_input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    ROOT-level intent detection with bounded complexity.</span>
+
+<span class="sd">    Validation Constraints (T5/T3):</span>
+<span class="sd">      - Maximum depth: ≤3 levels</span>
+<span class="sd">      - Branching factor: ≤4 per node</span>
+<span class="sd">      - Token allocation: ≤25% total budget per path</span>
+<span class="sd">      - Fallback: Every path must have explicit recovery</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># PRIMARY INTENT DETECTION (Level 0)</span>
+    <span class="n">primary_intent</span> <span class="o">=</span> <span class="n">classify_primary_intent</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">primary_intent</span> <span class="o">==</span> <span class="s2">"booking"</span><span class="p">:</span>
+        <span class="c1"># ADAPTATION PATTERN: Dynamic (Section 5.2.1, W1)</span>
+        <span class="k">return</span> <span class="n">booking_subtree</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">primary_intent</span> <span class="o">==</span> <span class="s2">"navigation"</span><span class="p">:</span>
+        <span class="c1"># ADAPTATION PATTERN: Semi-Static (Section 5.2.1, W2)</span>
+        <span class="k">return</span> <span class="n">navigation_subtree</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">primary_intent</span> <span class="o">==</span> <span class="s2">"diagnostic"</span><span class="p">:</span>
+        <span class="c1"># ADAPTATION PATTERN: Dynamic (Section 5.2.1, W3)</span>
+        <span class="k">return</span> <span class="n">diagnostic_subtree</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># DEFAULT FALLBACK (T3: 4/5 success with explicit fallback)</span>
+        <span class="k">return</span> <span class="n">escalation_node</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Intent unclear. Please specify: booking, navigation, or diagnostic."</span><span class="p">,</span>
+            <span class="n">retry_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">max_retries</span><span class="o">=</span><span class="mi">2</span>  <span class="c1"># Bounded loops (G.2.5 Anti-Pattern 4)</span>
+        <span class="p">)</span>
+</code></pre>
+</div>
+<hr/>
+<h3 id="pattern-1-dynamic-slot-filling-w1-healthcare-booking"><strong>Pattern 1: Dynamic Slot-Filling (W1 - Healthcare Booking)</strong></h3>
+<p><strong>Design Rationale:</strong> Natural language appointment requests vary unpredictably in information density, requiring conditional slot identification with runtime adaptation (Section 5.2.1).</p>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">booking_subtree</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    ADAPTATION PATTERN: Dynamic Slot-Filling (W1 domain).</span>
+
+<span class="sd">    Characteristics (Section 5.2.1):</span>
+<span class="sd">      - Conditional slot extraction with variable missing-data prompts</span>
+<span class="sd">      - Natural language request variability requires runtime intent parsing</span>
+<span class="sd">      - Information density unpredictable (complete vs partial inputs)</span>
+
+<span class="sd">    Slot Structure: {doctor_type, date, time}</span>
+<span class="sd">    Validation: W1 shows 84% completion with dynamic adaptation</span>
+<span class="sd">    Token Budget: ≤40% total (from G.3.2 Q7)</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># DEPTH LIMIT ENFORCEMENT (T5 validation)</span>
+    <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fallback_response</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Booking request too complex. Please simplify."</span><span class="p">,</span>
+            <span class="n">escalation_recommended</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="c1"># DYNAMIC SLOT EXTRACTION (Level 1)</span>
+    <span class="c1"># Adapts to variable input completeness</span>
+    <span class="n">slots</span> <span class="o">=</span> <span class="n">extract_slots</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>  <span class="c1"># Returns: {doctor_type, date, time}</span>
+
+    <span class="c1"># COMPLETENESS CHECK (Level 2)</span>
+    <span class="c1"># Different paths based on information density</span>
+    <span class="k">if</span> <span class="n">slots_complete</span><span class="p">(</span><span class="n">slots</span><span class="p">):</span>
+        <span class="c1"># Complete input: "Cardiology tomorrow at 2pm"</span>
+        <span class="k">return</span> <span class="n">confirm_booking</span><span class="p">(</span><span class="n">slots</span><span class="p">)</span>
+        <span class="c1"># Output: "Confirmed Cardiology, tomorrow, 2PM. ID [generated]"</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># ADAPTIVE CLARIFICATION (Level 3 - Maximum depth)</span>
+        <span class="c1"># Identifies specific missing slots dynamically</span>
+        <span class="n">missing_slots</span> <span class="o">=</span> <span class="n">identify_missing_slots</span><span class="p">(</span><span class="n">slots</span><span class="p">)</span>
+
+        <span class="c1"># Example adaptive behavior (Section 5.2.1):</span>
+        <span class="c1"># Input: "I want to book an appointment"</span>
+        <span class="c1"># → Output: "Missing [time, date, type] for appointment"</span>
+
+        <span class="k">return</span> <span class="n">clarify_missing_slots</span><span class="p">(</span>
+            <span class="n">missing</span><span class="o">=</span><span class="n">missing_slots</span><span class="p">,</span>
+            <span class="n">partial_context</span><span class="o">=</span><span class="n">serialize_slots</span><span class="p">(</span><span class="n">slots</span><span class="p">),</span>  <span class="c1"># T4: Explicit state passing</span>
+            <span class="n">depth</span><span class="o">=</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
+</code></pre>
+</div>
+<hr/>
+<h3 id="pattern-2-semi-static-deterministic-logic-w2-navigation"><strong>Pattern 2: Semi-Static Deterministic Logic (W2 - Navigation)</strong></h3>
+<p><strong>Design Rationale:</strong> Navigation operates on structured coordinate systems with fixed spatial relationships, enabling mathematical transformation rules rather than NLP interpretation (Section 5.2.1).</p>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">navigation_subtree</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    ADAPTATION PATTERN: Semi-Static Deterministic (W2 domain).</span>
+
+<span class="sd">    Characteristics (Section 5.2.1):</span>
+<span class="sd">      - Deterministic coordinate calculations with fixed directional rules</span>
+<span class="sd">      - Structured spatial relationships enable mathematical transformations</span>
+<span class="sd">      - Predictable logic follows coordinate geometry, not natural language parsing</span>
+
+<span class="sd">    Logic: Stateless coordinate transformation (A1→B3 = North 2m, East 1m)</span>
+<span class="sd">    Validation: W2 shows 85% success with symbolic compression</span>
+<span class="sd">    Token Budget: ≤25% per path (constrained spatial reasoning)</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># DEPTH LIMIT ENFORCEMENT</span>
+    <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fallback_response</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Route too complex. Provide simpler waypoints."</span><span class="p">,</span>
+            <span class="n">simplification_hint</span><span class="o">=</span><span class="s2">"Use landmarks: library, cafeteria, main entrance"</span>
+        <span class="p">)</span>
+
+    <span class="c1"># DETERMINISTIC SPATIAL PARSING (Level 1)</span>
+    <span class="c1"># Follows fixed mathematical rules, not adaptive interpretation</span>
+    <span class="n">route</span> <span class="o">=</span> <span class="n">parse_spatial_instructions</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+    <span class="c1"># Returns: {start_pos, landmarks[], destination, direction}</span>
+
+    <span class="c1"># VALIDITY CHECK (Level 2)</span>
+    <span class="c1"># Coordinate transformation validation</span>
+    <span class="k">if</span> <span class="n">route_valid</span><span class="p">(</span><span class="n">route</span><span class="p">):</span>
+        <span class="c1"># SEMI-STATIC EXECUTION</span>
+        <span class="c1"># Fixed directional calculations from coordinate pairs</span>
+        <span class="c1"># Example (Section 5.2.1):</span>
+        <span class="c1"># Input: "Navigate from A1 to B3"</span>
+        <span class="c1"># → Output: "North 2m, East 1m"</span>
+
+        <span class="c1"># Input: "A1 to B3, avoid C2"</span>
+        <span class="c1"># → Output: "North 2m (avoid C2), East 1m"</span>
+
+        <span class="k">return</span> <span class="n">execute_navigation</span><span class="p">(</span><span class="n">route</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># SPATIAL CLARIFICATION (Level 3)</span>
+        <span class="c1"># Still deterministic: requires structured coordinate/landmark</span>
+        <span class="k">return</span> <span class="n">clarify_spatial_reference</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Unclear location. Specify building/floor/landmark."</span><span class="p">,</span>
+            <span class="n">current_context</span><span class="o">=</span><span class="n">route</span><span class="o">.</span><span class="n">start_pos</span><span class="p">,</span>  <span class="c1"># Stateless context passing</span>
+            <span class="n">expected_format</span><span class="o">=</span><span class="s2">"Use format: [Building][Floor][Room] or [Landmark]"</span>
+        <span class="p">)</span>
+</code></pre>
+</div>
+<p><strong>Implementation Note:</strong> While MCD maintains stateless prompt architecture (consistency principle), the underlying logic is deterministic coordinate transformation that could theoretically be hardcoded as functions. MCD embeds this logic in prompts for deployment flexibility (Section 5.2.1).</p>
+<hr/>
+<h3 id="pattern-3-dynamic-heuristic-classification-w3-diagnostics"><strong>Pattern 3: Dynamic Heuristic Classification (W3 - Diagnostics)</strong></h3>
+<p><strong>Design Rationale:</strong> System diagnostics require adaptive pattern matching across multiple categories with variable complexity, demanding heuristic routing that adjusts to issue characteristics (Section 5.2.1).</p>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">diagnostic_subtree</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    ADAPTATION PATTERN: Dynamic Heuristic Classification (W3 domain).</span>
+
+<span class="sd">    Characteristics (Section 5.2.1):</span>
+<span class="sd">      - Heuristic category routing with priority-based step sequencing</span>
+<span class="sd">      - Issue complexity variation demands adaptive classification paths</span>
+<span class="sd">      - Multiple categories (Infrastructure, Software, Network) with varying priorities</span>
+
+<span class="sd">    Logic: Heuristic classification P1/P2/P3 with adaptive step sequences</span>
+<span class="sd">    Validation: W3 shows 91% accuracy with bounded scope</span>
+<span class="sd">    Token Budget: ≤30% (diagnostic reasoning requires more tokens)</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># DEPTH LIMIT ENFORCEMENT</span>
+    <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fallback_response</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Diagnostic too complex. Break into sub-issues."</span><span class="p">,</span>
+            <span class="n">recommendation</span><span class="o">=</span><span class="s2">"Focus on primary symptom first"</span>
+        <span class="p">)</span>
+
+    <span class="c1"># DYNAMIC SYMPTOM CLASSIFICATION (Level 1)</span>
+    <span class="c1"># Adapts to variable diagnostic information availability</span>
+    <span class="n">symptoms</span> <span class="o">=</span> <span class="n">extract_symptoms</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+
+    <span class="c1"># ADAPTIVE PRIORITY ASSIGNMENT (Level 2)</span>
+    <span class="c1"># Different routing based on symptom clarity and severity</span>
+    <span class="k">if</span> <span class="n">symptoms_clear</span><span class="p">(</span><span class="n">symptoms</span><span class="p">):</span>
+        <span class="c1"># HEURISTIC CLASSIFICATION</span>
+        <span class="n">priority</span> <span class="o">=</span> <span class="n">classify_priority</span><span class="p">(</span><span class="n">symptoms</span><span class="p">)</span>  <span class="c1"># P1/P2/P3</span>
+
+        <span class="c1"># Adaptive step sequencing based on category and priority</span>
+        <span class="c1"># Example (Section 5.2.1):</span>
+        <span class="c1"># Input: "Server crash"</span>
+        <span class="c1"># → Output: "Category: Infrastructure, Priority: P1, </span>
+        <span class="c1">#           Steps: [Check logs→services→hardware]"</span>
+
+        <span class="k">return</span> <span class="n">diagnostic_recommendation</span><span class="p">(</span><span class="n">symptoms</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># ADAPTIVE CLARIFICATION (Level 3)</span>
+        <span class="c1"># Requests specific diagnostic information based on ambiguity type</span>
+
+        <span class="c1"># Example (Section 5.2.1):</span>
+        <span class="c1"># Input: "Something's slow"</span>
+        <span class="c1"># → Output: "Insufficient data for classification"</span>
+
+        <span class="k">return</span> <span class="n">request_symptom_details</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Provide: error code, frequency, impact on operations."</span><span class="p">,</span>
+            <span class="n">bounded_scope</span><span class="o">=</span><span class="s2">"Focus on most critical issue only"</span><span class="p">,</span>  <span class="c1"># Prevent scope creep</span>
+            <span class="n">classification_hint</span><span class="o">=</span><span class="s2">"Specify: Server/Network/Application/Database"</span>
+        <span class="p">)</span>
+</code></pre>
+</div>
+<hr/>
+<h3 id="architectural-decision-guide-table-51-application"><strong>Architectural Decision Guide (Table 5.1 Application)</strong></h3>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">select_adaptation_pattern</span><span class="p">(</span><span class="n">task_characteristics</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Match implementation pattern to task structure (Section 5.2.1).</span>
+
+<span class="sd">    Critical Principle: Over-engineering navigation wastes tokens;</span>
+<span class="sd">                       under-engineering diagnostics fails variable patterns.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># PATTERN SELECTION DECISION TREE</span>
+    <span class="k">if</span> <span class="n">task_characteristics</span><span class="p">[</span><span class="s2">"information_density"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"unpredictable"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">task_characteristics</span><span class="p">[</span><span class="s2">"requires_nlu_parsing"</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"DYNAMIC"</span>  <span class="c1"># W1 Healthcare, W3 Diagnostics</span>
+            <span class="c1"># Rationale: Natural language variability demands runtime adaptation</span>
+
+    <span class="k">elif</span> <span class="n">task_characteristics</span><span class="p">[</span><span class="s2">"has_structured_relationships"</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">task_characteristics</span><span class="p">[</span><span class="s2">"allows_mathematical_transform"</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"SEMI-STATIC"</span>  <span class="c1"># W2 Navigation</span>
+            <span class="c1"># Rationale: Fixed spatial logic enables deterministic calculation</span>
+
+    <span class="k">elif</span> <span class="n">task_characteristics</span><span class="p">[</span><span class="s2">"requires_heuristic_classification"</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">task_characteristics</span><span class="p">[</span><span class="s2">"complexity_varies"</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"DYNAMIC"</span>  <span class="c1"># W3 Diagnostics</span>
+            <span class="c1"># Rationale: Issue patterns require adaptive routing</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"DYNAMIC"</span>  <span class="c1"># Default to dynamic for safety (handles variability)</span>
+</code></pre>
+</div>
+<hr/>
+<h3 id="g42-layer-2-control-layer-decision-tree"><strong>G.4.2 Layer 2: Control Layer Decision Tree</strong></h3>
+<p><strong>Purpose:</strong> Route user inputs through appropriate processing paths based on complexity classification. Node complexity ≤5 decision points, path depth ≤3 levels (validated in T3/T7).</p>
+<hr/>
+<h4 id="route-selection-control-logic"><strong>Route Selection Control Logic</strong></h4>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">control_layer_router</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Control layer decision tree architecture.</span>
+
+<span class="sd">    Constraints:</span>
+<span class="sd">        - Node complexity: ≤5 decision points per node</span>
+<span class="sd">        - Path depth: ≤3 levels maximum</span>
+<span class="sd">        - Exit conditions: Explicitly defined for all paths</span>
+<span class="sd">        - Fallback routes: From every decision point (T3/T7/T9 validation)</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># INPUT COMPLEXITY CLASSIFICATION</span>
+    <span class="n">input_classification</span> <span class="o">=</span> <span class="n">classify_input_complexity</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+
+    <span class="c1"># ROUTING DECISION TREE</span>
+    <span class="k">if</span> <span class="n">input_classification</span> <span class="o">==</span> <span class="s2">"simple_query"</span><span class="p">:</span>
+        <span class="c1"># Single-turn resolution, no state tracking needed</span>
+        <span class="k">return</span> <span class="n">direct_response_path</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">input_classification</span> <span class="o">==</span> <span class="s2">"complex_request"</span><span class="p">:</span>
+        <span class="c1"># Multi-step workflow with state management</span>
+        <span class="k">return</span> <span class="n">multi_step_path</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">input_classification</span> <span class="o">==</span> <span class="s2">"ambiguous_input"</span><span class="p">:</span>
+        <span class="c1"># Clarification required before processing</span>
+        <span class="k">return</span> <span class="n">clarification_path</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">input_classification</span> <span class="o">==</span> <span class="s2">"invalid_input"</span><span class="p">:</span>
+        <span class="c1"># Error handling with recovery guidance</span>
+        <span class="k">return</span> <span class="n">error_handling_path</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># FALLBACK: Unrecognized pattern</span>
+        <span class="k">return</span> <span class="n">fallback_escalation</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Unrecognized input pattern."</span><span class="p">,</span>
+            <span class="n">suggestion</span><span class="o">=</span><span class="s2">"Rephrase or contact support."</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">multi_step_path</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Multi-step workflow implementation (e.g., booking, diagnostics).</span>
+
+<span class="sd">    Example: Healthcare booking workflow (W1)</span>
+<span class="sd">    Validation: Each step has explicit exit condition</span>
+<span class="sd">    State Management: Stateless with explicit context passing (T4)</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># DETERMINE CURRENT WORKFLOW STEP</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="n">determine_current_step</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="c1"># STEP 1: INTENT CLASSIFICATION</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="o">==</span> <span class="s2">"intent_classification"</span><span class="p">:</span>
+        <span class="n">intent</span> <span class="o">=</span> <span class="n">classify_intent</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"intent"</span><span class="p">:</span> <span class="n">intent</span><span class="p">,</span> <span class="s2">"step_count"</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">transition_to_step</span><span class="p">(</span><span class="s2">"slot_extraction"</span><span class="p">)</span>
+
+    <span class="c1"># STEP 2: SLOT EXTRACTION</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">==</span> <span class="s2">"slot_extraction"</span><span class="p">:</span>
+        <span class="n">slots</span> <span class="o">=</span> <span class="n">extract_slots</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"slots"</span><span class="p">:</span> <span class="n">slots</span><span class="p">,</span> <span class="s2">"step_count"</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">slots_complete</span><span class="p">(</span><span class="n">slots</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">transition_to_step</span><span class="p">(</span><span class="s2">"validation"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># BOUNDED CLARIFICATION (≤2 iterations)</span>
+            <span class="k">return</span> <span class="n">clarification_path</span><span class="p">(</span><span class="n">identify_missing</span><span class="p">(</span><span class="n">slots</span><span class="p">))</span>
+
+    <span class="c1"># STEP 3: VALIDATION</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">==</span> <span class="s2">"validation"</span><span class="p">:</span>
+        <span class="n">validated</span> <span class="o">=</span> <span class="n">validate_booking</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s2">"slots"</span><span class="p">])</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"validated"</span><span class="p">:</span> <span class="n">validated</span><span class="p">,</span> <span class="s2">"step_count"</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">validated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">transition_to_step</span><span class="p">(</span><span class="s2">"confirmation"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">error_handling_path</span><span class="p">(</span><span class="s2">"Validation failed: "</span> <span class="o">+</span> <span class="n">validated</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+
+    <span class="c1"># STEP 4: CONFIRMATION</span>
+    <span class="k">elif</span> <span class="n">step</span> <span class="o">==</span> <span class="s2">"confirmation"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">complete_booking</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s2">"slots"</span><span class="p">])</span>
+
+    <span class="c1"># FALLBACK: Inconsistent workflow state</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fallback_escalation</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Workflow state inconsistent."</span><span class="p">,</span>
+            <span class="n">context_snapshot</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+            <span class="n">recovery</span><span class="o">=</span><span class="s2">"Restart from intent classification."</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_fallback_coverage</span><span class="p">(</span><span class="n">control_tree</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Validation function: Every node must have explicit fallback route.</span>
+
+<span class="sd">    Evidence: T3/T7/T9 show ≥80% controlled degradation with fallbacks</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">control_tree</span><span class="o">.</span><span class="n">all_nodes</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="n">node</span><span class="o">.</span><span class="n">has_fallback</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">,</span> \
+            <span class="sa">f</span><span class="s2">"CRITICAL: Node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> missing fallback (T3/T7/T9 requirement)"</span>
+</code></pre>
+</div>
+<hr/>
+<h3 id="g43-layer-3-execution-layer-quantization-aware"><strong>G.4.3 Layer 3: Execution Layer (Quantization-Aware)</strong></h3>
+<p><strong>Purpose:</strong> Select optimal quantization tier based on task complexity and hardware constraints, with dynamic routing Q1→Q4→Q8 when drift detected (T10 validation).</p>
+<hr/>
+<h4 id="quantization-tier-selection"><strong>Quantization Tier Selection</strong></h4>
+<div class="codehilite">
+<pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">quantization_tier_selector</span><span class="p">(</span><span class="n">task_complexity</span><span class="p">,</span> <span class="n">hardware_constraints</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Quantization-aware execution with dynamic tier routing.</span>
+
+<span class="sd">    Based on T10 findings:</span>
+<span class="sd">        - Q4 optimal for 80% of tasks</span>
+<span class="sd">        - Q1→Q4 escalation when drift &gt;10%</span>
+<span class="sd">        - Q4→Q8 escalation when performance inadequate (&lt;80%)</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        task_complexity: "simple" | "moderate" | "complex"</span>
+<span class="sd">        hardware_constraints: {"ram_mb": int, "platform": str}</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># TASK COMPLEXITY ASSESSMENT</span>
+    <span class="k">if</span> <span class="n">task_complexity</span> <span class="o">==</span> <span class="s2">"simple"</span><span class="p">:</span>  <span class="c1"># FAQ, basic classification</span>
+        <span class="k">return</span> <span class="n">try_q1_with_fallback</span><span class="p">()</span>
+
+    <span class="k">elif</span> <span class="n">task_complexity</span> <span class="o">==</span> <span class="s2">"moderate"</span><span class="p">:</span>  <span class="c1"># Slot-filling, navigation</span>
+        <span class="k">return</span> <span class="n">start_with_q4</span><span class="p">()</span>
+
+    <span class="k">elif</span> <span class="n">task_complexity</span> <span class="o">==</span> <span class="s2">"complex"</span><span class="p">:</span>  <span class="c1"># Multi-step reasoning</span>
+        <span class="k">return</span> <span class="n">start_with_q8</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># HARDWARE OVERRIDE: Constraints supersede task complexity</span>
+        <span class="k">return</span> <span class="n">hardware_constraint_override</span><span class="p">(</span><span class="n">hardware_constraints</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">try_q1_with_fallback</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Q1 tier: Ultra-minimal (Qwen2-0.5B, 300MB).</span>
+
+<span class="sd">    Strategy: Start with Q1 for efficiency, escalate if drift detected.</span>
+<span class="sd">    Validation: T10 shows 85% retention under Q1, 15% require escalation.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># LOAD Q1 MODEL</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">tier</span><span class="o">=</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s2">"Qwen2-0.5B-Q1"</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+    <span class="c1"># SEMANTIC DRIFT DETECTION (T10 methodology)</span>
+    <span class="n">drift_score</span> <span class="o">=</span> <span class="n">calculate_semantic_drift</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">expected_output</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">drift_score</span> <span class="o">&gt;</span> <span class="mf">0.10</span><span class="p">:</span>  <span class="c1"># T10 threshold: &gt;10% drift</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Q1 drift detected: </span><span class="si">{</span><span class="n">drift_score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> &gt; 0.10"</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Escalating to Q4 tier..."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fallback_to_q4</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Q1 optimal efficiency: drift=</span><span class="si">{</span><span class="n">drift_score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">start_with_q4</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Q4 tier: Optimal balance (TinyLlama-1.1B, 560MB).</span>
+
+<span class="sd">    Evidence: T8 validation shows Q4 optimal for browser/WASM</span>
+<span class="sd">    Performance: 95% task success rate, 430ms average latency</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># LOAD Q4 MODEL</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">tier</span><span class="o">=</span><span class="s2">"Q4"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s2">"TinyLlama-1.1B-Q4"</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+    <span class="c1"># PERFORMANCE EVALUATION</span>
+    <span class="n">performance_score</span> <span class="o">=</span> <span class="n">evaluate_performance</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">performance_score</span> <span class="o">&lt;</span> <span class="mf">0.80</span><span class="p">:</span>  <span class="c1"># Performance inadequate threshold</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Q4 insufficient: performance=</span><span class="si">{</span><span class="n">performance_score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Escalating to Q8 tier..."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">escalate_to_q8</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Q4 validated sweet spot: performance=</span><span class="si">{</span><span class="n">performance_score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">start_with_q8</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Q8 tier: Complex reasoning (Llama-3.2-1B, 800MB).</span>
+
+<span class="sd">    Use case: Multi-step diagnostics, complex spatial reasoning</span>
+<span class="sd">    Validation: Required Q4 justification per G.2.5 Anti-Pattern 3</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># LOAD Q8 MODEL</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">tier</span><span class="o">=</span><span class="s2">"Q8"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s2">"Llama-3.2-1B-Q8"</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+    <span class="c1"># OVERPROVISIONING CHECK</span>
+    <span class="k">if</span> <span class="n">is_overprovisioned</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">task_complexity</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Q8 overkill detected, downgrading to Q4..."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">downgrade_to_q4</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Q8 necessary for task complexity"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">hardware_constraint_override</span><span class="p">(</span><span class="n">constraints</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Hardware limitations override task complexity decisions.</span>
+
+<span class="sd">    Priority: Hardware constraints &gt; Task complexity preferences</span>
+<span class="sd">    Evidence: T8 shows platform-specific optimal tiers</span>
+<span class="sd">    """</span>
+
+    <span class="n">ram_available</span> <span class="o">=</span> <span class="n">constraints</span><span class="p">[</span><span class="s2">"ram_mb"</span><span class="p">]</span>
+    <span class="n">platform</span> <span class="o">=</span> <span class="n">constraints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"platform"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
+
+    <span class="c1"># CONSTRAINT 1: Severe RAM limitation</span>
+    <span class="k">if</span> <span class="n">ram_available</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RAM </span><span class="si">{</span><span class="n">ram_available</span><span class="si">}</span><span class="s2">MB &lt; 256MB: Forcing Q1/Q4 only"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">force_q1_q4_only</span><span class="p">()</span>
+
+    <span class="c1"># CONSTRAINT 2: Moderate RAM limitation</span>
+    <span class="k">elif</span> <span class="mi">256</span> <span class="o">&lt;=</span> <span class="n">ram_available</span> <span class="o">&lt;</span> <span class="mi">1024</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RAM </span><span class="si">{</span><span class="n">ram_available</span><span class="si">}</span><span class="s2">MB: Q4/Q8 acceptable"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">allow_q4_q8</span><span class="p">()</span>
+
+    <span class="c1"># CONSTRAINT 3: Browser/WASM platform</span>
+    <span class="k">elif</span> <span class="n">platform</span> <span class="o">==</span> <span class="s2">"browser_wasm"</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Browser/WASM detected: Q4 optimal (T8 validation)"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">force_q4_tier</span><span class="p">()</span>
+
+    <span class="c1"># CONSTRAINT 4: Unconstrained</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RAM </span><span class="si">{</span><span class="n">ram_available</span><span class="si">}</span><span class="s2">MB &gt;1GB: All tiers available"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">allow_all_tiers</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dynamic_tier_router</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">initial_tier</span><span class="o">=</span><span class="s2">"Q4"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Continuous monitoring with automatic escalation/degradation.</span>
+
+<span class="sd">    Adaptive Strategy: Start conservative, adjust based on drift</span>
+<span class="sd">    Validation: T10 shows dynamic routing improves efficiency 18%</span>
+<span class="sd">    """</span>
+
+    <span class="n">current_tier</span> <span class="o">=</span> <span class="n">initial_tier</span>
+    <span class="n">drift_history</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">max_iterations</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Prevent infinite escalation loops</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
+        <span class="c1"># GENERATE WITH CURRENT TIER</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">generate_with_tier</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">current_tier</span><span class="p">)</span>
+
+        <span class="c1"># CALCULATE DRIFT</span>
+        <span class="n">drift</span> <span class="o">=</span> <span class="n">calculate_semantic_drift</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">drift_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">drift</span><span class="p">)</span>
+
+        <span class="c1"># ESCALATION DECISION</span>
+        <span class="k">if</span> <span class="n">drift</span> <span class="o">&gt;</span> <span class="mf">0.10</span> <span class="ow">and</span> <span class="n">current_tier</span> <span class="o">&lt;</span> <span class="s2">"Q8"</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">: Drift </span><span class="si">{</span><span class="n">drift</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> &gt;10%, escalating"</span><span class="p">)</span>
+            <span class="n">current_tier</span> <span class="o">=</span> <span class="n">escalate_tier</span><span class="p">(</span><span class="n">current_tier</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># DEGRADATION DECISION</span>
+        <span class="k">elif</span> <span class="n">drift</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="n">current_tier</span> <span class="o">&gt;</span> <span class="s2">"Q1"</span> <span class="ow">and</span> <span class="n">is_overprovisioned</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">: Drift </span><span class="si">{</span><span class="n">drift</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> &lt;5%, downgrading"</span><span class="p">)</span>
+            <span class="n">current_tier</span> <span class="o">=</span> <span class="n">degrade_tier</span><span class="p">(</span><span class="n">current_tier</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># STABLE TIER FOUND</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tier </span><span class="si">{</span><span class="n">current_tier</span><span class="si">}</span><span class="s2"> stable: drift=</span><span class="si">{</span><span class="n">drift</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">response</span>
+
+    <span class="c1"># MAX ITERATIONS REACHED</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Max iterations reached, using tier </span><span class="si">{</span><span class="n">current_tier</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+</code></pre>
+</div>
+<hr/>
+<p><strong>G.4 Output:</strong> Three-layer architecture with embedded decision logic and quantization-aware execution → <strong>PROCEED TO PHASE 5 (Appendix G.5)</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="g5">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">G.5 Phase 5: Evidence-Based Validation Test Protocols</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+<p><strong>Purpose:</strong> Validate MCD implementation against empirical thresholds from Chapters 6-7 using T1-T10 test methodologies and W1-W3 domain-specific protocols. All tests reference established baselines with quantified pass/fail criteria.</p>
+<hr/>
+<h3 id="g51-core-mcd-validation-suite-t1-t10-protocols"><strong>G.5.1 Core MCD Validation Suite (T1-T10 Protocols)</strong></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Test</strong></th>
+<th><strong>Objective</strong></th>
+<th><strong>Pass Threshold</strong></th>
+<th><strong>Evidence Source</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T1-Style</strong></td>
+<td>Approach effectiveness vs alternatives</td>
+<td>≥90% expected performance</td>
+<td>Chapter 6.2</td>
+</tr>
+<tr>
+<td><strong>T4-Style</strong></td>
+<td>Stateless context reconstruction</td>
+<td>≥90% recovery (5/5 vs 2/5 implicit)</td>
+<td>Section 6.3.4</td>
+</tr>
+<tr>
+<td><strong>T6-Style</strong></td>
+<td>Over-engineering detection (RI calculation)</td>
+<td>RI ≤10, no components &gt;20% overhead</td>
+<td>Section 6.3.6</td>
+</tr>
+<tr>
+<td><strong>T7-Style</strong></td>
+<td>Constraint stress testing</td>
+<td>≥80% controlled failure, no hallucination</td>
+<td>Section 6.3.7</td>
+</tr>
+<tr>
+<td><strong>T8-Style</strong></td>
+<td>Deployment environment (browser/WASM)</td>
+<td>Zero crashes, &lt;500MB RAM, &lt;500ms latency</td>
+<td>Section 6.3.8</td>
+</tr>
+<tr>
+<td><strong>T10-Style</strong></td>
+<td>Quantization tier validation (Q1→Q4→Q8)</td>
+<td>Optimal tier selected ≥90% cases</td>
+<td>Section 6.3.10</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation Note:</strong> Run each test with n=5 trials minimum per configuration. Calculate 95% confidence intervals for completion rates. Document all failures with root cause analysis.</p>
+<hr/>
+<h3 id="g52-domain-specific-validation-w1-w3-protocols"><strong>G.5.2 Domain-Specific Validation (W1-W3 Protocols)</strong></h3>
+<p><strong>W1 Protocol (Healthcare Booking):</strong></p>
+<ul>
+<li>Task domain deployment with comparative performance vs Few-Shot/Conversational</li>
+<li>Metrics: Completion rate, token efficiency, latency, UX score</li>
+<li>Target: ≥85% completion under Q4 constraints (Chapter 7.2)</li>
+</ul>
+<p><strong>W2 Protocol (Spatial Navigation):</strong></p>
+<ul>
+<li>Real-world scenario execution under stateless constraints</li>
+<li>Metrics: Route accuracy, coordinate precision, safety communication</li>
+<li>Target: ≥80% successful navigation with transparent limitation acknowledgment (Chapter 7.3)</li>
+</ul>
+<p><strong>W3 Protocol (System Diagnostics):</strong></p>
+<ul>
+<li>Failure mode documentation with priority classification (P1/P2/P3)</li>
+<li>Metrics: Diagnostic accuracy, bounded scope adherence, systematic troubleshooting</li>
+<li>Target: ≥85% correct priority assignment, no fabricated root causes (Chapter 7.4)</li>
+</ul>
+<hr/>
+<h3 id="g53-multi-dimensional-diagnostic-checks"><strong>G.5.3 Multi-Dimensional Diagnostic Checks</strong></h3>
+<p><strong>Decision Tree Health Metrics:</strong></p>
+<ul>
+<li>Average path length: ≤3 levels (T5 constraint)</li>
+<li>Branching factor: ≤4 per node (complexity limit)</li>
+<li>Fallback activation frequency: Monitor for &gt;15% (indicates edge case gaps)</li>
+<li>Dead paths: Zero unused routes after test coverage</li>
+</ul>
+<p><strong>Context-Optimality Scoring:</strong></p>
+<ul>
+<li><strong>Resource-constrained:</strong> Efficiency score ≥80%</li>
+<li><strong>User experience:</strong> UX score ≥75%</li>
+<li><strong>Professional quality:</strong> Quality score ≥85%</li>
+</ul>
+<p><strong>Performance vs Complexity Analysis:</strong></p>
+<ul>
+<li>Plot: Efficiency vs resource usage</li>
+<li>Identify: Pareto frontier for optimal trade-offs</li>
+<li>Validate: Token cost justified by measurable improvement</li>
+</ul>
+<hr/>
+<h3 id="g54-final-deployment-decision-matrix"><strong>G.5.4 Final Deployment Decision Matrix</strong></h3>
+<pre><code>DEPLOYMENT_READINESS_CHECKLIST:
+
+✓ Core Tests (T1-T10):
+  - All tests PASS with thresholds met
+  - Decision trees validated (depth ≤3, branches ≤4)
+  - Redundancy Index ≤10 for all components
+
+✓ Domain Tests (W1-W3):
+  - Representative domain scenarios tested
+  - Comparative analysis vs baseline approaches documented
+  - Failure modes characterized with recovery strategies
+
+✓ Context Requirements:
+  - Efficiency priority → Score ≥80%
+  - UX priority → Score ≥75%
+  - Quality priority → Score ≥85%
+
+DECISION LOGIC:
+  IF all_core_tests == PASS AND domain_validation == PASS AND context_requirements == MET:
+    → DEPLOY MCD AGENT ✅
+    → Document: Performance baselines, monitoring thresholds
+
+  ELSE:
+    → RETURN TO FAILED PHASE for redesign
+    → Document: Specific failure modes, remediation plan
+    → ITERATE: Fix issues, re-run validation
+
+UNSUITABLE DETERMINATION:
+  IF multiple_iterations_fail OR fundamental_constraint_mismatch:
+    → Recommend alternative frameworks (LangChain, AutoGPT)
+    → Document: Justification with empirical evidence
+</code></pre>
+<hr/>
+<h3 id="g55-monitoring-integration-post-deployment"><strong>G.5.5 Monitoring Integration Post-Deployment</strong></h3>
+<p><strong>Ongoing Validation (Production Environment):</strong></p>
+<ol>
+<li><strong>Semantic Drift Monitor:</strong> Continuous comparison across quantization tiers, alert if drift &gt;10%</li>
+<li><strong>Dynamic Tier Selection:</strong> Automatic Q1→Q4→Q8 escalation with performance tracking</li>
+<li><strong>Performance Benchmarking:</strong> Weekly validation against established efficiency thresholds from Chapter 6</li>
+<li><strong>Usage Pattern Analysis:</strong> Monthly review of component utilization, flag if any &lt;10% (G.3.3 Q9)</li>
+</ol>
+<hr/>
+<p><strong>G.5 Output:</strong> Validated MCD implementation ready for deployment with documented performance characteristics and monitoring plan.</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="gx-block">
+  <div class="gx-card gx-page-block" id="end">
+    <div class="gx-card-header header-575">
+      <h4 class="gx-card-title">End</h4>
+      <div class="header-tools">
+        <a href="#" class="m-r-10 gx-full-card">
+          <i class="ri-fullscreen-line" title="Full Screen"></i>
+        </a>
+      </div>
+    </div>
+    <div class="gx-card-content">
+      <div class="intro">
+
+<hr/>
+<h2><strong>End of Appendix G: MCD Framework Decision Tree Implementation</strong></h2>
+<hr/>
+<h2><strong>- End of Appendixes -</strong></h2>
+<hr/>
+      </div>
+    </div>
+  </div>
+</div>
+      
+      <!-- Navigation -->
+      <section class="chapter-nav">
+         <nav class="page-nav" aria-label="Page navigation">
+            <a class="nav-link prev" href="c10.html#links" rel="prev">Prev : Chapter 10</a>
+           <a class="nav-link next" href="#" rel="next">End</a>
+         </nav>
+      </section>
+      
+      <hr class="section-divider">
+    </div>
+
+
+
+
+</div>
+
+					<!-- Sidebar Topics -->
+					<div class="gx-side-overlay"></div>
+					<div class="col-xl-3 col-md-12 gx-topic">
+						<div class="gx-card topic-sidebar">
+							<div class="gx-card-header">
+								<h4 class="gx-card-title">Topics</h4>
+							</div>
+							<div class="gx-card-content gx-topic-list">
+								<nav>
+									<ul class="topic-list">
+<li><a class="topic" href="#ch1-intro">Contents Overview</a></li>
+<li><a class="topic" href="#g1">G.1 Phase 1: Context Assessment &amp; Requirements Analysis</a></li>
+<li><a class="topic" href="#g2">G.2 Phase 2: Prompt Engineering Approach Selection</a></li>
+<li><a class="topic" href="#g3">G.3 Phase 3: MCD Principle Application Workflows</a></li>
+<li><a class="topic" href="#g4">G.4 Phase 4: Layer Implementation with Decision Trees</a></li>
+<li><a class="topic" href="#g5">G.5 Phase 5: Evidence-Based Validation Test Protocols</a></li>
+<li><a class="topic" href="#end">End</a></li>
+
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+	</main>
+
+	<!-- Vendor Custom -->
+	<script src="assets/js/vendor/jquery-3.6.4.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/vendor/prism.js"></script>
+	<!-- Main Custom -->
+	<script src="assets/js/main.js"></script>
+		<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tables = document.querySelectorAll('table');
+  
+  tables.forEach(function(table) {
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'table-responsive';
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+  
+  console.log(`Wrapped ${tables.length} tables for responsive behavior`);
+});
+</script>
+	
+</body>
+
+</html>

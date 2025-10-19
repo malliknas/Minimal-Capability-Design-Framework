@@ -532,7 +532,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>			
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>			
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -604,45 +606,86 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <h4>B.1.1 Hardware Configuration</h4>
-<p>The MCD framework validation was conducted using the following standardized hardware configuration:<br />
-Primary Testing Platform:<br />
-Platform: Windows 11 (NT 10.0, Win64 x64)<br />
-Memory: 8GB RAM<br />
-CPU Cores: 8 cores<br />
-GPU Support: WebGPU Available<br />
-Browser: Chrome 140.0.0.0 (also tested on Edge 140.0.0.0)<br />
-Runtime Environment: WebAssembly (WASM) with local browser execution</p>
-<p>Browser Engine Details:<br />
-User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0<br />
-JavaScript Engine: V8<br />
-WebGPU: Supported and Available<br />
-WebAssembly: Full WASM support enabled</p>
-<h4>B.1.2 Model Configuration and Quantization Tiers</h4>
-<p>Available Model Pool (135+ models tested):<br />
-The testing framework included access to 135+ quantized models across different parameter scales and optimization levels.</p>
-<p>Primary Test Models by Quantization Tier:<br />
-Q1 Tier (Ultra-Minimal - ~300MB)<br />
-Primary: Qwen2-0.5B-Instruct-q4f161-MLC<br />
-Backup: SmolLM2-360M-Instruct-q4f161-MLC<br />
-Memory Target: &lt;300MB<br />
-Use Case: Ultra-constrained environments, proof-of-concept validation</p>
-<p>Q4 Tier (Balanced - ~600MB)<br />
-Primary: TinyLlama-1.1B-Chat-v1.0-q4f161-MLC<br />
-Secondary: Qwen2.5-0.5B-Instruct-q4f161-MLC<br />
-Memory Target: 500-700MB<br />
-Use Case: Production deployment, optimal efficiency-quality balance</p>
-<p>Q8 Tier (Performance - ~800MB+)<br />
-Primary: Llama-3.2-1B-Instruct-q4f321-MLC<br />
-Secondary: Llama-3.1-8B-Instruct-q4f161-MLC-1k<br />
-Memory Target: 600-1200MB<br />
-Use Case: Complex reasoning, fallback tier for Q4 failures</p>
-<p>Extended Model Pool (Validation Coverage):<br />
-Llama Family: 3.2-1B, 3.2-3B, 3.1-8B variants<br />
-Qwen Family: 2.5 series (0.5B-7B), 3.0 series (0.6B-8B)<br />
-Specialized Models: DeepSeek-R1-Distill, Hermes-3, Phi-3.5, SmolLM2<br />
-Domain-Specific: WizardMath-7B, Qwen2.5-Coder series</p>
-                     
+      <h3 id="b11-hardware-configuration"><strong>B.1.1 Hardware Configuration</strong></h3>
+<p>The MCD framework validation was conducted using the following standardized hardware configuration to ensure reproducibility and constraint-representative testing conditions.</p>
+<p><strong>Primary Testing Platform:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Component</strong></th>
+<th><strong>Specification</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Platform</strong></td>
+<td>Windows 11 (NT 10.0, Win64 x64)</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>8GB RAM</td>
+</tr>
+<tr>
+<td><strong>CPU Cores</strong></td>
+<td>8 cores</td>
+</tr>
+<tr>
+<td><strong>GPU Support</strong></td>
+<td>WebGPU Available</td>
+</tr>
+<tr>
+<td><strong>Browser</strong></td>
+<td>Chrome 140.0.0.0 (also tested on Edge 140.0.0.0)</td>
+</tr>
+<tr>
+<td><strong>Runtime Environment</strong></td>
+<td>WebAssembly (WASM) with local browser execution</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Browser Engine Details:</strong></p>
+<ul>
+<li><strong>User Agent:</strong> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0</li>
+<li><strong>JavaScript Engine:</strong> V8</li>
+<li><strong>WebGPU:</strong> Supported and Available</li>
+<li><strong>WebAssembly:</strong> Full WASM support enabled</li>
+</ul>
+<hr/>
+<h3 id="b12-model-configuration-and-quantization-tiers"><strong>B.1.2 Model Configuration and Quantization Tiers</strong></h3>
+<p><strong>Available Model Pool:</strong></p>
+<p>The testing framework included access to <strong>135+ quantized models</strong> across different parameter scales and optimization levels, enabling comprehensive validation coverage across diverse architectures.</p>
+<p><strong>Primary Test Models by Quantization Tier:</strong></p>
+<p><strong>Q1 Tier (Ultra-Minimal)</strong></p>
+<ul>
+<li><strong>Primary Model:</strong> Qwen2-0.5B-Instruct-q4f16_1-MLC</li>
+<li><strong>Backup Model:</strong> SmolLM2-360M-Instruct-q4f16_1-MLC</li>
+<li><strong>Memory Target:</strong> &lt;300MB RAM</li>
+<li><strong>Validated Performance:</strong> 85% retention under Q1 constraints (T10)</li>
+<li><strong>Use Case:</strong> Ultra-constrained environments, proof-of-concept validation, simple FAQ/classification tasks</li>
+</ul>
+<p><strong>Q4 Tier (Optimal Balance)</strong></p>
+<ul>
+<li><strong>Primary Model:</strong> TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC</li>
+<li><strong>Secondary Model:</strong> Qwen2.5-0.5B-Instruct-q4f16_1-MLC</li>
+<li><strong>Memory Target:</strong> 500-700MB (stable at 560MB typical)</li>
+<li><strong>Validated Performance:</strong> Optimal for 80% of tasks, 430ms average latency (T8/T10)</li>
+<li><strong>Use Case:</strong> Production deployment, optimal efficiency-quality balance</li>
+</ul>
+<p><strong>Q8 Tier (Strategic Fallback)</strong></p>
+<ul>
+<li><strong>Primary Model:</strong> Llama-3.2-1B-Instruct-q4f32_1-MLC</li>
+<li><strong>Secondary Model:</strong> Llama-3.1-8B-Instruct-q4f16_1-MLC-1k</li>
+<li><strong>Memory Target:</strong> 600-1200MB (800MB typical for 1B models)</li>
+<li><strong>Validated Performance:</strong> Used when Q4 drift &gt;10% or performance &lt;80% threshold</li>
+<li><strong>Use Case:</strong> Complex reasoning, multi-step diagnostics, Q4 escalation fallback</li>
+</ul>
+<p><strong>Extended Model Pool (Validation Coverage):</strong></p>
+<ul>
+<li><strong>Llama Family:</strong> 3.2-1B, 3.2-3B, 3.1-8B variants</li>
+<li><strong>Qwen Family:</strong> 2.5 series (0.5B-7B), 3.0 series (0.6B-8B)</li>
+<li><strong>Specialized Models:</strong> DeepSeek-R1-Distill, Hermes-3, Phi-3.5, SmolLM2</li>
+<li><strong>Domain-Specific:</strong> WizardMath-7B, Qwen2.5-Coder series</li>
+</ul>
       </div>
     </div>
   </div>
@@ -660,63 +703,71 @@ Domain-Specific: WizardMath-7B, Qwen2.5-Coder series</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <h4>B.2.1 Token Budget Configuration</h4>
-<p>Tier-Specific Token Limits:</p>
+       <h3 id="b21-token-budget-configuration"><strong>B.2.1 Token Budget Configuration</strong></h3>
+<p><strong>Tier-Specific Token Limits:</strong></p>
 <table>
 <thead>
 <tr>
-<th>Tier</th>
-<th style="text-align: right;">Max Tokens</th>
-<th style="text-align: right;">Temperature</th>
-<th style="text-align: right;">Top-P</th>
-<th style="text-align: right;">Frequency Penalty</th>
-<th style="text-align: right;">Presence Penalty</th>
+<th><strong>Tier</strong></th>
+<th><strong>Max Tokens</strong></th>
+<th><strong>Temperature</strong></th>
+<th><strong>Top-P</strong></th>
+<th><strong>Frequency Penalty</strong></th>
+<th><strong>Presence Penalty</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Q1</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0.0</td>
-<td style="text-align: right;">0.85</td>
-<td style="text-align: right;">0.3</td>
-<td style="text-align: right;">0.1</td>
+<td><strong>Q1</strong></td>
+<td>60-90</td>
+<td>0.0</td>
+<td>0.85</td>
+<td>0.3</td>
+<td>0.1</td>
 </tr>
 <tr>
-<td>Q4</td>
-<td style="text-align: right;">90-120</td>
-<td style="text-align: right;">0.1</td>
-<td style="text-align: right;">0.8</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.3</td>
+<td><strong>Q4</strong></td>
+<td>90-130</td>
+<td>0.1</td>
+<td>0.8</td>
+<td>0.5</td>
+<td>0.3</td>
 </tr>
 <tr>
-<td>Q8</td>
-<td style="text-align: right;">144-200</td>
-<td style="text-align: right;">0.2-0.3</td>
-<td style="text-align: right;">0.8-0.9</td>
-<td style="text-align: right;">0.1-0.5</td>
-<td style="text-align: right;">0.05-0.3</td>
+<td><strong>Q8</strong></td>
+<td>130-200</td>
+<td>0.2-0.3</td>
+<td>0.8-0.9</td>
+<td>0.1-0.5</td>
+<td>0.05-0.3</td>
 </tr>
 </tbody>
 </table>
-<p>Prompt Engineering Parameters:<br />
-System Prompt: Null (stateless by design)<br />
-Dynamic Prompting: Enabled for all tiers<br />
-Template Protection: Added to prevent contamination<br />
-Context Window: Optimized per model (1k-4k tokens)</p>
-<h4>B.2.2 Memory Management Configuration</h4>
-<p>Memory Monitoring:<br />
-Pre-execution Memory: Baseline measurement before each test<br />
-Post-execution Memory: Memory usage after completion<br />
-Memory Delta: Tracked for resource efficiency scoring<br />
-Stability Threshold: ±50MB considered stable<br />
-Memory Budget: 512MB target, 1GB maximum</p>
-<p>Resource Limits:<br />
-Latency Budget: 500ms average, 2000ms maximum per query<br />
-CPU Usage: Monitored but not limited<br />
-Browser Stability: Crash detection and recovery enabled<br />
-Batch Processing: Disabled to ensure isolation</p>
+<p><strong>Rationale:</strong> Token ranges reflect capability plateau findings (Section 8.3): 90-130 tokens identified as optimal efficiency zone before diminishing returns.</p>
+<p><strong>Prompt Engineering Parameters:</strong></p>
+<ul>
+<li><strong>System Prompt:</strong> Null (stateless by design, Section 4.2)</li>
+<li><strong>Dynamic Prompting:</strong> Enabled for all tiers (adaptation to task complexity)</li>
+<li><strong>Template Protection:</strong> Added to prevent placeholder/formal letter contamination</li>
+<li><strong>Context Window:</strong> Optimized per model (1k-4k tokens depending on architecture)</li>
+</ul>
+<hr/>
+<h3 id="b22-memory-management-configuration"><strong>B.2.2 Memory Management Configuration</strong></h3>
+<p><strong>Memory Monitoring Protocol:</strong></p>
+<ul>
+<li><strong>Pre-execution Memory:</strong> Baseline measurement before each test iteration</li>
+<li><strong>Post-execution Memory:</strong> Memory usage after completion</li>
+<li><strong>Memory Delta:</strong> Tracked for resource efficiency scoring</li>
+<li><strong>Stability Threshold:</strong> ±50MB considered stable deployment</li>
+<li><strong>Memory Budget:</strong> &lt;512MB target (T8 validation), 1GB absolute maximum</li>
+</ul>
+<p><strong>Resource Limits:</strong></p>
+<ul>
+<li><strong>Latency Budget:</strong> &lt;500ms average (T8 threshold), 2000ms maximum per query</li>
+<li><strong>CPU Usage:</strong> Monitored but not limited (informational metric)</li>
+<li><strong>Browser Stability:</strong> Crash detection and recovery enabled</li>
+<li><strong>Batch Processing:</strong> Disabled to ensure test isolation and independent measurements</li>
+</ul>
       </div>
     </div>
   </div>
@@ -734,38 +785,52 @@ Batch Processing: Disabled to ensure isolation</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <h4>B.3.1 Cross-Validation Settings</h4>
-<p>Statistical Configuration:<br />
-Repeated Trials Design: n=5 independent measurements per variant<br />
-Statistical Analysis: Categorical performance differences with Fisher's Exact Test for binary outcomes; descriptive statistics for continuous metrics<br />
-Confidence Intervals: 95% CI (Wilson score method) calculated for completion rates<br />
-Sample Acknowledgment: Limited statistical power (n=5 per variant); validation relies on extreme effect sizes and cross-tier replication (Q1/Q4/Q8)<br />
-Random Seed: Fixed for reproducibility across test iterations
-</p>
-<p>Measurement Tools:<br />
-Primary: performance.now() API for high-resolution timing measurements<br />
-
-Secondary: Browser DevTools integration for resource monitoring<br />
-
-Validation: Cross-platform compatibility testing (Chrome, Firefox, Edge)<br />
-
-Error Handling: Comprehensive failure classification and logging</p>
-<h4>B.3.2 Domain-Specific Parameters</h4>
-<p>W1: Medical Appointment Domain<br />
-Slot Requirements: Doctor, Date, Time, Patient Name, Reason<br />
-Validation Rules: Date format, time slot availability, doctor specialization<br />
-Success Criteria: ≥4/5 slots correctly extracted<br />
-Fallback Depth: Maximum 3 clarification loops</p>
-<p>W2: Spatial Navigation Domain<br />
-Safety Classification: Critical path validation required<br />
-Hazard Types: Wet floors, construction zones, restricted areas<br />
-Route Validation: Point-to-point pathfinding accuracy<br />
-Memory Constraints: Stateless route recalculation required</p>
-<p>W3: Failure Diagnostics Domain<br />
-Error Categories: Server, Database, User Access, Performance, Communication<br />
-Response Structure: Component identification + structured troubleshooting<br />
-Technical Depth: Appropriate for Q1 (basic) to Q8 (detailed) tiers<br />
-Template Protection: Anti-contamination filters for formal language patterns</p>
+        <h3 id="b31-validation-settings"><strong>B.3.1 Validation Settings</strong></h3>
+<p><strong>Statistical Configuration:</strong></p>
+<ul>
+<li><strong>Repeated Trials Design:</strong> n=5 independent measurements per variant</li>
+<li><strong>Statistical Analysis:</strong>
+<ul>
+<li><strong>Categorical outcomes:</strong> Fisher's Exact Test for binary completion rates</li>
+<li><strong>Continuous metrics:</strong> Descriptive statistics (mean, median, range)</li>
+</ul></li>
+<li><strong>Confidence Intervals:</strong> 95% CI (Wilson score method) calculated for completion rates</li>
+<li><strong>Sample Acknowledgment:</strong> Limited statistical power (n=5 per variant); validation relies on extreme effect sizes and cross-tier replication (Q1/Q4/Q8)</li>
+<li><strong>Random Seed:</strong> Fixed for reproducibility across test iterations</li>
+</ul>
+<p><strong>Measurement Tools:</strong></p>
+<ul>
+<li><strong>Primary:</strong> <code>performance.now()</code> API for high-resolution timing measurements</li>
+<li><strong>Secondary:</strong> Browser DevTools integration for resource monitoring</li>
+<li><strong>Validation:</strong> Cross-platform compatibility testing (Chrome, Firefox, Edge)</li>
+<li><strong>Error Handling:</strong> Comprehensive failure classification and logging</li>
+</ul>
+<hr/>
+<h3 id="b32-domain-specific-parameters"><strong>B.3.2 Domain-Specific Parameters</strong></h3>
+<p><strong>W1: Healthcare Appointment Booking Domain (Chapter 7.2)</strong></p>
+<ul>
+<li><strong>Slot Requirements:</strong> Doctor type, Date, Time, Patient Name, Reason for visit</li>
+<li><strong>Validation Rules:</strong> Date format validation, time slot availability, doctor specialization matching</li>
+<li><strong>Success Criteria:</strong> ≥4/5 slots correctly extracted</li>
+<li><strong>Fallback Depth:</strong> Maximum <strong>2 clarification loops</strong> (bounded rationality, T5 validation)</li>
+<li><strong>Adaptation Pattern:</strong> Dynamic slot-filling (Section 5.2.1, Table 5.1)</li>
+</ul>
+<p><strong>W2: Spatial Navigation Domain (Chapter 7.3)</strong></p>
+<ul>
+<li><strong>Safety Classification:</strong> Critical path validation required for hazard communication</li>
+<li><strong>Hazard Types:</strong> Wet floors, construction zones, restricted areas, accessibility obstacles</li>
+<li><strong>Route Validation:</strong> Point-to-point pathfinding accuracy with coordinate calculations</li>
+<li><strong>Memory Constraints:</strong> Stateless route recalculation required (T4: 5/5 stateless success)</li>
+<li><strong>Adaptation Pattern:</strong> Semi-static deterministic logic (Section 5.2.1, Table 5.1)</li>
+</ul>
+<p><strong>W3: System Diagnostics Domain (Chapter 7.4)</strong></p>
+<ul>
+<li><strong>Error Categories:</strong> Server, Database, User Access, Performance, Communication failures</li>
+<li><strong>Response Structure:</strong> Component identification + priority classification (P1/P2/P3) + structured troubleshooting steps</li>
+<li><strong>Technical Depth:</strong> Appropriate for Q1 (basic identification) to Q8 (detailed root cause analysis) tiers</li>
+<li><strong>Template Protection:</strong> Anti-contamination filters for formal language patterns</li>
+<li><strong>Adaptation Pattern:</strong> Dynamic heuristic classification (Section 5.2.1, Table 5.1)</li>
+</ul>
       </div>
     </div>
   </div>
@@ -785,29 +850,121 @@ Template Protection: Anti-contamination filters for formal language patterns</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <h4>B.4.1 MCD Compliance Scoring</h4>
-<p>Alignment Metrics:<br />
-Minimality Score: Token efficiency relative to semantic value<br />
-Boundedness Score: Adherence to reasoning depth limits (≤3 steps)<br />
-Degeneracy Score: Component utilization rates (≥10% threshold)<br />
-Stateless Score: Context reconstruction success without persistent memory</p>
-<p>Classification Thresholds:<br />
-MCD-Compliant: Score ≥0.7<br />
-MCD-Compatible: Score 0.4-0.69<br />
-Non-MCD: Score &lt;0.4<br />
-Over-Engineered: Redundancy Index &gt;10</p>
-<h4>B.4.2 Performance Classification</h4>
-<p>Tier Performance Categories:<br />
-Excellent: ≥90% completion rate, optimal resource usage<br />
-Good: 75-89% completion rate, acceptable efficiency<br />
-Acceptable: 60-74% completion rate, within memory bounds<br />
-Poor: &lt;60% completion rate or excessive resource consumption</p>
-<p>Edge Deployment Classification:<br />
-Edge-Superior: &lt;400ms latency, &lt;300MB memory, 100% success<br />
-Edge-Optimized: &lt;500ms latency, &lt;500MB memory, ≥90% success<br />
-Edge-Compatible: &lt;750ms latency, &lt;700MB memory, ≥75% success<br />
-Edge-Risky: &lt;1000ms latency, &lt;1GB memory, ≥60% success<br />
-Deployment-Hostile: Exceeds edge deployment constraints</p>
+        <h3 id="b41-mcd-compliance-scoring"><strong>B.4.1 MCD Compliance Scoring</strong></h3>
+<p><strong>Alignment Metrics (Section 4.2 Principles):</strong></p>
+<ul>
+<li><strong>Minimality Score:</strong> Token efficiency relative to semantic value delivered</li>
+<li><strong>Boundedness Score:</strong> Adherence to reasoning depth limits (≤3 steps, Section 4.2)</li>
+<li><strong>Degeneracy Score:</strong> Component utilization rates (≥10% threshold, T7 validation)</li>
+<li><strong>Stateless Score:</strong> Context reconstruction success without persistent memory (T4: 5/5 vs 2/5)</li>
+</ul>
+<p><strong>Classification Thresholds:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Category</strong></th>
+<th><strong>Score Range</strong></th>
+<th><strong>Interpretation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MCD-Compliant</strong></td>
+<td>≥0.7</td>
+<td>Full adherence to MCD principles</td>
+</tr>
+<tr>
+<td><strong>MCD-Compatible</strong></td>
+<td>0.4-0.69</td>
+<td>Partial alignment, acceptable with documentation</td>
+</tr>
+<tr>
+<td><strong>Non-MCD</strong></td>
+<td>&lt;0.4</td>
+<td>Violates core principles</td>
+</tr>
+<tr>
+<td><strong>Over-Engineered</strong></td>
+<td>RI &gt;10</td>
+<td>Redundancy Index exceeds efficiency threshold (T6)</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="b42-performance-classification"><strong>B.4.2 Performance Classification</strong></h3>
+<p><strong>Tier Performance Categories:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Category</strong></th>
+<th><strong>Completion Rate</strong></th>
+<th><strong>Resource Usage</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Excellent</strong></td>
+<td>≥90%</td>
+<td>Optimal efficiency, within all constraints</td>
+</tr>
+<tr>
+<td><strong>Good</strong></td>
+<td>75-89%</td>
+<td>Acceptable efficiency, minor deviations</td>
+</tr>
+<tr>
+<td><strong>Acceptable</strong></td>
+<td>60-74%</td>
+<td>Within memory bounds, performance adequate</td>
+</tr>
+<tr>
+<td><strong>Poor</strong></td>
+<td>&lt;60%</td>
+<td>Excessive resource consumption or low success</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Edge Deployment Classification:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Category</strong></th>
+<th><strong>Latency</strong></th>
+<th><strong>Memory</strong></th>
+<th><strong>Success Rate</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edge-Superior</strong></td>
+<td>&lt;400ms</td>
+<td>&lt;300MB</td>
+<td>100%</td>
+</tr>
+<tr>
+<td><strong>Edge-Optimized</strong></td>
+<td>&lt;500ms</td>
+<td>&lt;500MB</td>
+<td>≥90%</td>
+</tr>
+<tr>
+<td><strong>Edge-Compatible</strong></td>
+<td>&lt;750ms</td>
+<td>&lt;700MB</td>
+<td>≥75%</td>
+</tr>
+<tr>
+<td><strong>Edge-Risky</strong></td>
+<td>&lt;1000ms</td>
+<td>&lt;1GB</td>
+<td>≥60%</td>
+</tr>
+<tr>
+<td><strong>Deployment-Hostile</strong></td>
+<td>Exceeds any constraint threshold</td>
+</tr>
+</tbody>
+</table>
       </div>
     </div>
   </div>
@@ -824,45 +981,52 @@ Deployment-Hostile: Exceeds edge deployment constraints</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <h4>B.5.1 Experimental Data Format</h4>
-<p>Primary Data Structure:<br />
-json</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;exportType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Unified Comprehensive Analysis T1-T10&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ISO-8601 format&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;testBedInfo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;environment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;browser&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Win32&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8GB&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;cores&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;webgpu&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Supported&quot;</span>
+      <h3 id="b51-experimental-data-format"><strong>B.5.1 Experimental Data Format</strong></h3>
+<p><strong>Primary Data Structure:</strong></p>
+<div class="codehilite">
+<pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"exportType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unified Comprehensive Analysis T1-T10"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ISO-8601 format (YYYY-MM-DDTHH:mm:ss.sssZ)"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"testBedInfo"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"environment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"browser"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"platform"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Win32"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"memory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8GB"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"cores"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"webgpu"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Supported"</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;selectedModels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Q1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model_identifier&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;Q4&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model_identifier&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;Q8&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model_identifier&quot;</span>
+<span class="w">  </span><span class="nt">"selectedModels"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Q1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Qwen2-0.5B-Instruct-q4f16_1-MLC"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"Q4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"Q8"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Llama-3.2-1B-Instruct-q4f32_1-MLC"</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;systemSpecs&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hardware configuration&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;performanceMetrics&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aggregated results&quot;</span>
+<span class="w">  </span><span class="nt">"systemSpecs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hardware configuration details"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"performanceMetrics"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Aggregated results per test variant"</span>
 <span class="p">}</span>
-</code></pre></div>
-
-<p>Data Integrity Measures:<br />
-Contamination Detection: Template and placeholder pattern recognition<br />
-Backend Readiness: Model loading and availability verification<br />
-Tier Optimization: Quantization-specific parameter validation<br />
-Storage Integrity: Complete data capture confirmation</p>
-<h4>B.5.2 Result Classification Schema</h4>
-<p>Success Determination:<br />
-Technical Success: Task completion within resource constraints<br />
-Semantic Success: Meaningful and contextually appropriate responses<br />
-MCD Alignment: Adherence to framework principles<br />
-Edge Viability: Deployment compatibility in constrained environments</p>
-<p>Failure Categories:<br />
-Technical Failure: Crashes, timeouts, resource exhaustion<br />
-Semantic Failure: Hallucination, irrelevant responses, safety violations<br />
-Framework Violation: Non-compliance with MCD principles<br />
-Template Contamination: Use of placeholder text or formal letter patterns</p>
+</code></pre>
+</div>
+<p><strong>Data Integrity Measures:</strong></p>
+<ul>
+<li><strong>Contamination Detection:</strong> Template and placeholder pattern recognition (regex-based filtering)</li>
+<li><strong>Backend Readiness:</strong> Model loading and availability verification before test execution</li>
+<li><strong>Tier Optimization:</strong> Quantization-specific parameter validation</li>
+<li><strong>Storage Integrity:</strong> Complete data capture confirmation with checksum validation</li>
+</ul>
+<hr/>
+<h3 id="b52-result-classification-schema"><strong>B.5.2 Result Classification Schema</strong></h3>
+<p><strong>Success Determination Criteria:</strong></p>
+<ul>
+<li><strong>Technical Success:</strong> Task completion within resource constraints (&lt;512MB RAM, &lt;500ms latency)</li>
+<li><strong>Semantic Success:</strong> Meaningful and contextually appropriate responses (human-evaluated)</li>
+<li><strong>MCD Alignment:</strong> Adherence to framework principles (≥0.7 compliance score)</li>
+<li><strong>Edge Viability:</strong> Deployment compatibility in constrained environments</li>
+</ul>
+<p><strong>Failure Categories:</strong></p>
+<ul>
+<li><strong>Technical Failure:</strong> Crashes, timeouts, resource exhaustion</li>
+<li><strong>Semantic Failure:</strong> Hallucination, irrelevant responses, safety violations</li>
+<li><strong>Framework Violation:</strong> Non-compliance with MCD principles (e.g., unbounded loops, &gt;3 reasoning steps)</li>
+<li><strong>Template Contamination:</strong> Use of placeholder text or formal letter patterns (e.g., "[Your Name]", "Dear Sir/Madam")</li>
+</ul>
       </div>
     </div>
   </div>
@@ -879,28 +1043,37 @@ Template Contamination: Use of placeholder text or formal letter patterns</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <h4>B.6.1 Environment Standardization</h4>
-<p>Browser Configuration:<br />
-Cache Management: Cleared before each test session<br />
-Extension Isolation: Clean browser profiles used<br />
-Network Conditions: Local execution only, no external API calls<br />
-Resource Monitoring: Real-time memory and CPU tracking</p>
-<p>Model Loading Protocol:<br />
-Pre-load Phase: All three tiers loaded before testing begins<br />
-Warm-up Period: Initial inference to stabilize performance<br />
-Baseline Measurement: Resource usage recorded before first test<br />
-Isolation Protocol: Memory reset between test variants</p>
-<h4>B.6.2 Statistical Validity Assurance</h4>
-<p>Randomization Controls:<br />
-Test Order: Randomized variant presentation<br />
-Model Selection: Systematic tier progression (Q1→Q4→Q8)<br />
-Cross-Validation: Stratified sampling across approach types<br />
-Temporal Controls: Time-of-day effects minimized through session distribution</p>
-<p>Quality Assurance:<br />
-Inter-Rater Reliability: Automated scoring validation<br />
-Test-Retest Stability: Repeated measures for key findings<br />
-External Validation: Cross-platform compatibility verification<br />
-Data Auditing: Complete experimental trace logging</p>
+      <h3 id="b61-environment-standardization"><strong>B.6.1 Environment Standardization</strong></h3>
+<p><strong>Browser Configuration:</strong></p>
+<ul>
+<li><strong>Cache Management:</strong> Cleared before each test session</li>
+<li><strong>Extension Isolation:</strong> Clean browser profiles used (no extensions enabled)</li>
+<li><strong>Network Conditions:</strong> Local execution only, no external API calls</li>
+<li><strong>Resource Monitoring:</strong> Real-time memory and CPU tracking via DevTools</li>
+</ul>
+<p><strong>Model Loading Protocol:</strong></p>
+<ol>
+<li><strong>Pre-load Phase:</strong> All three tiers (Q1/Q4/Q8) loaded before testing begins</li>
+<li><strong>Warm-up Period:</strong> Initial inference run to stabilize performance baseline</li>
+<li><strong>Baseline Measurement:</strong> Resource usage recorded before first test iteration</li>
+<li><strong>Isolation Protocol:</strong> Memory reset between test variants to ensure independence</li>
+</ol>
+<hr/>
+<h3 id="b62-statistical-validity-assurance"><strong>B.6.2 Statistical Validity Assurance</strong></h3>
+<p><strong>Randomization Controls:</strong></p>
+<ul>
+<li><strong>Test Order:</strong> Randomized variant presentation to control order effects</li>
+<li><strong>Model Selection:</strong> Systematic tier progression (Q1→Q4→Q8) for escalation validation</li>
+<li><strong>Cross-Validation:</strong> Stratified sampling across approach types (MCD, Few-Shot, CoT, etc.)</li>
+<li><strong>Temporal Controls:</strong> Time-of-day effects minimized through session distribution</li>
+</ul>
+<p><strong>Quality Assurance:</strong></p>
+<ul>
+<li><strong>Inter-Rater Reliability:</strong> Automated scoring validation with manual spot-checking (10% sample)</li>
+<li><strong>Test-Retest Stability:</strong> Repeated measures for key findings (n=5 per variant)</li>
+<li><strong>External Validation:</strong> Cross-platform compatibility verification (Chrome, Firefox, Edge)</li>
+<li><strong>Data Auditing:</strong> Complete experimental trace logging for reproducibility</li>
+</ul>
       </div>
     </div>
   </div>

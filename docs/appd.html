@@ -532,7 +532,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>				
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>				
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -586,9 +588,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     <div class="gx-card-content">
       <div class="intro">
         <h3>Contents Overview</h3>
-<p>This appendix provides detailed architectural diagrams for each of the MCD layers: the Prompt Layer, the Stateless Control Layer, the Execution Layer, and the Fallback Layer. These visual representations clarify how MCD avoids orchestration-heavy pipelines while maintaining architectural discipline.</p>
-<h3>Purpose Statement</h3>
-<p>To visually link the subsystem designs from Chapter 4 with the instantiated agent architecture in Chapter 5, demonstrating how MCD principles manifest in concrete system architecture without requiring complex orchestration frameworks.</p>
+<p>This appendix provides detailed architectural diagrams for each of the MCD layers: the Prompt Layer, the Stateless Control Layer, the Execution Layer, and the integrated Fallback mechanisms. These visual representations clarify how MCD avoids orchestration-heavy pipelines while maintaining architectural discipline.</p>
+<h3 id="purpose-statement"><strong>Purpose Statement</strong></h3>
+<p>To visually link the subsystem designs from Chapter 4 with the instantiated agent architecture in Chapter 5, demonstrating how MCD principles (Minimality by Default, Bounded Rationality, Degeneracy Detection) manifest in concrete system architecture without requiring complex orchestration frameworks.</p>
       </div>
     </div>
   </div>
@@ -607,43 +609,44 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Figure D.1: Complete MCD Layer Architecture<br />
-text</p>
-<div class="highlight"><pre><span></span><code><span class="err">┌─────────────────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">                      </span><span class="n">PROMPT</span><span class="w"> </span><span class="n">LAYER</span><span class="w"> </span><span class="p">(</span><span class="n">Section</span><span class="w"> </span><span class="mf">4.3</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span><span class="w">           </span><span class="err">│</span>
-<span class="err">├─────────────────────────────────────────────────────────────┤</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="mi">90</span><span class="o">-</span><span class="n">token</span><span class="w"> </span><span class="n">capability</span><span class="w"> </span><span class="n">ceiling</span><span class="w"> </span><span class="p">(</span><span class="n">Bounded</span><span class="w"> </span><span class="n">Rationality</span><span class="p">)</span><span class="w">        </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Zero</span><span class="o">-</span><span class="n">shot</span><span class="w"> </span><span class="n">baseline</span><span class="w"> </span><span class="n">prompting</span><span class="w"> </span><span class="p">(</span><span class="n">Minimality</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">Default</span><span class="p">)</span><span class="w">     </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Embedded</span><span class="w"> </span><span class="n">fallback</span><span class="w"> </span><span class="n">logic</span><span class="w"> </span><span class="p">(</span><span class="n">Degeneracy</span><span class="w"> </span><span class="n">Detection</span><span class="p">)</span><span class="w">           </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Modality</span><span class="w"> </span><span class="n">anchoring</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">multi</span><span class="o">-</span><span class="n">modal</span><span class="w"> </span><span class="n">inputs</span><span class="w">                </span><span class="err">│</span>
-<span class="err">│</span><span class="w">                                                             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Input</span><span class="p">:</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="n">Query</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Intent</span><span class="w"> </span><span class="n">Router</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Decision</span><span class="w"> </span><span class="n">Prompt</span><span class="w">        </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Output</span><span class="p">:</span><span class="w"> </span><span class="n">Symbolic</span><span class="w"> </span><span class="n">routing</span><span class="w"> </span><span class="n">tokens</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Execution</span><span class="w"> </span><span class="n">instructions</span><span class="w">   </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────────────────┘</span>
-<span class="w">                              </span><span class="err">↓</span>
-<span class="err">┌─────────────────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">               </span><span class="n">STATELESS</span><span class="w"> </span><span class="n">CONTROL</span><span class="w"> </span><span class="n">LAYER</span><span class="w"> </span><span class="p">(</span><span class="n">Section</span><span class="w"> </span><span class="mf">4.3</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span><span class="w">       </span><span class="err">│</span>
-<span class="err">├─────────────────────────────────────────────────────────────┤</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">In</span><span class="o">-</span><span class="n">prompt</span><span class="w"> </span><span class="n">routing</span><span class="w"> </span><span class="n">logic</span><span class="w"> </span><span class="p">(</span><span class="n">No</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">orchestration</span><span class="p">)</span><span class="w">      </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Deterministic</span><span class="w"> </span><span class="n">fallback</span><span class="w"> </span><span class="n">paths</span><span class="w"> </span><span class="p">(</span><span class="n">Bounded</span><span class="w"> </span><span class="n">Rationality</span><span class="p">)</span><span class="w">       </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Symbolic</span><span class="w"> </span><span class="n">decision</span><span class="w"> </span><span class="n">trees</span><span class="w"> </span><span class="p">(</span><span class="n">Token</span><span class="o">-</span><span class="n">level</span><span class="w"> </span><span class="n">cues</span><span class="p">)</span><span class="w">               </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Context</span><span class="w"> </span><span class="n">regeneration</span><span class="w"> </span><span class="n">without</span><span class="w"> </span><span class="n">persistent</span><span class="w"> </span><span class="n">memory</span><span class="w">           </span><span class="err">│</span>
-<span class="err">│</span><span class="w">                                                             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Flow</span><span class="p">:</span><span class="w"> </span><span class="n">Intent</span><span class="w"> </span><span class="n">Classification</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Route</span><span class="w"> </span><span class="n">Selection</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Context</span><span class="w">    </span><span class="err">│</span>
-<span class="err">│</span><span class="w">        </span><span class="n">Anchoring</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Execution</span><span class="w"> </span><span class="n">Triggering</span><span class="w">                     </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────────────────┘</span>
-<span class="w">                              </span><span class="err">↓</span>
-<span class="err">┌─────────────────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">                </span><span class="n">EXECUTION</span><span class="w"> </span><span class="n">LAYER</span><span class="w"> </span><span class="p">(</span><span class="n">Section</span><span class="w"> </span><span class="mf">4.3</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span><span class="w">              </span><span class="err">│</span>
-<span class="err">├─────────────────────────────────────────────────────────────┤</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Q1</span><span class="o">/</span><span class="n">Q4</span><span class="o">/</span><span class="n">Q8</span><span class="w"> </span><span class="n">quantization</span><span class="w"> </span><span class="n">tiers</span><span class="w"> </span><span class="p">(</span><span class="n">Hardware</span><span class="o">-</span><span class="n">aware</span><span class="p">)</span><span class="w">             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Local</span><span class="w"> </span><span class="n">inference</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="p">(</span><span class="n">WebAssembly</span><span class="o">/</span><span class="n">llama</span><span class="o">.</span><span class="n">cpp</span><span class="p">)</span><span class="w">             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="n">Dynamic</span><span class="w"> </span><span class="n">tier</span><span class="w"> </span><span class="n">selection</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">complexity</span><span class="w">               </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="mi">512</span><span class="n">MB</span><span class="w"> </span><span class="n">RAM</span><span class="w"> </span><span class="n">constraints</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="n">ms</span><span class="w"> </span><span class="n">latency</span><span class="w"> </span><span class="n">budgets</span><span class="w">             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">                                                             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Components</span><span class="p">:</span><span class="w"> </span><span class="n">Quantized</span><span class="w"> </span><span class="n">LLM</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Local</span><span class="w"> </span><span class="n">Runtime</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Response</span><span class="w">       </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────────────────┘</span>
-</code></pre></div>
+       <p><strong>Figure D.1: Complete MCD Layer Architecture</strong></p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                 PROMPT LAYER (Section 4.3.1)                │
+├─────────────────────────────────────────────────────────────┤
+│  • 90-130 token capability plateau (Bounded Rationality)    │
+│  • Zero-shot baseline prompting (Minimality by Default)     │
+│  • Embedded fallback logic (Degeneracy Detection)           │
+│  • Symbolic routing with IF-THEN decision trees             │
+│                                                             │
+│  Input: User Query → Intent Router → Decision Prompt        │
+│  Output: Symbolic routing tokens + Execution instructions   │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│            STATELESS CONTROL LAYER (Section 4.3.2)          │
+├─────────────────────────────────────────────────────────────┤
+│  • In-prompt routing logic (No external orchestration)      │
+│  • Deterministic fallback paths (Bounded Rationality)       │
+│  • Symbolic decision trees (≤3 depth, ≤4 branches)          │
+│  • Context regeneration without persistent memory           │
+│                                                             │
+│  Flow: Intent Classification → Route Selection → Context    │
+│        Anchoring → Execution Triggering                     │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│               EXECUTION LAYER (Section 4.3.3)               │
+├─────────────────────────────────────────────────────────────┤
+│  • Q1/Q4/Q8 quantization tiers (Hardware-aware)             │
+│  • Local inference only (WebAssembly/llama.cpp)             │
+│  • Dynamic tier routing: Q1→Q4→Q8 (drift &gt;10% threshold) │
+│  • Resource constraints: &lt;512MB RAM, &lt;500ms latency   │
+│                                                             │
+│  Components: Quantized LLM → Local Runtime → Response       │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+                        RESPONSE OUTPUT
+</code></pre>
                      
       </div>
     </div>
@@ -662,33 +665,34 @@ text</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>Figure D.2: Prompt Layer Design Pattern<br />
-text</p>
-<div class="highlight"><pre><span></span><code>USER INPUT
+      <p><strong>Figure D.2: Prompt Layer Design Pattern</strong></p>
+<pre><code>USER INPUT
      ↓
 ┌─────────────────────────────────────────────────┐
 │           PROMPT STRUCTURE                      │
 ├─────────────────────────────────────────────────┤
 │  System: [Lightweight stateless assistant]      │
 │  Context: [Compressed state tokens]             │
-│  Intent Router:                                 │
-│    • if intent=booking → appointment_logic      │
-│    • if intent=query → information_logic        │
-│    • if intent=unclear → clarification_logic    │
-│  Fallback: [Safe default responses]             │
+│  Intent Router (Symbolic Decision Tree):        │
+│    • IF intent=booking → appointment_logic      │
+│    • IF intent=navigation → spatial_logic       │
+│    • IF intent=diagnostic → heuristic_logic     │
+│    • ELSE → clarification_logic                 │
+│  Fallback: [Bounded loops ≤2 iterations]        │
 │  Output Format: [Structured symbolic tokens]    │
 └─────────────────────────────────────────────────┘
      ↓
 SYMBOLIC ROUTING DECISION
      ↓
 EXECUTION PATHWAY
-</code></pre></div>
-
-<p>Key Components:<br />
-- Token-efficient context packing: intent=book, time=today, specialty=neuro<br />
-- Embedded routing logic: Decision branches encoded as token patterns<br />
-- Fallback safety: Default actions for ambiguous inputs<br />
-- Modality anchoring: Visual/audio → symbolic token conversion</p>
+</code></pre>
+<p><strong>Key Components:</strong></p>
+<ul>
+<li><strong>Token-efficient context packing:</strong> <code>intent=book, time=today, specialty=neuro</code> (explicit slot passing, T4 validation)</li>
+<li><strong>Embedded routing logic:</strong> Decision branches encoded as IF-THEN token patterns (Section 5.2.1)</li>
+<li><strong>Fallback safety:</strong> Bounded clarification loops (≤2 iterations, Anti-Pattern 4)</li>
+<li><strong>Adaptation patterns:</strong> Dynamic (W1/W3), Semi-Static (W2) routing strategies (Table 5.1)</li>
+</ul>
       </div>
     </div>
   </div>
@@ -706,33 +710,43 @@ EXECUTION PATHWAY
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>Figure D.3: Control Layer Decision Logic<br />
-text</p>
-<div class="highlight"><pre><span></span><code><span class="n">PROMPT</span><span class="w"> </span><span class="n">INPUT</span>
-<span class="w">     </span><span class="err">↓</span>
-<span class="err">┌─────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">         </span><span class="n">INTENT</span><span class="w"> </span><span class="n">CLASSIFICATION</span><span class="w">                    </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">┌─────────────┐</span><span class="w">  </span><span class="err">┌─────────────┐</span><span class="w">  </span><span class="err">┌──────────┐</span><span class="w"> </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="n">BOOKING</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">    </span><span class="n">QUERY</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">UNCLEAR</span><span class="w"> </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="n">Route</span><span class="w"> </span><span class="n">A</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="n">Route</span><span class="w"> </span><span class="n">B</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">Route</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">└─────────────┘</span><span class="w">  </span><span class="err">└─────────────┘</span><span class="w">  </span><span class="err">└──────────┘</span><span class="w"> </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────┘</span>
-<span class="w">     </span><span class="err">↓</span><span class="w">              </span><span class="err">↓</span><span class="w">              </span><span class="err">↓</span>
-<span class="n">ROUTE</span><span class="w"> </span><span class="n">A</span><span class="p">:</span><span class="w"> </span><span class="n">Appointment</span><span class="w"> </span><span class="n">Logic</span><span class="w">    </span><span class="n">ROUTE</span><span class="w"> </span><span class="n">C</span><span class="p">:</span><span class="w"> </span><span class="n">Fallback</span>
-<span class="err">┌─────────────────────────┐</span><span class="w">  </span><span class="err">┌─────────────────┐</span>
-<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="n">required</span><span class="w"> </span><span class="n">fields</span><span class="w"> </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Clarification</span><span class="w"> </span><span class="err">│</span>
-<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Validate</span><span class="w"> </span><span class="n">constraints</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Safe</span><span class="w"> </span><span class="n">exit</span><span class="w">     </span><span class="err">│</span>
-<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Generate</span><span class="w"> </span><span class="n">confirmation</span><span class="w"> </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="n">recovery</span><span class="err">│</span>
-<span class="err">└─────────────────────────┘</span><span class="w">  </span><span class="err">└─────────────────┘</span>
-<span class="w">     </span><span class="err">↓</span><span class="w">                           </span><span class="err">↓</span>
-<span class="n">EXECUTION</span><span class="w"> </span><span class="n">LAYER</span><span class="w">             </span><span class="n">CONTROLLED</span><span class="w"> </span><span class="n">FAILURE</span>
-</code></pre></div>
-
-<p>Control Flow Characteristics:<br />
-- No persistent state: Each decision cycle is self-contained<br />
-- Symbolic routing: Token patterns trigger execution paths<br />
-- Bounded fallback: Maximum 2-loop recovery prevents drift<br />
-- Context regeneration: State reconstructed from prompt tokens</p>
+      <p><strong>Figure D.3: Control Layer Decision Logic</strong></p>
+<pre><code>PROMPT INPUT
+     ↓
+┌─────────────────────────────────────────────────┐
+│         INTENT CLASSIFICATION                   │
+│  ┌─────────────┐  ┌─────────────┐  ┌──────────┐ │
+│  │   BOOKING   │  │  NAVIGATION │  │DIAGNOSTIC│ │
+│  │   Route A   │  │   Route B   │  │ Route C  │ │
+│  │  (Dynamic)  │  │(Semi-Static)│  │(Dynamic) │ │
+│  └─────────────┘  └─────────────┘  └──────────┘ │
+└─────────────────────────────────────────────────┘
+     ↓                  ↓                  ↓
+ROUTE A: Booking      ROUTE B: Navigation   ROUTE C: Diagnostic
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│ • Dynamic slot  │  │ • Deterministic │  │ • Heuristic     │
+│   extraction    │  │   coordinate    │  │   category      │
+│ • Clarification │  │   calculation   │  │   routing       │
+│ • Confirmation  │  │ • Landmark refs │  │ • Priority      │
+│   (W1 pattern)  │  │   (W2 pattern)  │  │   (W3 pattern)  │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
+     ↓                  ↓                  ↓
+           FALLBACK ROUTE (if needed)
+         ┌─────────────────────────┐
+         │ • Bounded clarification │
+         │ • Safe limitation exit  │
+         │ • Controlled failure    │
+         └─────────────────────────┘
+                  ↓
+            EXECUTION LAYER
+</code></pre>
+<p><strong>Control Flow Characteristics:</strong></p>
+<ul>
+<li><strong>No persistent state:</strong> Each decision cycle is self-contained (T4: 5/5 stateless success)</li>
+<li><strong>Symbolic routing:</strong> Token patterns trigger execution paths (Section 5.2.1)</li>
+<li><strong>Bounded fallback:</strong> Maximum 2-loop recovery prevents semantic drift (T5: &gt;3 steps causes drift)</li>
+<li><strong>Context regeneration:</strong> State reconstructed from explicit slot reinjection (Section 4.2)</li>
+</ul>
       </div>
     </div>
   </div>
@@ -750,38 +764,39 @@ text</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Figure D.4: Tiered Execution Model<br />
-text</p>
-<div class="highlight"><pre><span></span><code><span class="nx">TASK</span><span class="w"> </span><span class="nx">COMPLEXITY</span><span class="w"> </span><span class="nx">ASSESSMENT</span>
-<span class="w">     </span><span class="err">↓</span>
-<span class="err">┌─────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">              </span><span class="nx">TIER</span><span class="w"> </span><span class="nx">SELECTION</span><span class="w"> </span><span class="nx">LOGIC</span><span class="w">               </span><span class="err">│</span>
-<span class="err">├─────────────────────────────────────────────────┤</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">Q1</span><span class="p">:</span><span class="w"> </span><span class="nx">Ultra</span><span class="o">-</span><span class="nx">minimal</span><span class="w"> </span><span class="p">(</span><span class="mi">300</span><span class="nx">MB</span><span class="p">,</span><span class="w"> </span><span class="nx">simple</span><span class="w"> </span><span class="nx">tasks</span><span class="p">)</span><span class="w">        </span><span class="err">│</span>
-<span class="err">│</span><span class="w">      </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="nx">semantic</span><span class="w"> </span><span class="nx">drift</span><span class="w"> </span><span class="nx">detected</span><span class="p">)</span><span class="w">             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">Q4</span><span class="p">:</span><span class="w"> </span><span class="nx">Optimal</span><span class="w"> </span><span class="nx">balance</span><span class="w"> </span><span class="p">(</span><span class="mi">600</span><span class="nx">MB</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="o">%</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">tasks</span><span class="p">)</span><span class="w">      </span><span class="err">│</span>
-<span class="err">│</span><span class="w">      </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="nx">timeout</span><span class="o">/</span><span class="nx">low</span><span class="w"> </span><span class="nx">confidence</span><span class="p">)</span><span class="w">              </span><span class="err">│</span><span class="w"> </span>
-<span class="err">│</span><span class="w">  </span><span class="nx">Q8</span><span class="p">:</span><span class="w"> </span><span class="nx">Strategic</span><span class="w"> </span><span class="nx">fallback</span><span class="w"> </span><span class="p">(</span><span class="mi">800</span><span class="nx">MB</span><span class="p">,</span><span class="w"> </span><span class="nx">complex</span><span class="w"> </span><span class="nx">tasks</span><span class="p">)</span><span class="w">  </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────┘</span>
-<span class="w">     </span><span class="err">↓</span>
-<span class="err">┌─────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">            </span><span class="nx">LOCAL</span><span class="w"> </span><span class="nx">EXECUTION</span><span class="w"> </span><span class="nx">RUNTIME</span><span class="w">              </span><span class="err">│</span>
-<span class="err">├─────────────────────────────────────────────────┤</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">WebAssembly</span><span class="w"> </span><span class="nx">Runtime</span><span class="w"> </span><span class="p">(</span><span class="nx">Browser</span><span class="p">)</span><span class="w">                  </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">OR</span><span class="w">                                             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">llama</span><span class="p">.</span><span class="nx">cpp</span><span class="w"> </span><span class="p">(</span><span class="nx">Native</span><span class="p">)</span><span class="w">                             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">OR</span><span class="w">                                             </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">WebLLM</span><span class="w"> </span><span class="p">(</span><span class="nx">JavaScript</span><span class="p">)</span><span class="w">                            </span><span class="err">│</span>
-<span class="err">│</span><span class="w">                                                 </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="nx">Constraints</span><span class="p">:</span><span class="w">                                   </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="nx">No</span><span class="w"> </span><span class="nx">backend</span><span class="w"> </span><span class="nx">servers</span><span class="w">                           </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="nx">Local</span><span class="w"> </span><span class="nx">inference</span><span class="w"> </span><span class="nx">only</span><span class="w">                         </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="mi">430</span><span class="nx">ms</span><span class="w"> </span><span class="nx">average</span><span class="w"> </span><span class="nx">latency</span><span class="w">                        </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="err">•</span><span class="w"> </span><span class="nx">Memory</span><span class="w"> </span><span class="nx">bounds</span><span class="w"> </span><span class="nx">enforced</span><span class="w">                       </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────┘</span>
-<span class="w">     </span><span class="err">↓</span>
-<span class="nx">RESPONSE</span><span class="w"> </span><span class="nx">OUTPUT</span>
-</code></pre></div>
+       <p><strong>Figure D.4: Tiered Execution Model</strong></p>
+<pre><code>TASK COMPLEXITY ASSESSMENT
+     ↓
+┌─────────────────────────────────────────────────┐
+│            TIER SELECTION LOGIC (T10)           │
+├─────────────────────────────────────────────────┤
+│  Q1: Ultra-minimal (Qwen2-0.5B, 300MB RAM)      │
+│      ↓ (if semantic drift &gt;10%)              │
+│  Q4: Optimal balance (TinyLlama-1.1B, 560MB)    │
+│      ↓ (if performance &lt;80% or timeout)      │
+│  Q8: Strategic fallback (Llama-3.2-1B, 800MB)   │
+│                                                 │
+│  Evidence: Q4 optimal for 80% of tasks (T10)    │
+└─────────────────────────────────────────────────┘
+     ↓
+┌─────────────────────────────────────────────────┐
+│          LOCAL EXECUTION RUNTIME (T8)           │
+├─────────────────────────────────────────────────┤
+│  WebAssembly Runtime (Browser deployment)       │
+│  OR                                             │
+│  llama.cpp (Native/Raspberry Pi deployment)     │
+│  OR                                             │
+│  WebLLM (JavaScript-based inference)            │
+│                                                 │
+│  Validated Constraints (T8):                    │
+│  • No backend servers (edge-first principle)    │
+│  • Local inference only                         │
+│  • &lt;500ms average latency (Q4 tier: 430ms)   │
+│  • &lt;512MB memory stable deployment           │
+└─────────────────────────────────────────────────┘
+     ↓
+RESPONSE OUTPUT
+</code></pre>
       </div>
     </div>
   </div>
@@ -798,39 +813,40 @@ text</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>Figure D.5: Fallback Recovery Paths<br />
-text</p>
-<div class="highlight"><pre><span></span><code><span class="n">TASK</span><span class="w"> </span><span class="n">EXECUTION</span>
-<span class="w">     </span><span class="err">↓</span>
-<span class="n">MONITORING</span><span class="w"> </span><span class="n">LAYER</span>
-<span class="err">┌─────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Semantic</span><span class="w"> </span><span class="n">Drift</span><span class="w"> </span><span class="n">Detection</span><span class="w"> </span><span class="p">(</span><span class="o">&gt;</span><span class="mi">10</span><span class="o">%</span><span class="w"> </span><span class="n">threshold</span><span class="p">)</span><span class="w">      </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Confidence</span><span class="w"> </span><span class="n">Scoring</span><span class="w"> </span><span class="p">(</span><span class="n">below</span><span class="w"> </span><span class="n">fallback</span><span class="w"> </span><span class="n">threshold</span><span class="p">)</span><span class="w">  </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Response</span><span class="w"> </span><span class="n">Timeout</span><span class="w"> </span><span class="p">(</span><span class="o">&gt;</span><span class="n">timeout</span><span class="w"> </span><span class="n">limit</span><span class="p">)</span><span class="w">              </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Input</span><span class="w"> </span><span class="n">Ambiguity</span><span class="w"> </span><span class="p">(</span><span class="n">unclear</span><span class="w"> </span><span class="n">intent</span><span class="p">)</span><span class="w">               </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────┘</span>
-<span class="w">     </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">detected</span><span class="p">)</span>
-<span class="err">┌─────────────────────────────────────────────────┐</span>
-<span class="err">│</span><span class="w">              </span><span class="n">FALLBACK</span><span class="w"> </span><span class="n">SEQUENCE</span><span class="w">                  </span><span class="err">│</span>
-<span class="err">├─────────────────────────────────────────────────┤</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Loop</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">Re</span><span class="o">-</span><span class="n">prompt</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">clarification</span><span class="w">            </span><span class="err">│</span>
-<span class="err">│</span><span class="w">    </span><span class="s">&quot;Please specify [missing information]&quot;</span><span class="w">       </span><span class="err">│</span>
-<span class="err">│</span><span class="w">         </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">still</span><span class="w"> </span><span class="n">unclear</span><span class="p">)</span><span class="w">                    </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Loop</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="n">Provide</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">constraints</span><span class="w">         </span><span class="err">│</span>
-<span class="err">│</span><span class="w">    </span><span class="s">&quot;Available options: [list]&quot;</span><span class="w">                  </span><span class="err">│</span>
-<span class="err">│</span><span class="w">         </span><span class="err">↓</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">continued</span><span class="w"> </span><span class="n">failure</span><span class="p">)</span><span class="w">                </span><span class="err">│</span>
-<span class="err">│</span><span class="w">  </span><span class="n">Loop</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="n">Safe</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">clear</span><span class="w"> </span><span class="n">limitation</span><span class="w">        </span><span class="err">│</span>
-<span class="err">│</span><span class="w">    </span><span class="s">&quot;Unable to complete. Please try again.&quot;</span><span class="w">      </span><span class="err">│</span>
-<span class="err">└─────────────────────────────────────────────────┘</span>
-<span class="w">     </span><span class="err">↓</span>
-<span class="n">CONTROLLED</span><span class="w"> </span><span class="n">TERMINATION</span>
-</code></pre></div>
-
-<p>Fallback Characteristics:<br />
-- Bounded loops: Maximum 3 recovery attempts<br />
-- Progressive degradation: Each loop reduces complexity<br />
-- Safe termination: Clear limitation acknowledgment<br />
-- Stateless recovery: No dependency on session memory</p>
+       <p><strong>Figure D.5: Fallback Recovery Paths</strong></p>
+<pre><code>TASK EXECUTION
+     ↓
+MONITORING LAYER (Continuous Validation)
+┌─────────────────────────────────────────────────┐
+│  • Semantic Drift Detection (&gt;10% threshold, T10) │
+│  • Confidence Scoring (below threshold triggers)  │
+│  • Response Timeout (&gt;latency limit detection)    │
+│  • Input Ambiguity (unclear intent classification)│
+└─────────────────────────────────────────────────┘
+     ↓ (if failure detected)
+┌─────────────────────────────────────────────────┐
+│            BOUNDED FALLBACK SEQUENCE            │
+├─────────────────────────────────────────────────┤
+│  Loop 1: Specific clarification request         │
+│    "Please specify [missing_slot]"              │
+│         ↓ (if still unclear)                    │
+│  Loop 2: Bounded options or constraints         │
+│    "Choose: [option_A, option_B, option_C]"     │
+│         ↓ (if continued failure, max depth=2)   │
+│  Safe Exit: Transparent limitation              │
+│    "Unable to complete [task]. Limitation:      │
+│     [specific_constraint]. Please [action]."    │
+└─────────────────────────────────────────────────┘
+     ↓
+CONTROLLED TERMINATION (T7: 80% success)
+</code></pre>
+<p><strong>Fallback Characteristics (Empirically Validated):</strong></p>
+<ul>
+<li><strong>Bounded loops:</strong> Maximum 2 recovery attempts (T5: &gt;3 steps causes semantic drift)</li>
+<li><strong>Progressive degradation:</strong> Each loop reduces complexity, narrows scope</li>
+<li><strong>Transparent limitation:</strong> Clear acknowledgment of constraint boundaries (W2/W3 safety-critical)</li>
+<li><strong>Stateless recovery:</strong> No dependency on session memory (T4: 5/5 stateless success)</li>
+</ul>
       </div>
     </div>
   </div>
@@ -847,30 +863,35 @@ text</p>
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>Figure D.6: Complete MCD Agent Lifecycle<br />
-text</p>
-<div class="highlight"><pre><span></span><code><span class="nv">USER</span><span class="w"> </span><span class="nv">QUERY</span>
-<span class="w">     </span>↓
+      <p><strong>Figure D.6: Complete MCD Agent Lifecycle</strong></p>
+<pre><code>USER QUERY
+     ↓
 ┌─────────────────────────────────────────────────┐
-│<span class="w">  </span><span class="nv">PROMPT</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Intent</span><span class="w"> </span><span class="nv">parsing</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Route</span><span class="w"> </span><span class="nv">selection</span><span class="w"> </span>│
+│  PROMPT LAYER: Intent parsing + Route selection │
+│    • Adaptation pattern determination (W1/W2/W3)│
 ├─────────────────────────────────────────────────┤
-│<span class="w">  </span><span class="nv">CONTROL</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Symbolic</span><span class="w"> </span><span class="nv">routing</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Context</span><span class="w"> </span><span class="nv">mgmt</span><span class="w"> </span>│
+│  CONTROL LAYER: Symbolic routing + Context mgmt │
+│    • Decision tree execution (≤3 depth, ≤4 branch)│
 ├─────────────────────────────────────────────────┤
-│<span class="w">  </span><span class="nv">EXECUTION</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Q</span><span class="o">-</span><span class="nv">tier</span><span class="w"> </span><span class="nv">selection</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Local</span><span class="w"> </span><span class="k">exec</span><span class="w"> </span>│
+│  EXECUTION LAYER: Q-tier selection + Local exec │
+│    • Dynamic tier routing Q1→Q4→Q8 (T10)        │
 ├─────────────────────────────────────────────────┤
-│<span class="w">  </span><span class="nv">FALLBACK</span><span class="w"> </span><span class="nv">LAYER</span>:<span class="w"> </span><span class="nv">Error</span><span class="w"> </span><span class="nv">detection</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">Recovery</span><span class="w">     </span>│
+│  FALLBACK MONITORING: Error detection + Recovery│
+│    • Bounded loops ≤2, transparent limitations  │
 └─────────────────────────────────────────────────┘
-<span class="w">     </span>↓
+     ↓
 ┌─────────────────────────────────────────────────┐
-│<span class="w">               </span><span class="nv">SUCCESS</span><span class="w"> </span><span class="nv">PATH</span><span class="w">                      </span>│
-│<span class="w">  </span><span class="nv">Task</span><span class="w"> </span><span class="nv">Completion</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Symbolic</span><span class="w"> </span><span class="nv">Response</span><span class="w"> </span><span class="nv">Output</span><span class="w">     </span>│
+│               SUCCESS PATH                      │
+│  Task Completion → Validated Response Output    │
+│  Performance: 85% retention under Q1 (T10)      │
 └─────────────────────────────────────────────────┘
-<span class="w">     </span><span class="nv">OR</span>
+     OR
 ┌─────────────────────────────────────────────────┐
-│<span class="w">               </span><span class="nv">FALLBACK</span><span class="w"> </span><span class="nv">PATH</span><span class="w">                     </span>│
-│<span class="w">  </span><span class="nv">Controlled</span><span class="w"> </span><span class="nv">Degradation</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Safe</span><span class="w"> </span><span class="k">Exit</span><span class="w"> </span><span class="nv">State</span><span class="w">       </span>│
+│               FALLBACK PATH                     │
+│  Controlled Degradation → Safe Limitation Exit  │
+│  Transparency: Clear constraint acknowledgment  │
 └─────────────────────────────────────────────────┘
-</code></pre></div>
+</code></pre>
       </div>
     </div>
   </div>

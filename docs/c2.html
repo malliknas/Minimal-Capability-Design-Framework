@@ -532,7 +532,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>				
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>				
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -949,44 +951,9 @@ This motivates MCD&rsquo;s Degeneracy Detection principle (detailed in Ch. 4), w
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>Recent research demonstrates a paradigm shift toward Small Language Models (SLMs) as efficient alternatives to large-scale models for specialized tasks (Belcak et al., 2025; Gunasekar et al., 2024). NVIDIA research argues that &ldquo;small language models are sufficiently powerful, inherently more suitable, and necessarily more economical for many invocations in agentic systems&rdquo; (Belcak et al., 2025). This positions SLMs as complementary to architectural minimalism by achieving efficiency through domain specificity rather than post-hoc optimization.<br />
-Contemporary SLM implementations demonstrate that models under 10 billion parameters can match or exceed the task performance of larger counterparts in specialized domains (Microsoft Research, 2024; Google DeepMind, 2024). Microsoft&rsquo;s Phi family exemplifies this trend: Phi-3-mini (3.8B parameters) achieves comparable reasoning performance to models 10x larger on mathematical and coding benchmarks (Abdin et al., 2024). Similarly, Google&rsquo;s Gemma models provide &ldquo;lightweight versions&rdquo; optimized for deployment on laptops and mobile devices while maintaining task-specific efficacy (Google Research, 2024).</p>
-<p>Limitation:<br />
-While SLMs offer domain-specific efficiency, they require careful task-scope definition and may lack generalization capability across diverse domains (Touvron et al., 2023). Their effectiveness depends heavily on training data quality and domain alignment.</p>
-<p>Alignment with MCD:<br />
-SLMs complement MCD&rsquo;s constraint-first philosophy by providing model-level specialization that aligns with architectural minimalism (Li et al., 2024). Where MCD enforces minimality through stateless design and prompt efficiency, SLMs achieve similar goals through parameter reduction and domain focus. This synergy suggests future MCD implementations could benefit from SLM base models without compromising framework principles.</p>
-<p>Table 2.6: SLM Alignment with MCD Principles</p>
-<table>
-<thead>
-<tr>
-<th>SLM Characteristic</th>
-<th>MCD Principle Alignment</th>
-<th>Synergy Potential</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Parameter efficiency</td>
-<td>Minimality by Default</td>
-<td>High - reduces computational overhead</td>
-</tr>
-<tr>
-<td>Domain specialization</td>
-<td>Degeneracy Detection</td>
-<td>High - eliminates unused capabilities</td>
-</tr>
-<tr>
-<td>Local deployment capability</td>
-<td>Stateless execution</td>
-<td>Medium - supports edge deployment</td>
-</tr>
-<tr>
-<td>Fast inference</td>
-<td>Bounded rationality</td>
-<td>High - enables real-time constraints</td>
-</tr>
-</tbody>
-</table>
+     <p> Recent developments in Small Language Models (SLMs) demonstrate parallel efficiency optimization through domain-specialized pre-training rather than post-deployment compression (Belcak et al., 2025; Gunasekar et al., 2024). While MCD primarily leverages quantization for deployment flexibility, emerging SLM architectures (Phi-3, Gemma, SmolLM) achieve similar resource profiles through parameter reduction from inception. </p>
+<p>While quantization and SLMs represent parallel paths to efficiency optimization, this thesis focuses exclusively on quantization-based MCD validation to maintain methodological coherence. SLM-MCD architectural compatibility is discussed theoretically in Section 4.9.1, but empirical SLM validation is beyond the current research scope—representing an important direction for future work (Section 9.2.1). This design choice prioritizes framework universality: by demonstrating constraint-resilience through quantization of general-purpose models, MCD principles remain applicable whether practitioners deploy quantized LLMs or native SLMs. </p>
+
       </div>
     </div>
   </div>
@@ -1007,7 +974,7 @@ SLMs complement MCD&rsquo;s constraint-first philosophy by providing model-level
         <p>This review reveals a consistent pattern: the literature on lightweight AI is dominated by model-centric, post-hoc optimizations, while the literature on agentic frameworks assumes resource abundance. MCD is formulated to address this gap by treating minimality not as an afterthought, but as a foundational architectural constraint. It focuses on interaction sufficiency, fallback robustness, and symbolic reasoning—not just computational lightness. Unlike runtime-oriented frameworks such as LangChain, MCD does not prescribe implementation libraries. Instead, it defines a design logic that assumes constraints and failure by default, making it compatible with a wide range of runtime choices. Critically, MCD does not compete with traditional frameworks in resource-abundant scenarios—instead, it provides reliable baseline performance precisely when resource constraints cause alternative approaches to degrade unpredictably or fail entirely. The MCD framework is task-agnostic and may be applied to any agent modality, as demonstrated in the <a href="c7.html" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted); padding-bottom: 1px; transition: border-color 0.2s ease;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--muted)'">Chapter 7</a> walkthroughs.<br />
 The emergence of Small Language Models provides additional validation for constraint-first design principles. Where traditional approaches optimize large models post-deployment, both MCD and SLMs demonstrate that design-time constraints - whether architectural or parametric - yield more efficient, deployable solutions (Belcak et al., 2025). This convergence suggests that future lightweight agents will benefit from combining MCD&rsquo;s architectural minimalism with SLM&rsquo;s domain-specific efficiency, creating a dual-layer optimization strategy aligned with edge deployment requirements.<br />
 Additionally, while various model-level optimizations such as distillation and parameter-efficient fine-tuning offer theoretical benefits, their integration often demands persistent session state, retraining access, or complex runtime adaptations. For agents operating in cold-start or browser-based settings, these strategies introduce fragility — thereby strengthening the case for quantization as the most practical and robust deployment-aligned optimization in MCD</p>
-<caption>Table 2.7: MCD Responses to Edge Deployment Limitations</caption>
+<caption>Table 2.6: MCD Responses to Edge Deployment Limitations</caption>
 <table>
 <thead>
 <tr>

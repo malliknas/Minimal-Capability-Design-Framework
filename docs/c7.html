@@ -532,7 +532,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 								<li class="list"><a href="appe.html" class="gx-page-link drop"><i
 											class="ri-record-circle-line"></i>Appendix E</a></li>
                                 <li class="list"><a href="appf.html" class="gx-page-link drop"><i
-											class="ri-record-circle-line"></i>Appendix F</a></li>				
+											class="ri-record-circle-line"></i>Appendix F</a></li>	
+                                <li class="list"><a href="appg.html" class="gx-page-link drop"><i
+											class="ri-record-circle-line"></i>Appendix G</a></li>				
 							</ul>
 						</li>
 						<li class="gx-sb-item-separator"></li>
@@ -604,7 +606,7 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>This chapter extends the theoretical foundations established in Chapters 2-6 into practical comparative evaluation of prompt engineering approaches across domain-specific agent workflows (Hevner et al., 2004). Rather than validating a single methodology, this chapter provides evidence-based analysis of five distinct prompt engineering strategies, examining their contextual effectiveness under varying operational constraints and deployment priorities (Venable et al., 2016).</p>
+       <p>This chapter extends MCD theoretical foundations (Chapters 4-5) and simulation validation (Chapter 6) into comparative evaluation of prompt engineering approaches across domain-specific agent workflows (Hevner et al., 2004). Following the walkthrough methodology established in Section 3.4, three domains validate MCD principles through systematic multi-approach comparison under progressive resource constraints (Q1→Q4→Q8 quantization tiers).</p>
 
 <p>The evaluation framework recognizes that no single approach dominates across all contexts, instead focusing on systematic analysis of trade-offs, implementation requirements, and performance characteristics that inform evidence-based approach selection for different deployment scenarios (Patton, 2014).</p>
                      
@@ -614,40 +616,9 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
 </div>
 
 <div class="gx-block">
-  <div class="gx-card gx-page-block" id="7.0">
-    <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">7.0 Advanced Evaluation Framework</h4>
-      <div class="header-tools">
-        <a href="#" class="m-r-10 gx-full-card">
-          <i class="ri-fullscreen-line" title="Full Screen"></i>
-        </a>
-      </div>
-    </div>
-    <div class="gx-card-content">
-      <div class="intro">
-        <p>Multi-Strategy Comparative Methodology: This chapter evaluates five prompt engineering approaches representing different optimization philosophies (Liu et al., 2023; Sahoo et al., 2024):</p>
-
-<ul>
-<li>MCD Structured: Resource-efficient, constraint-optimized design (from Chapters 4-5)</li>
-<li>Conversational: User experience-focused, natural interaction approach (Thoppilan et al., 2022)</li>
-<li>Few-Shot Pattern: Example-driven learning with structural guidance (Brown et al., 2020; Dong et al., 2022)</li>
-<li>System Role Professional: Expertise framing with systematic processing (Ouyang et al., 2022)</li>
-<li>Hybrid Multi-Strategy: Advanced integration leveraging complementary strengths (Wei et al., 2022)</li>
-</ul>
-
-<p>Quantization-Based Optimization: All evaluations utilize quantized models (Q1/Q4/Q8) as established in Chapter 5, maintaining consistency with constrained deployment scenarios while enabling fair comparison across approaches under identical resource limitations (Dettmers et al., 2022; Nagel et al., 2021).</p>
-
-<p>Implementation Sophistication Spectrum: The framework explicitly accounts for varying levels of prompt engineering expertise required, from simple single-strategy implementations to advanced multi-strategy coordination requiring sophisticated ML engineering capabilities.</p>
-<p><strong>Prompt Architecture Design Note</strong>: The MCD Structured implementations in this chapter follow the domain-specific adaptation patterns established in Section 5.2.1, which distinguished between dynamic slot-filling logic (W1: Healthcare Booking), deterministic spatial calculation (W2: Navigation), and dynamic heuristic classification (W3: Diagnostics). Each MCD prompt structure leverages symbolic routing tailored to task characteristics, as theoretically defined in Chapter 5's instantiation framework. This ensures that MCD's constraint-first design principles are applied consistently across domains while adapting to variable information density (W1), structured coordinate systems (W2), and complexity-driven classification (W3)[reference to Section 5.2.1].</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="gx-block">
   <div class="gx-card gx-page-block" id="7.1">
     <div class="gx-card-header header-575">
-      <h4 class="gx-card-title">7.1 Methodological Framework for ML Expert Evaluation</h4>
+      <h4 class="gx-card-title">7.1 Standardized evaluation protocol and metrics</h4>
       <div class="header-tools">
         <a href="#" class="m-r-10 gx-full-card">
           <i class="ri-fullscreen-line" title="Full Screen"></i>
@@ -656,40 +627,35 @@ pre, code{ background:var(--bg-soft); border:1px solid var(--border); color:var(
     </div>
     <div class="gx-card-content">
       <div class="intro">
-       <p>Standardized Evaluation Protocol:</p>
-
+       <p><strong>7.1.1 Domain Selection Rationale</strong></p>
+<p>The three walkthrough domains were selected from systematic MCD applicability analysis documented in&nbsp;<strong>Table 8.3 (MCD Suitability Matrix)</strong>, which evaluates nine task categories across constraint-resilience characteristics, quantization requirements, and SLM enhancement potential. From this analysis, high-suitability categories (FAQ Chatbots, Symbolic Navigation, Prompt Tuning, Edge Search) were identified, with three representative domains selected to validate MCD's task-agnostic principles as established in Section 3.4 and Section 2.7:</p>
+<p><strong>W1 &ndash; Healthcare Appointment Booking</strong>&nbsp;(High Suitability &ndash; Transactional Category, Table 8.3)<br />Tests structured slot-filling extraction (doctor type, date, time) under tight token budgets, validating transparent failure patterns in high-stakes medical contexts where dangerous misclassification must be prevented (Berg, 2001).&nbsp;<strong>Key Challenge:</strong>&nbsp;Predictable degradation under constraint pressure with explicit limitation acknowledgment rather than confident incorrect responses.</p>
+<p><strong>W2 &ndash; Spatial Indoor Navigation</strong>&nbsp;(High Suitability &ndash; Symbolic Reasoning Category, Table 8.3)<br />Tests stateless coordinate-based pathfinding without persistent maps, validating safety-critical decision-making where route hallucination poses liability risks (Lynch, 1960; Thrun et al., 2005).&nbsp;<strong>Key Challenge:</strong>&nbsp;Precise spatial reasoning under resource constraints while maintaining adequate safety communication for hazard awareness.</p>
+<p><strong>W3 &ndash; System Failure Diagnostics</strong>&nbsp;(High Suitability &ndash; Heuristic Classification Category, Table 8.3)<br />Tests heuristic classification under complexity scaling (P1/P2/P3 priority assignment), validating bounded diagnostic scope with transparent limitation acknowledgment when diagnostic data is insufficient (Basili et al., 1994).&nbsp;<strong>Key Challenge:</strong>&nbsp;Systematic troubleshooting logic that degrades predictably rather than fabricating confident but incorrect root cause analyses.</p>
+<p>Together, these domains cover structured extraction (W1), symbolic reasoning (W2), and heuristic classification (W3) task-types under resource constraints&mdash;validating MCD's task-agnostic applicability across the high-suitability categories identified in Table 8.3. Partial-suitability domains (Code Generation, Multimodal Captioning, Live Interview) and low-suitability domains (Continuous Learning, Safety-Critical Control) were excluded as documented in Table 8.3 due to fundamental architectural misalignment with MCD's stateless, constraint-first principles (Section 3.4).</p>
+<p><strong>7.1.2 Multi-Strategy Comparative Framework</strong></p>
+<p>Each domain evaluates <strong>five prompt engineering approaches</strong> representing different optimization philosophies (Liu et al., 2023; Sahoo et al., 2024):</p>
+<ol>
+<li><strong>MCD Structured:</strong> Resource-efficient, constraint-optimized design (from Chapters 4-5)</li>
+<li><strong>Conversational:</strong> User experience-focused, natural interaction approach (Thoppilan et al., 2022)</li>
+<li><strong>Few-Shot Pattern:</strong> Example-driven learning with structural guidance (Brown et al., 2020; Dong et al., 2022)</li>
+<li><strong>System Role Professional:</strong> Expertise framing with systematic processing (Ouyang et al., 2022)</li>
+<li><strong>Hybrid Multi-Strategy:</strong> Advanced integration leveraging complementary strengths (Example: MCD + FewShot) (Wei et al., 2022)</li>
+</ol>
+<p><strong>Evaluation Framework:</strong> Following Section 3.4 methodology, walkthroughs prioritize <strong>constraint-resilience</strong> (predictable degradation under resource pressure) over optimal-condition performance. All approaches tested under identical quantization constraints (Q1/Q4/Q8 tiers, Table 5.3) with 256MB RAM limits and 512-token budgets (Banbury et al., 2021).</p>
+<p><strong>Quantization-Aware Testing:</strong> All evaluations utilize quantized models as established in Table 5.3 (Q1: Qwen2-0.5B/300MB, Q4: TinyLlama-1.1B/560MB, Q8: Llama-3.2-1B/800MB), maintaining consistency with constrained deployment scenarios validated in T10 (Section 6.2.10) where Q4 emerged as optimal tier for 80% of constraint-bounded reasoning tasks (Dettmers et al., 2022; Nagel et al., 2021).</p>
+<p><strong>7.1.3 MCD Prompt Architecture Adaptation</strong></p>
+<p>MCD implementations follow <strong>domain-specific adaptation patterns</strong> established in Section 5.2.1:</p>
 <ul>
-<li>Domain Context &amp; Constraints: Operational requirements and resource limitations (Campbell &amp; Stanley, 1963)</li>
-<li>Multi-Approach Implementation: Detailed prompt engineering for each strategy</li>
-<li>Performance Matrix Analysis: Task completion, resource efficiency, user experience, professional quality (Cohen, 1988)</li>
-<li>Implementation Complexity Assessment: Engineering sophistication requirements</li>
-<li>Failure Mode Analysis: Systematic evaluation of approach-specific failure patterns (Amodei et al., 2016)</li>
-<li>Statistical Validation: Confidence intervals and effect size analysis where applicable (Field, 2013)</li>
-<li>Cross-Domain Transferability: Pattern recognition across different workflow contexts (Miles et al., 2013)</li>
+<li><strong>W1 (Healthcare Booking):</strong> Dynamic slot-filling logic with variable information density&mdash;systematic extraction of {doctor_type, date, time} with explicit missing-slot clarification protocols</li>
+<li><strong>W2 (Spatial Navigation):</strong> Deterministic coordinate transformation with structured spatial relationships&mdash;mathematical directional calculations (North/South/East/West) following predictable geometric patterns</li>
+<li><strong>W3 (System Diagnostics):</strong> Dynamic heuristic classification with complexity-driven routing&mdash;adaptive pattern matching across {category, priority, diagnostic_steps} with bounded scope acknowledgment</li>
 </ul>
-
-<p>Advanced Metrics for ML Engineering Teams:</p>
-
-<ul>
-<li>Strategy Integration Quality: For hybrid approaches, assessment of multi-strategy coordination effectiveness</li>
-<li>Reliability Variance: Performance consistency under varying input conditions</li>
-<li>Maintenance Overhead: Long-term sustainability and debugging complexity</li>
-<li>Scalability Characteristics: Performance degradation patterns under load</li>
-</ul>
-
-<h4 id="711-implementation-scope-and-slm-considerations">7.1.1 Implementation Scope and SLM Considerations</h4>
-
-<p>Important Note on Implementation Generality and SLM Potential: The domain walkthroughs presented in this chapter employ generalized implementations designed to demonstrate MCD architectural principles rather than achieve optimal domain-specific performance. Each domain would benefit significantly from specialized implementations:</p>
-
-<ul>
-<li>Healthcare appointment booking could leverage medical terminology databases, slot-optimization algorithms, and healthcare-specific Small Language Models (SLMs) trained on clinical vocabularies and appointment workflows (Magnini et al., 2025; Maity et al., 2025)</li>
-<li>Spatial navigation could incorporate SLAM algorithms, computer vision preprocessing, and robotics-specific SLMs trained on spatial reasoning datasets like RoboSpatial (Song et al., 2024)</li>
-<li>Prompt diagnostics could utilize code-specific parsers, semantic analysis tools, and specialized debugging SLMs such as Microsoft's CodeBERT family for enhanced code understanding (Microsoft Research, 2024)</li>
-</ul>
-
-<p>While Section 4.9.1 establishes theoretical SLM-MCD compatibility, this walkthrough utilizes quantized general-purpose LLMs (Qwen2-0.5B, TinyLlama-1.1B, Llama-3.2-1B) rather than domain-specialized SLMs. </br>This thesis focuses on architectural minimalism through quantization, MCD principles (statelessness, fallback safety, degeneracy detection) apply regardless of base model - whether general LLMs, quantized models, or domain-specific SLMs.</p>
-
-<p>However, these generalized implementations serve the thesis objective of validating MCD principles across diverse domains. The comparative results between MCD and alternative approaches remain methodologically sound and demonstrate genuine architectural trade-offs, as the same level of generalization is applied consistently across all tested variants.</p>
+<p>Each MCD prompt structure leverages <strong>symbolic routing tailored to task characteristics</strong> (Section 5.2.1), ensuring constraint-first design principles apply consistently across domains while adapting to operational requirements (Ribeiro et al., 2016).</p>
+<p><strong>7.1.4 Implementation Scope and Generalization Note</strong></p>
+<p><strong>Important:</strong> Domain walkthroughs employ <strong>generalized implementations</strong> designed to validate MCD architectural principles rather than achieve optimal domain-specific performance (Venable et al., 2016). Specialized enhancements&mdash;medical terminology databases (W1), SLAM algorithms (W2), code-specific parsers (W3)&mdash;would improve performance but fall outside the constraint-first architecture validation scope established in Section 3.4.</p>
+<p>While domain-specialized Small Language Models (SLMs) offer potential efficiency gains (Magnini et al., 2025; Maity et al., 2025; Song et al., 2024), this thesis validates MCD principles using quantized general-purpose LLMs to ensure architectural findings generalize across model families. Section 4.9.1 establishes theoretical SLM-MCD compatibility, with empirical SLM validation deferred to future research (Chapter 9.2.1).</p>
+<p><strong>Methodological Consistency:</strong> The same generalization level applies across all tested variants, ensuring comparative results demonstrate genuine architectural trade-offs rather than domain-specific optimization artifacts (Patton, 2014).</p>
       </div>
     </div>
   </div>
@@ -1223,7 +1189,7 @@ This positioning reinforces MCD's role as the reliable diagnostic baseline for e
 </tbody>
 </table>
 
-<p>Academic Contributions to Advanced Prompt Engineering:</p>
+<p><strong>Academic Contributions to Advanced Prompt Engineering:</strong></p>
 
 <ul>
 <li>Multi-Strategy Optimization Framework: Validates effectiveness of coordinated multi-strategy approaches, demonstrating performance levels beyond individual approach limitations (Ribeiro et al., 2016)</li>
@@ -1248,41 +1214,28 @@ This positioning reinforces MCD's role as the reliable diagnostic baseline for e
     </div>
     <div class="gx-card-content">
       <div class="intro">
-        <p>Primary Research Findings:  </p>
-
+ <p><strong>Primary Research Findings:</strong></p>
 <ol>
-<li>Context-Dependent Effectiveness: No single approach dominates across all conditions. Optimal selection depends on resource availability and deployment constraints. (Bommasani et al., 2021)  </li>
-<li>Constraint-Resilience Trade-off: MCD sacrifices optimal-condition performance for predictable behavior under resource pressure.  </li>
-<li>Edge Deployment Advantage: As quantization increases and resources decrease, MCD maintains higher performance retention than alternatives. (Xu et al., 2023)  </li>
-<li>Production-Ready Failure Patterns: MCD fails transparently while alternatives may fail with confident but incorrect responses. (Lin et al., 2022)</li>
+<li><strong>Context-Dependent Effectiveness:</strong> No single approach dominates across all conditions. Optimal selection depends on resource availability and deployment constraints. (Bommasani et al., 2021)</li>
+<li><strong>Constraint-Resilience Trade-off:</strong> MCD sacrifices optimal-condition performance for predictable behavior under resource pressure.</li>
+<li><strong>Edge Deployment Advantage:</strong> As quantization increases and resources decrease, MCD maintains higher performance retention than alternatives. (Xu et al., 2023)</li>
+<li><strong>Production-Ready Failure Patterns:</strong> MCD fails transparently while alternatives may fail with confident but incorrect responses. (Lin et al., 2022)</li>
 </ol>
-
-<p>Strategic Framework: Choose MCD when constraint resilience matters more than peak performance. Choose alternatives when resources support optimization for specific objectives (user experience, professional quality, task completion).</p>
-
-<p>SLM Enhancement Potential:<br />
-The emergence of domain-specific Small Language Models provides complementary optimization to MCD's architectural minimalism (Belcak et al., 2025). Future implementations could leverage specialized SLMs as base models within MCD frameworks, potentially addressing some domain-specific limitations while preserving constraint-first design principles. This model-agnostic compatibility demonstrates MCD's forward-compatibility with evolving language model landscapes.</p>
-
-<p>Domain 1<br />
-Healthcare-specific SLMs trained on clinical terminology and appointment workflows could potentially improve slot-filling accuracy and medical terminology understanding while maintaining MCD's stateless principles (Magnini et al., 2025). Domain-specific models might reduce the ambiguous input failures observed in the "Book something tomorrow" case by better interpreting medical context.</p>
-
-<p>Domain 2<br />
-Robotics-specific SLMs trained on spatial reasoning datasets could potentially reduce the semantic drift observed in multi-step navigation tasks (Song et al., 2024). Domain-specific spatial understanding might improve route chaining while preserving MCD's structured coordinate handling and predictable failure patterns.</p>
-
-<p>Domain 3<br />
-Code-specific SLMs like Microsoft's CodeBERT family could enhance diagnostic pattern recognition and system classification accuracy (Microsoft Research, 2024). Domain-specific models might improve novel issue handling while maintaining MCD's structured classification approach and transparent boundary acknowledgment.</p>
-
-<p>Future Research Directions for Advanced Systems:</p>
-
+<p><strong>Strategic Framework</strong>: Choose MCD when constraint resilience matters more than peak performance. Choose alternatives when resources support optimization for specific objectives (user experience, professional quality, task completion).</p>
+<p><strong>SLM Enhancement Potential:&nbsp;</strong></p>
+<p>The emergence of domain-specific Small Language Models provides complementary optimization to MCD's architectural minimalism (Belcak et al., 2025). Future implementations could leverage specialized SLMs as base models within MCD frameworks, potentially addressing some domain-specific limitations while preserving constraint-first design principles. This model-agnostic compatibility demonstrates MCD's forward-compatibility with evolving language model landscapes.</p>
+<p><strong>Domain 1</strong><br /> Healthcare-specific SLMs trained on clinical terminology and appointment workflows could potentially improve slot-filling accuracy and medical terminology understanding while maintaining MCD's stateless principles (Magnini et al., 2025). Domain-specific models might reduce the ambiguous input failures observed in the "Book something tomorrow" case by better interpreting medical context.</p>
+<p><strong>Domain 2</strong><br /> Robotics-specific SLMs trained on spatial reasoning datasets could potentially reduce the semantic drift observed in multi-step navigation tasks (Song et al., 2024). Domain-specific spatial understanding might improve route chaining while preserving MCD's structured coordinate handling and predictable failure patterns.</p>
+<p><strong>Domain 3</strong><br /> Code-specific SLMs like Microsoft's CodeBERT family could enhance diagnostic pattern recognition and system classification accuracy (Microsoft Research, 2024). Domain-specific models might improve novel issue handling while maintaining MCD's structured classification approach and transparent boundary acknowledgment.</p>
+<p><strong>Future Research Directions for Advanced Systems:</strong></p>
 <ul>
 <li>Adaptive multi-strategy systems optimizing strategy coordination based on real-time task complexity and resource availability</li>
 <li>Strategy integration algorithms for automated optimization of multi-approach coordination</li>
 <li>Cross-model strategy portability examining coordination effectiveness across different language model architectures</li>
 <li>Production-scale coordination studies evaluating multi-strategy performance under realistic deployment conditions</li>
 </ul>
-
-<p>Framework Significance: This comparative methodology provides ML expert teams with evidence-based strategies for leveraging multi-approach coordination in prompt engineering, enabling optimization beyond single-strategy limitations while acknowledging the expertise requirements for effective implementation. (Gregor &amp; Hevner, 2013).</p>
-
-<p>Practical Impact: Results demonstrate that sophisticated prompt engineering teams can achieve significant performance gains through strategic approach coordination, while simpler deployments benefit from evidence-based single-strategy selection based on contextual priorities and resource constraints.</p>
+<p><strong>Framework Significance:</strong> This comparative methodology provides ML expert teams with evidence-based strategies for leveraging multi-approach coordination in prompt engineering, enabling optimization beyond single-strategy limitations while acknowledging the expertise requirements for effective implementation. (Gregor &amp; Hevner, 2013).</p>
+<p><strong>Practical Impact:</strong> Results demonstrate that sophisticated prompt engineering teams can achieve significant performance gains through strategic approach coordination, while simpler deployments benefit from evidence-based single-strategy selection based on contextual priorities and resource constraints.</p>
       </div>
     </div>
   </div>
@@ -1356,8 +1309,7 @@ Chapter 8 performs this comparative evaluation, measuring sufficiency, redundanc
 								<nav>
 									<ul class="topic-list">
 <li><a class="topic" href="#ch1-intro">Chapter 7: Comprehensive Walkthrough Analysis</a></li>
-<li><a class="topic" href="#7.0">7.0 Advanced Evaluation Framework</a></li>
-<li><a class="topic" href="#7.1">7.1 Methodological Framework for ML Expert Evaluation</a></li>
+<li><a class="topic" href="#7.1">7.1 Standardized evaluation protocol and metrics</a></li>
 <li><a class="topic" href="#7.2">7.2 Domain 1: Stateless Appointment Booking Agent</a></li>
 <li><a class="topic" href="#7.3">7.3 Domain 2: Spatial Navigation Agent</a></li>
 <li><a class="topic" href="#7.4">7.4 Domain 3: Failure Diagnostics Agent</a></li>
